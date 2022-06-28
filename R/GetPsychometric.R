@@ -1,3 +1,14 @@
+#' @param data
+#'
+#' @param scaleNames description
+#' @param responseScale description
+#' @param typeSum description
+#' @param itemLength description
+#' @param reverse description
+#' @param idVar description
+#' @param name description
+#' @param itemDictionary description
+#'
 #' @export
 GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
                             typeSum = "Mean", itemLength = 6,
