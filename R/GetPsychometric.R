@@ -1,4 +1,5 @@
-#' @param data
+#' Psychometric analyses of Likert scales
+#' @param data datafile with items columns from one or more scales
 #'
 #' @param scaleNames description
 #' @param responseScale description
@@ -8,6 +9,10 @@
 #' @param idVar description
 #' @param name description
 #' @param itemDictionary description
+#'
+#' @examples
+#' dat <- as.data.frame(list(pItem1 = c(2,3,4,2,3,4,3,4), pItem2 = c(2,3,5,4,2,0,4,3)))
+#' GetPsychometric(dat, "p", responseScale = list(c(0,4)), itemLength = 1)
 #'
 #' @export
 GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
@@ -21,6 +26,10 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   if (!is.null(data[[idVar]]))
   {
     IDVar <- data[[idVar]]
+  }
+  else
+  {
+    IDVar <- as.data.frame(list(ID = row.names(data)))
   }
   if (FALSE %in% sapply(scaleNames, FUN = function(x) return(stringr::str_length(x) >= itemLength)))
   {
@@ -97,15 +106,15 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     signPart <- strtrim(scaleNames, itemLength)
     for(v in names(data))
     {
-      if (str_length(v) > itemLength)
+      if (stringr::str_length(v) > itemLength)
       {
         if (substr(v, 1, itemLength) %in% signPart)
         {
           iName <- scaleNames[match(substr(v, 1, itemLength),signPart)]
-          if (str_length(iName) > itemLength)
+          if (stringr::str_length(iName) > itemLength)
           {
             c <- ""
-            for (s in itemLength+1:str_length(v))
+            for (s in itemLength+1:stringr::str_length(v))
             {
 
               if (substring(v, s, s) == substring(iName, s,s))
@@ -115,7 +124,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
               else
                 break
             }
-            names(data)[names(data) == v] <- str_remove(v,c)
+            names(data)[names(data) == v] <- stringr::str_remove(v,c)
           }
         }
       }
@@ -183,7 +192,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   {
     d <- NULL
     if (file.exists(itemDictionary))
-      d <- read.delim(itemDictionary, comment.char="#")
+      d <- utils::read.delim(itemDictionary, comment.char="#")
     else
       print("Dictionary file does not exist")
     rowNames <- NULL
