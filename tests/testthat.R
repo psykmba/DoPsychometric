@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(Psychometric)
+library(DoPsychometric)
 
-test_check("Psychometric")
+test_check("DoPsychometric")

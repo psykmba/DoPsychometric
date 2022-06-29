@@ -7,8 +7,13 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
+Imports: 
+    stringr,
+    dplyr, 
+    utils,
+    psych
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
-Imports: 
-    dplyr,
-    stringr
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
