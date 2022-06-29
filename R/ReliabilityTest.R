@@ -111,7 +111,7 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
 summary.Reliability <- function(object, ...)
 {
   arg <- list(...)
-  if (scale %in% names(arg))
+  if ("scale" %in% names(arg))
     scale <- arg$scale
   else
     scale <- NULL
@@ -146,8 +146,9 @@ print.Reliability <- function(x, ...)
 #' @export
 plot.Reliability <- function(x, ...)
 {
+  browser()
   arg <- list(...)
-  if (scale %in% names(arg))
+  if ("scale" %in% names(arg))
     scale <- arg$scale
   else
     scale <- NULL
