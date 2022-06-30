@@ -20,7 +20,7 @@ A Reliability object that can be used for analyses
 Makes it simple to do basic psychometrics
 }
 \examples{
-dat <- as.data.frame(list(pItem1 = c(2,3,4,2,3,4,3,4), pItem2 = c(2,3,5,4,2,0,4,3)))
-object <- GetPsychometric(dat, "p", responseScale = list(c(0,4)), itemLength = 1)
+object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+ responseScale = list(c(0,4)), itemLength = 4)
 relObject <- GetReliabilityTest(object)
 }
