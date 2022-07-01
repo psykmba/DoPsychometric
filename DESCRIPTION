@@ -8,12 +8,13 @@ Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
-    stringr,
     dplyr, 
     utils,
     psych,
     mice,
-    stats
+    stats,
+    naniar, 
+    ggplot2
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Suggests: 

@@ -79,7 +79,5 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     object$ScaleFrame <- GetScalesFrame(object$ScaleItemFrames, object$ScaleNames)
   }
 
-  # Here we change the object to a Missing.Psychometric object. But remember
-  # that it can still be used as a Psychometric object
   return(object)
 }

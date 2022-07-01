@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetPsychometric.R
 \name{GetPsychometric}
 \alias{GetPsychometric}
-\title{Psychometric analyses of Likert scales}
+\title{Getting the Psychometric class}
 \usage{
 GetPsychometric(
   data,
@@ -13,30 +13,42 @@ GetPsychometric(
   reverse = T,
   idVar = "ID",
   name = "Psychometric",
-  itemDictionary = NULL
+  itemDictionary = NULL,
+  itemList = NULL,
+  reverseList = c(),
+  missings = NULL
 )
 }
 \arguments{
-\item{data}{datafile with items columns from one or more scales}
+\item{data}{A dataframe with the items and eventual extra variables}
 
-\item{scaleNames}{description}
+\item{scaleNames}{A vector with the names of the scales}
 
-\item{responseScale}{description}
+\item{responseScale}{A list with vectors of response intervalls, either one (if all are the same) or one for each scale}
 
-\item{typeSum}{description}
+\item{typeSum}{A functions used for summarizing the items to scales}
 
-\item{itemLength}{description}
+\item{itemLength}{The number of significant characters in items}
 
-\item{reverse}{description}
+\item{reverse}{A boolean that sets whether items ending with 'R' should be reversed}
 
-\item{idVar}{description}
+\item{idVar}{The name of the case identifier (if none a case number variable called ID will be created)}
 
-\item{name}{description}
+\item{name}{The name of the object (optional)}
 
-\item{itemDictionary}{description}
+\item{itemDictionary}{a textfile with information about scale, items and sign}
+
+\item{itemList}{a textfile with information about scale, items and sign}
+
+\item{reverseList}{a textfile with information about scale, items and sign}
+
+\item{missings}{a vector with numbers to be converted to NA}
+}
+\value{
+A Psychometric object that can be used for analyses
 }
 \description{
-Psychometric analyses of Likert scales
+Makes it simple to do basic psychometrics
 }
 \examples{
 object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),

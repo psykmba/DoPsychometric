@@ -1,40 +1,99 @@
-#' Psychometric analyses of Likert scales
-#' @param data datafile with items columns from one or more scales
+
+
+#' Getting the Psychometric class
 #'
-#' @param scaleNames description
-#' @param responseScale description
-#' @param typeSum description
-#' @param itemLength description
-#' @param reverse description
-#' @param idVar description
-#' @param name description
-#' @param itemDictionary description
-#'
+#' Makes it simple to do basic psychometrics
+#' @param data A dataframe with the items and eventual extra variables
+#' @param scaleNames A vector with the names of the scales
+#' @param responseScale A list with vectors of response intervalls, either one (if all are the same) or one for each scale
+#' @param typeSum A functions used for summarizing the items to scales
+#' @param itemLength The number of significant characters in items
+#' @param reverse A boolean that sets whether items ending with 'R' should be reversed
+#' @param idVar The name of the case identifier (if none a case number variable called ID will be created)
+#' @param name The name of the object (optional)
+#' @param itemDictionary a textfile with information about scale, items and sign
+#' @param itemList a textfile with information about scale, items and sign
+#' @param reverseList a textfile with information about scale, items and sign
+#' @param missings a vector with numbers to be converted to NA
+#' @return A Psychometric object that can be used for analyses
+#' @export
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #'
-#' @export
 GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
-                            typeSum = "Mean", itemLength = 6,
+                            typeSum = "Mean", itemLength = 6,  #item skall ha samma namn som skalan plus tecken
                             reverse = T, idVar = "ID", name = "Psychometric",
-                            itemDictionary = NULL)
+                            itemDictionary = NULL, itemList=NULL, reverseList=c(),
+                            missings = NULL)
 {
   # if there is a variable called "ID" this variable is added to all the data
-  # frames
+  # frame
   IDVar <- NULL
   if (!is.null(data[[idVar]]))
   {
     IDVar <- data[[idVar]]
+    data <- dplyr::select(data, -idVar)
   }
   else
   {
-    IDVar <- as.data.frame(list(ID = row.names(data)))
+    IDVar <- as.data.frame(1:nrow(data))
+
   }
-  if (FALSE %in% sapply(scaleNames, FUN = function(x) return(stringr::str_length(x) >= itemLength)))
+  if (FALSE %in% sapply(scaleNames, FUN = function(x) return(nchar(x) >= itemLength)))
   {
     print(paste("Error: itemLength = ", itemLength, "is larger than the string length of the shortes scale name"))
     return()
+  }
+  MakeMissing <- function()
+  {
+    if (is.null(missings))
+      return()
+    for (mis in missings)
+    {
+      data <- naniar::replace_with_na_all(data, condition = ~.x == mis)
+
+    }
+  }
+  CreateItemNames <- function()
+  {
+    index <- 1
+    for (scale in scaleNames)
+    {
+      for (item in itemList[[index]])
+      {
+        if (!is.character(item))
+        {
+          if (item %in% reverseList)
+            names(data)[item] <- paste(substr(scale, 1, itemLength),
+                                       names(data[item]), "R", sep = "")
+          else
+            names(data)[item] <- paste(substr(scale, 1, itemLength),
+                                       names(data[item]), sep = "")
+
+        }
+        else
+        {
+          if (item %in% reverseList)
+          {
+            cn <- which( colnames(data)==item )
+            names(data)[cn] <- paste(substr(scale, 1, itemLength),
+                                     item, "R", sep = "")
+          }
+          else
+          {
+            cn <- which( colnames(data)==item )
+
+            names(data)[cn] <- paste(substr(scale, 1, itemLength),
+                                     item, sep = "")
+          }
+
+        }
+      }
+      index <- index + 1
+
+    }
+    return(data)
   }
 
   expandResponsScale <- function(respons, scales)
@@ -54,9 +113,21 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
 
   GetNonItemVar <- function()
   {
+    res <- NULL
+    if (!is.null(IDVar))
+    {
+      res <- IDVar
+
+    }
+    else
+    {
+      res <- 1:nrow(data)
+    }
+    res <- as.data.frame(res)
+    names(res) <- "ID"
+
     scaleNamesItemLength <- unlist(sapply(scaleNames, FUN = function(x)
       return(substr(x, 1, itemLength))), use.names = F)
-    res <- NULL
     for (index in ncol(data):1)
     {
       name <- names(data[index])
@@ -69,20 +140,18 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     return(data.frame(res))
 
   }
-
-
   getSignItemName <- function(x, scales, itemLength)
   {
     signPart <- strtrim(scales, itemLength)
 
-    if ( stringr::str_length(scales) > itemLength)
+    if (nchar(scales) > itemLength)
     {
       newNames <- NULL
       for (item in 1:ncol(x))
       {
         c <- ""
         iName <- names(x[item])
-        for (s in itemLength+1: stringr::str_length(scales))
+        for (s in itemLength+1:nchar(scales))
         {
 
           if (substring(scales, s, s) == substring(iName, s,s))
@@ -92,29 +161,29 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
           else
             break
         }
-        newNames <-c(newNames,  stringr::str_remove(names(x[item]),c))
+        if (c != "")
+          newNames <-c(newNames, gsub(c, '', names(x[item])))
+        else
+          newNames <- c(newNames, names(x[item]))
       }
       names(x) <- newNames
     }
     return(x)
   }
-
-
-
   ChangeOriginalDataNames <- function(data)
   {
     signPart <- strtrim(scaleNames, itemLength)
     for(v in names(data))
     {
-      if (stringr::str_length(v) > itemLength)
+      if (nchar(v) > itemLength)
       {
         if (substr(v, 1, itemLength) %in% signPart)
         {
           iName <- scaleNames[match(substr(v, 1, itemLength),signPart)]
-          if (stringr::str_length(iName) > itemLength)
+          if (nchar(iName) > itemLength)
           {
             c <- ""
-            for (s in itemLength+1:stringr::str_length(v))
+            for (s in itemLength+1:nchar(v))
             {
 
               if (substring(v, s, s) == substring(iName, s,s))
@@ -124,7 +193,11 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
               else
                 break
             }
-            names(data)[names(data) == v] <- stringr::str_remove(v,c)
+            if (c != "")
+              names(data)[names(data) == v] <- gsub(c, '', v)
+            else
+              names(data)[names(data) == v] <- v
+
           }
         }
       }
@@ -172,18 +245,14 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
 
   GetScalesFrame <- function(frames, nameV)
   {
-    res <- IDVar
-    names(res) <- "ID"
+    res <- NULL
     for (index in 1:length(frames))
     {
       res <- cbind(res, rowMeans(as.data.frame(frames[index]), na.rm = F))
     }
     res <- as.data.frame(res)
     row.names(res) <- 1:nrow(res)
-    if (!is.null(IDVar))
-      names(res) <- c("ID", nameV)
-    else
-      names(res) <- nameV
+    names(res) <- nameV
     return(res)
 
 
@@ -194,12 +263,17 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     if (file.exists(itemDictionary))
       d <- utils::read.delim(itemDictionary, comment.char="#")
     else
+    {
       print("Dictionary file does not exist")
+      return(NULL)
+    }
     rowNames <- NULL
     for(index in 1:nrow(d))
       rowNames <- c(rowNames, paste(substr(d[index, 4],1,itemLength), d[index,1], sep = ""))
     return(data.frame(cbind(d[2], d[3], d[4], row.names = rowNames)))
   }
+  if (!is.null(itemList))
+    data <- CreateItemNames()
   otherVariables <- GetNonItemVar()
   responseScale <- expandResponsScale(responseScale, scaleNames)
   scaleItemFrames <- GetScaleItemFrames(data, responseScale)
@@ -209,11 +283,11 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   if (!is.null(itemDictionary))
     itemDictionary <- GetDictionary()
   else
-    itemDictionary <- list();
+    itemDictionary <- NULL;
   MyObject <- list(ResponseScales = responseScale, ScaleItemFrames = scaleItemFrames, ScaleFrame = scaleFrames,
                    ScaleNames = scaleNames, OtherVariables = otherVariables, OriginalData = data,
                    Name = name, ItemDictionary = itemDictionary,
-                   ItemLength = itemLength, ResultList = list(), RCommands = list())
+                   ItemLength = itemLength, ResultList = list(), PrintRes = list(), RCommands = list())
 
   class(MyObject) <- "Psychometric"
   return(MyObject)
@@ -266,7 +340,7 @@ summary.Psychometric<-function(object, ...)
   n <- GetExtraArgument("n")
   plots <- GetExtraArgument("plots")
 
-  y <- object$ScaleFrame[,-1]
+  y <- object$ScaleFrame
   sumx <- data.frame(Tillf = c(1:ncol(y)))
   for (i in 1:ncol(y))
   {
