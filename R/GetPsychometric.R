@@ -2,7 +2,7 @@
 
 #' Getting the Psychometric class
 #'
-#' Makes it simple to do basic psychometrics
+#' Makes it simple to do basic psychometrics of scales
 #' @param data A dataframe with the items and eventual extra variables
 #' @param scaleNames A vector with the names of the scales
 #' @param responseScale A list with vectors of response intervalls, either one (if all are the same) or one for each scale
