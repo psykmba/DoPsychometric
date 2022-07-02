@@ -1,7 +1,22 @@
-bestItems <- function(x, ...) {
-  UseMethod("bestItems", x)
+#' Title
+#'
+#' @param object Psychometric object
+#' @param scale, scale to find best items for
+#' @param nItems, number of items in new scale
+#'
+#' @return best item object
+#' @export
+#'
+#' @examples
+#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+#'  responseScale = list(c(0,4)), itemLength = 4)
+#' res <- bestItems(object, "Achievement", 3)
+#'
+bestItems <- function(object,  scale, nItems) {
+  UseMethod("bestItems", object)
 }
 
+#' @export
 bestItems.Psychometric <- function(object, scale, nItems)
 {
 
@@ -14,13 +29,17 @@ bestItems.Psychometric <- function(object, scale, nItems)
 
 #' BestScales
 #'
-#' @param object
-#' @param nItems
+#' @param object Psychometric object
+#' @param nItems Number of items in new scales
 #'
-#' @return
+#' @return Psychometric object with scale means using best items
 #' @export
 #'
 #' @examples
+#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+#'  responseScale = list(c(0,4)), itemLength = 4)
+#' res <- bestScales(object,  5)
+
 bestScales <- function(object, nItems) {
   UseMethod("bestScales",object)
 }
@@ -33,7 +52,7 @@ bestScales.Psychometric <- function(object, nItems)
   {
     res <-bestItems(object, scale, nItems)
     items <- object$ScaleItemFrames[[scale]]
-    items < items[res$best.keys[[1]]]
+    items <- items[res$best.keys[[1]]]
     object$ScaleFrame[scale] <- rowMeans(as.data.frame(items), na.rm = F)
   }
   return(object)
