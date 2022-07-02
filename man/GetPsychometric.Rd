@@ -48,7 +48,7 @@ GetPsychometric(
 A Psychometric object that can be used for analyses
 }
 \description{
-Makes it simple to do basic psychometrics
+Makes it simple to do basic psychometrics of scales
 }
 \examples{
 object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),

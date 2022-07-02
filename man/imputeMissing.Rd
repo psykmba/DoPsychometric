@@ -4,7 +4,7 @@
 \alias{imputeMissing}
 \title{Summary of imputeMissing}
 \usage{
-imputeMissing(object, handleMissing = "Listwise", scales = F, ...)
+imputeMissing(object, handleMissing = "Listwise", scales = T, ...)
 }
 \arguments{
 \item{object}{A Reliability object}

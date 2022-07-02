@@ -13,7 +13,7 @@
 #' myObject <- imputeMissing(myObject)
 #' @export
 
-imputeMissing <- function(object, handleMissing = "Listwise", scales = F, ...) {
+imputeMissing <- function(object, handleMissing = "Listwise", scales = T, ...) {
 UseMethod("imputeMissing", object)
 }
 
