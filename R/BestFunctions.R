@@ -40,13 +40,13 @@ bestItems.Psychometric <- function(object, scale, nItems)
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' res <- bestScales(object,  5)
 
-bestScales <- function(object, nItems) {
+bestScales <- function(object, nItems, deleteItems = F) {
   UseMethod("bestScales",object)
 }
 
 
 #' @export
-bestScales.Psychometric <- function(object, nItems)
+bestScales.Psychometric <- function(object, nItems, deleteItems = F)
 {
   for (scale in object$ScaleNames)
   {
@@ -54,6 +54,10 @@ bestScales.Psychometric <- function(object, nItems)
     items <- object$ScaleItemFrames[[scale]]
     items <- items[res$best.keys[[1]]]
     object$ScaleFrame[scale] <- rowMeans(as.data.frame(items), na.rm = F)
+    if (deleteItems)
+    {
+      object$ScaleItemFrames[[scale]] <- items
+    }
   }
-  return(object)
+   return(object)
 }

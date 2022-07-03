@@ -20,6 +20,16 @@ UseMethod("imputeMissing", object)
 #' @export
 imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scales = F,...)
 {
+  GetExtraArgument <- function(a)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(T)
+
+  }
+  printFlag <- GetExtraArgument("printFlag")
   HandleMissing <- function(dataToHandle)
   {
     if (handleMissing == "Listwise")
@@ -30,19 +40,19 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     }
     if (handleMissing == "Impute")
     {
-      imputed <- mice::mice(dataToHandle, m = 1, method = "norm.predict", printFlag = F)
+      imputed <- mice::mice(dataToHandle, m = 1, method = "norm.predict", printFlag)
       return(mice::complete(imputed))
 
     }
     if (handleMissing == "Mean")
     {
-      imputed <- mice::mice(dataToHandle, m = 1, method = "mean", printFlag = F)
+      imputed <- mice::mice(dataToHandle, m = 1, method = "mean", printFlag)
       return(mice::complete(imputed))
 
     }
     if (handleMissing == "Bayesian")
     {
-      imputed <- mice::mice(dataToHandle, m = 1, method = "norm", printFlag = F)
+      imputed <- mice::mice(dataToHandle, m = 1, method = "norm", printFlag)
       return(mice::complete(imputed))
 
     }

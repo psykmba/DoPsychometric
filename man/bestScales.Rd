@@ -4,7 +4,7 @@
 \alias{bestScales}
 \title{BestScales}
 \usage{
-bestScales(object, nItems)
+bestScales(object, nItems, deleteItems = F)
 }
 \arguments{
 \item{object}{Psychometric object}
