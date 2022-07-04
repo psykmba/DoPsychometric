@@ -56,6 +56,22 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
       return(mice::complete(imputed))
 
     }
+    if (handleMissing == "BayesianMean")
+    {
+      imputed <- mice::mice(dataToHandle, m = 10, method = "norm", printFlag=pf)
+      imputed <-  complete(imputed, "all")
+      sumStart <- imputed[[1]]
+      for(index in 2:10)
+      {
+        sumStart <- sumStart + imputed[[index]]
+      }
+      sumStart <- sumStart / 10
+
+
+      return(sumStart)
+
+    }
+
     if (handleMissing == "Check")
     {
       print(mice::md.pattern(dataToHandle, plot = TRUE))
