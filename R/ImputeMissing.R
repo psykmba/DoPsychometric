@@ -26,7 +26,7 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     if (a %in% names(arg))
       return(arg[[a]])
     else
-      return(T)
+      return(F)
 
   }
   pf <- GetExtraArgument("printFlag")
