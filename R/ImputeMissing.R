@@ -46,7 +46,6 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     }
     if (handleMissing == "Mean")
     {
-      browser()
       imputed <- mice::mice(dataToHandle, m = 1, method = "mean", printFlag=pf)
       return(mice::complete(imputed))
 
