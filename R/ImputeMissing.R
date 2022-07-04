@@ -20,16 +20,17 @@ UseMethod("imputeMissing", object)
 #' @export
 imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scales = F,...)
 {
-  GetExtraArgument <- function(a)
+  GetExtraArgument <- function(a, default)
   {
     arg <- list(...)
     if (a %in% names(arg))
       return(arg[[a]])
     else
-      return(F)
+      return(default)
 
   }
   pf <- GetExtraArgument("printFlag")
+  k <- GetExtraArgument("k", 10)
   HandleMissing <- function(dataToHandle)
   {
     if (handleMissing == "Listwise")
