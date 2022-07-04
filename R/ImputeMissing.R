@@ -3,8 +3,8 @@
 #'
 #' Makes it simple to do basic psychometrics
 #' @param object A Reliability object
-#' @param handleMissing A Reliability object
-#' @param scales do missing on scale level
+#' @param handleMissing can be:  Listwise, Mean, Impute, Bayesian and check
+#' @param scales T = do missing on scale level F = on item level
 #' @param ... commands to missing
 #' @return A Psychometric object that can be used for analyses
 #' @examples
@@ -29,7 +29,7 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
       return(T)
 
   }
-  printFlag <- GetExtraArgument("printFlag")
+  pf <- GetExtraArgument("printFlag")
   HandleMissing <- function(dataToHandle)
   {
     if (handleMissing == "Listwise")
@@ -40,19 +40,20 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     }
     if (handleMissing == "Impute")
     {
-      imputed <- mice::mice(dataToHandle, m = 1, method = "norm.predict", printFlag)
+      imputed <- mice::mice(dataToHandle, m = 1, method = "norm.predict", printFlag=pf)
       return(mice::complete(imputed))
 
     }
     if (handleMissing == "Mean")
     {
-      imputed <- mice::mice(dataToHandle, m = 1, method = "mean", printFlag)
+      browser()
+      imputed <- mice::mice(dataToHandle, m = 1, method = "mean", printFlag=pf)
       return(mice::complete(imputed))
 
     }
     if (handleMissing == "Bayesian")
     {
-      imputed <- mice::mice(dataToHandle, m = 1, method = "norm", printFlag)
+      imputed <- mice::mice(dataToHandle, m = 1, method = "norm", printFlag=pf)
       return(mice::complete(imputed))
 
     }
