@@ -74,7 +74,7 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
       imputed <- mice::mice(dataToHandle, m = 10, method = "norm", printFlag=pf)
       imputed <-  complete(imputed, "all")
       sumStart <- imputed[[1]]
-      for(index in 2:10)
+      for(index in 2:k)
       {
         sumStart <- sumStart + imputed[[index]]
       }
