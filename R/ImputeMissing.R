@@ -3,7 +3,7 @@
 #'
 #' Makes it simple to do basic psychometrics
 #' @param object A Reliability object
-#' @param handleMissing can be:  Listwise, Mean, Impute, Bayesian and check
+#' @param handleMissing can be:  Listwise, Mean, Impute, Bayesian, Regression, Pmm, BayesianMean, and check
 #' @param scales T = do missing on scale level F = on item level
 #' @param ... commands to missing
 #' @return A Psychometric object that can be used for analyses
