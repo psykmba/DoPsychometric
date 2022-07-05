@@ -71,7 +71,7 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     }
     if (handleMissing == "BayesianMean")
     {
-      imputed <- mice::mice(dataToHandle, m = 10, method = "norm", printFlag=pf)
+      imputed <- mice::mice(dataToHandle, m = k, method = "norm", printFlag=pf)
       imputed <-  complete(imputed, "all")
       sumStart <- imputed[[1]]
       for(index in 2:k)
