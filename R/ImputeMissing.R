@@ -39,9 +39,21 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
       return(dataToHandle[stats::complete.cases(dataToHandle),])
 
     }
-    if (handleMissing == "Impute")
+    if (handleMissing == "Pmm")
+    {
+      imputed <- mice::mice(dataToHandle, m = 1, method = "pmm", printFlag=pf)
+      return(mice::complete(imputed))
+
+    }
+    if (handleMissing == "Regression")
     {
       imputed <- mice::mice(dataToHandle, m = 1, method = "norm.predict", printFlag=pf)
+      return(mice::complete(imputed))
+
+    }
+    if (handleMissing == "Impute")
+    {
+      imputed <- mice::mice(dataToHandle, m = 1, method = "norm.nob", printFlag=pf)
       return(mice::complete(imputed))
 
     }
