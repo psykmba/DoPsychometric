@@ -9,11 +9,11 @@ imputeMissing(object, handleMissing = "Listwise", scales = T, ...)
 \arguments{
 \item{object}{A Reliability object}
 
-\item{handleMissing}{A Reliability object}
+\item{handleMissing}{can be:  Listwise, Mean, Impute, Bayesian, Regression, Pmm, BayesianMean, and check}
 
-\item{scales}{do missing on scale level}
+\item{scales}{T = do missing on scale level F = on item level}
 
-\item{...}{commands to missing}
+\item{...}{k = kan be used to create BayesianMean based on k imputations}
 }
 \value{
 A Psychometric object that can be used for analyses

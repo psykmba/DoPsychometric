@@ -5,7 +5,7 @@
 #' @param object A Reliability object
 #' @param handleMissing can be:  Listwise, Mean, Impute, Bayesian, Regression, Pmm, BayesianMean, and check
 #' @param scales T = do missing on scale level F = on item level
-#' @param ... commands to missing
+#' @param ... k = kan be used to create BayesianMean based on k imputations
 #' @return A Psychometric object that can be used for analyses
 #' @examples
 #' dat <- as.data.frame(list(pItem1 = c(2,3,4,4,3,4,NA,4), pItem2 = c(2,3,4,4,2,4,2,3)))
@@ -29,7 +29,7 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
       return(default)
 
   }
-  pf <- GetExtraArgument("printFlag")
+  pf <- GetExtraArgument("printFlag", F)
   k <- GetExtraArgument("k", 10)
   HandleMissing <- function(dataToHandle)
   {

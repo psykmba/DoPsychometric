@@ -36,13 +36,13 @@ GetPsychometric(
 
 \item{name}{The name of the object (optional)}
 
-\item{itemDictionary}{a textfile with information about scale, items and sign}
+\item{itemDictionary}{a textfile with information about all scales, items and whether they should be reversed}
 
-\item{itemList}{a textfile with information about scale, items and sign}
+\item{itemList}{items do not conform to above they can be addressed by number instead, new item names will be created based on scale names}
 
-\item{reverseList}{a textfile with information about scale, items and sign}
+\item{reverseList}{a vector with numbers for all items that should be reversed, if any}
 
-\item{missings}{a vector with numbers to be converted to NA}
+\item{missings}{a vector with numbers to be converted to NA, e.g., -99 should be converted to NA}
 }
 \value{
 A Psychometric object that can be used for analyses

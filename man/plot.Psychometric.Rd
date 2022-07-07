@@ -4,10 +4,10 @@
 \alias{plot.Psychometric}
 \title{Plot scales rom Psychometric}
 \usage{
-\method{plot}{Psychometric}(object, ...)
+\method{plot}{Psychometric}(x, ...)
 }
 \arguments{
-\item{object}{a Psychometric object}
+\item{x}{a Psychometric object}
 
 \item{...}{extra argument is: scale = scaleName}
 }

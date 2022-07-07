@@ -10,9 +10,11 @@ bestScales(object, nItems, deleteItems = F)
 \item{object}{Psychometric object}
 
 \item{nItems}{Number of items in new scales}
+
+\item{deleteItems}{F = allitems are left in the object. T: items not selected are deleted}
 }
 \value{
-Psychometric object with scale means using best items
+Psychometric object with scale means using the best nItems items
 }
 \description{
 BestScales

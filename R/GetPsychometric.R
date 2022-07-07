@@ -11,10 +11,10 @@
 #' @param reverse A boolean that sets whether items ending with 'R' should be reversed
 #' @param idVar The name of the case identifier (if none a case number variable called ID will be created)
 #' @param name The name of the object (optional)
-#' @param itemDictionary a textfile with information about scale, items and sign
-#' @param itemList a textfile with information about scale, items and sign
-#' @param reverseList a textfile with information about scale, items and sign
-#' @param missings a vector with numbers to be converted to NA
+#' @param itemDictionary a textfile with information about all scales, items and whether they should be reversed
+#' @param itemList items do not conform to above they can be addressed by number instead, new item names will be created based on scale names
+#' @param reverseList a vector with numbers for all items that should be reversed, if any
+#' @param missings a vector with numbers to be converted to NA, e.g., -99 should be converted to NA
 #' @return A Psychometric object that can be used for analyses
 #' @export
 #' @examples

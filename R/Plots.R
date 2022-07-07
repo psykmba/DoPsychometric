@@ -84,7 +84,7 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
 
 #' Plot scales rom Psychometric
 #'
-#' @param object a Psychometric object
+#' @param x a Psychometric object
 #' @param ... extra argument is: scale = scaleName
 #'
 #' @return nothing
@@ -94,7 +94,7 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #'  plot(object, scale = "Achievement")
-plot.Psychometric <- function(object, ...)
+plot.Psychometric <- function(x, ...)
 {
   GetExtraArgument <- function(a)
   {
@@ -109,7 +109,7 @@ plot.Psychometric <- function(object, ...)
   if (scale == "All")
   {
 
-    for(data in object$ScaleItemFrames )
+    for(data in x$ScaleItemFrames )
     {
       corr <- cor(data, use = "pairwise.complete.obs");
 
@@ -121,7 +121,7 @@ plot.Psychometric <- function(object, ...)
   {
     if (any(scale == object$ScaleNames))
     {
-      data <- object$ScaleItemFrames[[scale]]
+      data <- x$ScaleItemFrames[[scale]]
       corr <- cor(data, use = "pairwise.complete.obs")
       print(ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                              lab = TRUE))

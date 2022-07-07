@@ -31,8 +31,9 @@ bestItems.Psychometric <- function(object, scale, nItems)
 #'
 #' @param object Psychometric object
 #' @param nItems Number of items in new scales
+#' @param deleteItems F = allitems are left in the object. T: items not selected are deleted
 #'
-#' @return Psychometric object with scale means using best items
+#' @return Psychometric object with scale means using the best nItems items
 #' @export
 #'
 #' @examples
