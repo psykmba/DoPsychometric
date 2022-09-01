@@ -99,27 +99,3 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T, skew = T, kurto
   return(summaryy)
 }
 
-#' Title
-#'
-#' @param object
-#' @param keep
-#'
-#' @return
-#' @export
-#'
-filter.Psychometric<-function(object, keep)
-{
-  if (nrow(object$ScaleFrame) != length(keep))
-  {
-    print("Logical vector not the same length as frames")
-    return()
-  }
-  object$ScaleFrame <- dplyr::filter(object$ScaleFrame, keep)
-  object$OtherVariables <- dplyr::filter(object$OtherVariables, keep)
-  object$OriginalData <- dplyr::filter(object$OriginalData, keep)
-  for(index in 1:length(object$ScaleItemFrames))
-    object$ScaleItemFrames[[index]] <-
-    dplyr::filter(object$ScaleItemFrames[[index]], keep)
-  return(object)
-}
-
