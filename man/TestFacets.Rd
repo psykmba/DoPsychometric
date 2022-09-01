@@ -20,7 +20,7 @@ results
 Title
 }
 \examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly", ),
    responseScale = list(c(0,4)), itemLength = 4)
 TestFacets(object, "Cons", c("Achievement", "Dutifulness", "Orderly"))
 }
