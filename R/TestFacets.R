@@ -7,7 +7,7 @@
 #'
 #' @return results
 #' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly", ),
 #'    responseScale = list(c(0,4)), itemLength = 4)
 #' TestFacets(object, "Cons", c("Achievement", "Dutifulness", "Orderly"))
 #' @export
@@ -136,4 +136,19 @@ TestFacets.Psychometric <- function(object, scales, subscales)
     result <- append(result,GetTestSubscale(subscale))
   }
   return(append(hierModel, result))
+}
+
+
+#' Title
+#'
+#' @param param1 paramter 1
+#' @param param2
+#'
+#' @return
+#' @export
+#'
+#' @examples
+Test <- function(param1, param2)
+{
+
 }
