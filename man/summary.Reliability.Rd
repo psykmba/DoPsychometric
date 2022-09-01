@@ -2,7 +2,7 @@
 % Please edit documentation in R/ReliabilityTest.R
 \name{summary.Reliability}
 \alias{summary.Reliability}
-\title{Summary of Reliability}
+\title{Summary for Reliability}
 \usage{
 \method{summary}{Reliability}(object, ...)
 }

@@ -4,13 +4,13 @@
 \alias{getData}
 \title{Gets data from Psychometric object}
 \usage{
-getData(object)
+getData(object, items)
 }
 \arguments{
 \item{object}{the object to get data from}
 }
 \value{
-a dataframe with all scales and other variables
+a dataframe with all scales and other variablesof the Psychometric object
 }
 \description{
 Gets data from Psychometric object

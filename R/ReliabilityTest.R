@@ -3,8 +3,8 @@
 #' Makes it simple to do basic psychometrics
 #' @param object A Psychometric object
 #' @param what what type of analyses: Alpha, Omega or Parallel
-#' @param ... gh
-#' @return A Reliability object that can be used for analyses
+#' @param ... more arguments
+#' @return A Reliability object based on a Psychometric object that can be used for analyses
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
@@ -100,7 +100,7 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
 }
 
 
-#' Summary of Reliability
+#' Summary for Reliability
 #'
 #' Makes it simple to do basic psychometrics
 #' @param object A Reliability object

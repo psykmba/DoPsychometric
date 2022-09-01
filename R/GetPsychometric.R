@@ -1,5 +1,4 @@
 
-
 #' Getting the Psychometric class
 #'
 #' Makes it simple to do basic psychometrics of scales
@@ -44,16 +43,6 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   {
     print(paste("Error: itemLength = ", itemLength, "is larger than the string length of the shortes scale name"))
     return()
-  }
-  MakeMissing <- function()
-  {
-    if (is.null(missings))
-      return()
-    for (mis in missings)
-    {
-      data <- naniar::replace_with_na_all(data, condition = ~.x == mis)
-
-    }
   }
   CreateItemNames <- function()
   {
@@ -211,7 +200,9 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     GetData <- function(name)
     {
       frame <- dplyr::select(d, dplyr::starts_with(substr(name, 1, itemLength)))
-      return(frame)
+       frame2 <- as.data.frame(sapply(frame, FUN = function(x) ifelse(x %in% missings, NA, x)))
+       names(frame2) <- names(frame)
+      return(frame2)
     }
     Reverse <- function(col, resp)
     {
@@ -248,7 +239,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     res <- NULL
     for (index in 1:length(frames))
     {
-      res <- cbind(res, rowMeans(as.data.frame(frames[index]), na.rm = F))
+      res <- cbind(res, rowMeans(as.data.frame(frames[index]), na.rm = T))
     }
     res <- as.data.frame(res)
     row.names(res) <- 1:nrow(res)
@@ -274,7 +265,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   }
   if (!is.null(itemList))
     data <- CreateItemNames()
-  otherVariables <- GetNonItemVar()
+   otherVariables <- GetNonItemVar()
   responseScale <- expandResponsScale(responseScale, scaleNames)
   scaleItemFrames <- GetScaleItemFrames(data, responseScale)
   scaleFrames <- GetScalesFrame(scaleItemFrames, scaleNames)

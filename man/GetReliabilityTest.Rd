@@ -11,10 +11,10 @@ GetReliabilityTest(object, what = "Alpha", ...)
 
 \item{what}{what type of analyses: Alpha, Omega or Parallel}
 
-\item{...}{gh}
+\item{...}{more arguments}
 }
 \value{
-A Reliability object that can be used for analyses
+A Reliability object based on a Psychometric object that can be used for analyses
 }
 \description{
 Makes it simple to do basic psychometrics

@@ -16,7 +16,7 @@ handleOutliers(object, method = "Mahalanobis", limit = 0.001, missing = "None")
 \item{missing}{when "none", missing values are not handled, otherwise the method in missing will be used}
 }
 \value{
-a Psychometric object
+a Psychometric object with handled outliers
 }
 \description{
 Handle outliers method

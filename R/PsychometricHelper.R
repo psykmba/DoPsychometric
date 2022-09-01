@@ -14,6 +14,14 @@ filter.Psychometric<-function(object, keep)
   return(object)
 }
 
+MakeMissing <- function(data, miss)
+{
+  if (is.null(miss))
+    return(data)
+  data <- naniar::replace_with_na_all(data, ~.x %in% miss)
+  return(data)
+}
+
 
 
 #' Handle outliers method
@@ -23,7 +31,7 @@ filter.Psychometric<-function(object, keep)
 #' @param limit the probability value for handeling an outlier
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
 #'
-#' @return a Psychometric object
+#' @return a Psychometric object with handled outliers
 #' @export
 #'
 #' @examples
@@ -96,7 +104,16 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   }
 }
 
+#' Names
+#'
+#' @param x a Psychometric object to work with
+#' @return the names of Scale and Other variables
 #' @export
+#'
+#' examples
+#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+#' names(object)
+
 names.Psychometric <- function(x)
 {
   print("Scales")
@@ -110,21 +127,60 @@ names.Psychometric <- function(x)
 #'
 #' @param object the object to get data from
 #'
-#' @return a dataframe with all scales and other variables
+#' @return a dataframe with all scales and other variablesof the Psychometric object
 #' @export
 #'
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' data <- getData(object)
-getData <- function(object) {
+getData <- function(object, items) {
   UseMethod("getData", object)
 }
 
 #' @export
-getData.Psychometric <- function(object)
+getData.Psychometric <- function(object, items = F)
 {
-  as.data.frame(cbind(object$ScaleFrame, object$OtherVariables))
+  if (!items)
+    return(as.data.frame(cbind(object$ScaleFrame, object$OtherVariables)))
+  else
+    return(as.data.frame(cbind(object$ScaleFrame, object$OtherVariables, object$ScaleItemFrames)))
+
 }
 
+#' Split Psychometric
+#'
+#' Makes it simple to work with groups
+#' @param object A Psychometric object
+#' @param group  A group variables among other variables
+#' @param f  A function to apply to the groups
+#' @param ... more arguments to the f function
+#' @return all results from the f function
+#' @export
+#'
+#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+#'  splitPsychometric(object, group = "Sex", f = Summary)
+#'
 
+
+splitPsychometric <- function(object, group, f,...)
+{
+  splitDataFrames <- split(object$OriginalData, object$OriginalData[c(group)])
+  results <- list()
+  lNames <- c()
+  for (data in splitDataFrames)
+  {
+    print(paste("Here are results for group variable ", group,
+                "category", data[1, group]))
+    Psychometric <- GetPsychometric(data, object$ScaleNames,
+                                    responseScale = object$ResponseScales,
+                                    itemLength = object$ItemLength,
+                                    reverse = F, name = paste(group, data[1, group]))
+    res <- f(Psychometric, ...)
+    lNames <- c(lNames, paste(group, as.character(data[group][1,1]), sep = ""))
+    results <- append(results, list(res))
+  }
+  names(results) <- lNames
+  return(results)
+
+}
