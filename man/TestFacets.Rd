@@ -2,9 +2,18 @@
 % Please edit documentation in R/TestFacets.R
 \name{TestFacets}
 \alias{TestFacets}
-\title{Title}
+\title{Facet test with CFA}
 \usage{
-TestFacets(object, scale, subscales)
+TestFacets(
+  object,
+  scale,
+  subscales,
+  fixed = F,
+  fixedScales = F,
+  parcel = T,
+  tries = 1,
+  estimator = "ML"
+)
 }
 \arguments{
 \item{object}{a Psychometric object}
@@ -12,12 +21,20 @@ TestFacets(object, scale, subscales)
 \item{scale}{a Scale name}
 
 \item{subscales}{a vector of facet names}
+
+\item{fixed}{whether the bi-factor should be fixed to 1}
+
+\item{fixedScales}{whether the scales should be fixed to 1}
+
+\item{parcel}{whether the observed variables should be in parcels}
+
+\item{estimator}{any estimator that is admissible for cfa}
 }
 \value{
 results
 }
 \description{
-Title
+Facet test with CFA
 }
 \examples{
 object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly", ),
