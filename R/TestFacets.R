@@ -409,7 +409,6 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = NULL)
   {
     stringVect <- stringr::str_split(com, "\n")
     res <- ""
-    browser()
     for(s in stringVect[[1]])
     {
       if (!(exclude %in% s))
