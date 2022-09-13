@@ -24,7 +24,7 @@ MakeMissing <- function(data, miss)
 
 
 
-#' Handle outliers method
+#' Handle outliers methods
 #'
 #' @param object a Psychometric object to work with
 #' @param method there are three ways, "Mahalanobis", "SD" and "Change"
@@ -32,13 +32,13 @@ MakeMissing <- function(data, miss)
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
 #'
 #' @return a Psychometric object with handled outliers
-#' @export
 #'
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' newObject <- handleOutliers(object)
 
+#' @export
 handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
                            missing = "None") {
   UseMethod("handleOutliers", object)
@@ -108,11 +108,11 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
 #'
 #' @param x a Psychometric object to work with
 #' @return the names of Scale and Other variables
-#' @export
 #'
 #' examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #' names(object)
+#' @export
 
 names.Psychometric <- function(x)
 {
@@ -128,12 +128,12 @@ names.Psychometric <- function(x)
 #' @param object the object to get data from
 #'
 #' @return a dataframe with all scales and other variablesof the Psychometric object
-#' @export
 #'
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' data <- getData(object)
+#' @export
 getData <- function(object, items) {
   UseMethod("getData", object)
 }

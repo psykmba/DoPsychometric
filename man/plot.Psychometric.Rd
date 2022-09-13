@@ -2,7 +2,7 @@
 % Please edit documentation in R/Plots.R
 \name{plot.Psychometric}
 \alias{plot.Psychometric}
-\title{Plot scales rom Psychometric}
+\title{Plot scales from Psychometric}
 \usage{
 \method{plot}{Psychometric}(x, ...)
 }
@@ -15,7 +15,7 @@
 nothing
 }
 \description{
-Plot scales rom Psychometric
+Plot scales from Psychometric
 }
 \examples{
 object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),

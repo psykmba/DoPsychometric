@@ -12,6 +12,7 @@
 #' @export
 GetReliabilityTest <- function(object, what = "Alpha", ...)
 {
+
   reslist2 <- NULL
   printres <- NULL
   GetAlphaCommands <- function()

@@ -11,6 +11,10 @@
 }
 \value{
 the names of Scale and Other variables
+
+examples
+object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+names(object)
 }
 \description{
 Names
