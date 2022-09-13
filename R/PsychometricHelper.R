@@ -148,3 +148,19 @@ getData.Psychometric <- function(object, items = F)
 
 }
 
+#' Write all data
+#'
+#' @param object A psychometric object
+#' @param fileName A filename with pathinformation
+#' @param col.names T if you like to write column names
+#' @param row.names T if you like to write row names
+#'
+#' @return NULL
+#' @export
+write.csv.Psychometrics <- function(object, fileName, colnames = T, rownames = F)
+{
+  write.csv(x = getData(object, items = T),file = fileName)
+  return(NULL)
+
+}
+

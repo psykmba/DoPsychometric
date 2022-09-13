@@ -2,7 +2,7 @@
 % Please edit documentation in R/PsychometricHelper.R
 \name{handleOutliers}
 \alias{handleOutliers}
-\title{Handle outliers method}
+\title{Handle outliers methods}
 \usage{
 handleOutliers(object, method = "Mahalanobis", limit = 0.001, missing = "None")
 }
@@ -19,7 +19,7 @@ handleOutliers(object, method = "Mahalanobis", limit = 0.001, missing = "None")
 a Psychometric object with handled outliers
 }
 \description{
-Handle outliers method
+Handle outliers methods
 }
 \examples{
 object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
