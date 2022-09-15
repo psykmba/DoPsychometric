@@ -9,7 +9,7 @@
 #' @param parcel whether the observed variables should be in parcels
 #' @param estimator any estimator that is admissible for cfa
 #'
-#' @return results
+#' @return a new Psychometric model with a new CFA for model
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly", ),
 #'    responseScale = list(c(0,4)), itemLength = 4)
@@ -17,14 +17,25 @@
 #' @export
 TestFacets <- function(object,scale, subscales, fixed = F,
                        fixedScales = F,parcel = T,
-                       tries = 1, estimator = "ML") {
+                       tries = 1, estimator = "ML", zeroVar = c()) {
   UseMethod("TestFacets", object)
 }
 
+#' Facet test with CFA
+#'
+#' @param object  a Psychometric object
+#' @param scale a Scale name
+#' @param subscales a vector of facet names
+#' @param fixed whether the bi-factor should be fixed to 1
+#' @param fixedScales whether the scales should be fixed to 1
+#' @param parcel whether the observed variables should be in parcels
+#' @param estimator any estimator that is admissible for cfa
+#'
+#' @return a new Psychometric model with a new CFA for model
 #' @export
 TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
                                     fixedScales = F,parcel = T,
-                                    tries = 1, estimator = "ML")
+                                    tries = 1, estimator = "ML", zeroVar = c())
 {
   commands <- list()
   GetItemWithParcels <- function(subscales,ScaleItemFrames)
@@ -162,6 +173,16 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
       }
     return(lines)
   }
+  GetZeroVarList <- function()
+  {
+    lines <- ""
+    for (z in zeroVar)
+    {
+      lines <- paste(lines, z, "~~0*",z, "\n ", sep="")
+
+    }
+    return (lines)
+  }
 
   GetHierarchicalModel <- function(scales, subScaleData)
   {
@@ -185,6 +206,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
     dep <-  getScaleNames(names(subScaleData))
     covariance <- getZeroCovariance(names(subScaleData))
     lines <- paste(lines, scales, "=~", dep,"\n ", covariance,"\n ", sep = "")
+    lines <- paste(lines, GetZeroVarList(),"\n ", sep = "")
 
     dataFrame <- getDataFrameSubScale(subScaleData)
 
@@ -215,6 +237,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
     dep <-  getScaleNames(names(subScaleData))
     covariance <- getZeroCovariance(names(subScaleData))
     lines <- paste(lines, covariance,"\n ", sep = "")
+    lines <- paste(lines, GetZeroVarList(),"\n ", sep = "")
 
     dataFrame <- getDataFrameSubScale(subScaleData)
 
@@ -246,8 +269,8 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
       }
       else
       {
-           ind1 <-getSubScaleNames(subScaleData[[scale]])
-                lineBiv <- paste(dependent, "=~" , ind1, "\n", sep=" ")
+        ind1 <-getSubScaleNames(subScaleData[[scale]])
+        lineBiv <- paste(dependent, "=~" , ind1, "\n", sep=" ")
       }
       lines <- paste(lines, " ", line,lineBiv, sep=" ")
     }
@@ -316,9 +339,9 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
     scaleNames <- scaleNames[-which(scaleNames == zeroScale)]
     covariance <- getZeroCovariance(c(scaleNames, dependent))
     lines <- paste(lines, covariance,"\n ", sep = "")
+    lines <- paste(lines, GetZeroVarList(),"\n ", sep = "")
 
     dataFrame <- getDataFrameSubScale(subScaleData)
-
 
     commands <<- append(commands, list(lines))
 
@@ -328,7 +351,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 
   MainCall <- function()
   {
-     subScaleData <- GetItemWithParcels(subscales, object$ScaleItemFrames)
+    subScaleData <- GetItemWithParcels(subscales, object$ScaleItemFrames)
     hierModel <- list(GetHierarchicalModel(scales, subScaleData))
     names(hierModel) <- "Hierarchical Model"
     result <- list(GetTestSubscaleAll(scales, subScaleData))
@@ -341,7 +364,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
     }
     simpModel <- list(GetSimpleModel(scales, subScaleData))
 
-     object$ResultList <- append(append(hierModel, result), simpModel)
+    object$ResultList <- append(append(hierModel, result), simpModel)
     object$RCommands <- commands
     return(object)
   }
@@ -358,7 +381,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 
     ret <- MainCall()
     if(is.null(warnings()))
-       break
+      break
     rounds <- rounds + 1
   }
   class(ret) <- c("TestFacets", "Psychometric")
@@ -370,8 +393,10 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 #'
 #' @param object an of class TestFacets
 #' @param model a text string with an cfa model
+#' @param what can be "SetNegativeVar"
+#' @param exclude a list of items to be deleted
 #'
-#' @return a lavaan object with cfa results
+#' @return a new Psychometric model with a new CFA for model
 #' @export
 RunCFA <- function(object, model, what = NULL, exclude = NULL) {
   UseMethod("RunCFA", object)
@@ -381,9 +406,12 @@ RunCFA <- function(object, model, what = NULL, exclude = NULL) {
 #'
 #' @param object  an of class TestFacets
 #' @param model  a text string with an cfa model
+#' @param what can be "SetNegativeVar"
+#' @param exclude a list of items to be deleted
 #'
+#' @return a new Psychometric model with a new CFA for model
 #' @export
-RunCFA.Psychometric <- function(object, model, what = NULL, exclude = NULL)
+RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
 {
   GetAllScaleItemFrames <-function()
   {
@@ -407,6 +435,8 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = NULL)
 
   DeleteVar <- function(com)
   {
+    if (is.null(exclude))
+      return(com)
     stringVect <- stringr::str_split(com, "\n")
     res <- ""
     for(s in stringVect[[1]])
@@ -419,6 +449,7 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = NULL)
     return(res)
   }
 
+  browser()
   if (is.numeric(model))
   {
     if (is.null(what))
@@ -429,7 +460,7 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = NULL)
     }
     if (what == "SetNegativeVar")
     {
-      rsquare <- lavInspect(object$ResultList[[model]], what = "rsquare")
+      rsquare <- lavaan::lavInspect(object$ResultList[[model]], what = "rsquare")
       NegVar <- GetVarNegative(rsquare)
       com <-  object$RCommands[[model]]
       if (length(NegVar) > 0)
@@ -439,23 +470,24 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = NULL)
         }
       com <- DeleteVar(com)
       object$RCommands <- list(com)
+      p
       object$ResultList <- list(cfa(data = GetAllScaleItemFrames(), model = com))
       return(object)
     }
   }
-  object$RCommands <- model
-  object$ResultList <- list(cfa(data = GetAllScaleItemFrames(), model = model))
+  object$RCommands[model] <- model
+  object$ResultList[model] <- list(cfa(data = GetAllScaleItemFrames(), model = model))
 
   return(object)
 }
 
-#' Title
+#' mySummary to get all the output
 #'
 #' @param object  an object of class TestFacets
 #' @param model which model to print
 #' @param standardized whether the standardized values should be printed
 #'
-#' @return
+#' @return Results
 #' @export
 mySummary <-function(object, model=NULL, standardized = F) {
   UseMethod("mySummary", object)
@@ -480,7 +512,7 @@ mySummary.Psychometric <- function(object, model=NULL, standardized = F)
     else
     {
       print(lavaan::summary(object$ResultList[[model]]), header=F, estimates=T,
-             fit.measures=TRUE)
+            fit.measures=TRUE)
     }
 
   }
@@ -533,7 +565,7 @@ print.TestFacets <- function(object, model=NULL, standardized = F)
 #' @param object  an object of class TestFacets
 #' @param type  an be "Bifactor" or "Hiearchical" or "B" or "H"
 #'
-#' @return
+#' @return summary of the lavaan results in the object
 #' @export
 myAnova <-function(object, type="Bifactor") {
   UseMethod("myAnova")
@@ -554,7 +586,9 @@ myAnova.Psychometric <- function(object, type)
     compModel <-2
   if (!isTRUE(lavInspect(object$ResultList[[compModel]], "post.check")))
     return("Comparison model has not converged")
-  print("Compar")
+  if (type == "H") print("Comparison modell hierarchical")
+  else
+    print("Comparison modell bifactor")
   print(fitmeasures(object$ResultList[[compModel]],c("cfi", "rmsea" ,"srmr_mplus")))
 
   if (length(object$ResultList)>2)
