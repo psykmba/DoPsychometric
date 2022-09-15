@@ -4,19 +4,7 @@
 \alias{summary.Psychometric}
 \title{Summary}
 \usage{
-\method{summary}{Psychometric}(
-  object,
-  mean = T,
-  sd = T,
-  SE = T,
-  skew = T,
-  kurtosis = T,
-  min = T,
-  max = T,
-  omega = T,
-  n = T,
-  plots = F
-)
+\method{summary}{Psychometric}(object, ...)
 }
 \arguments{
 \item{object}{The Psychometric object}

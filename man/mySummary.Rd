@@ -2,7 +2,7 @@
 % Please edit documentation in R/TestFacets.R
 \name{mySummary}
 \alias{mySummary}
-\title{Title}
+\title{mySummary to get all the output}
 \usage{
 mySummary(object, model = NULL, standardized = F)
 }
@@ -13,6 +13,9 @@ mySummary(object, model = NULL, standardized = F)
 
 \item{standardized}{whether the standardized values should be printed}
 }
+\value{
+Results
+}
 \description{
-Title
+mySummary to get all the output
 }

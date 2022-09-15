@@ -10,9 +10,13 @@ RunCFA(object, model, what = NULL, exclude = NULL)
 \item{object}{an of class TestFacets}
 
 \item{model}{a text string with an cfa model}
+
+\item{what}{can be "SetNegativeVar"}
+
+\item{exclude}{a list of items to be deleted}
 }
 \value{
-a lavaan object with cfa results
+a new Psychometric model with a new CFA for model
 }
 \description{
 A Psychometric CFA estimator

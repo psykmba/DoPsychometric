@@ -11,6 +11,9 @@ myAnova(object, type = "Bifactor")
 
 \item{type}{an be "Bifactor" or "Hiearchical" or "B" or "H"}
 }
+\value{
+summary of the lavaan results in the object
+}
 \description{
 myAnova
 }

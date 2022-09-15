@@ -4,12 +4,19 @@
 \alias{RunCFA.Psychometric}
 \title{A Psychometric CFA estimator}
 \usage{
-\method{RunCFA}{Psychometric}(object, model, what = NULL, exclude = NULL)
+\method{RunCFA}{Psychometric}(object, model, what = NULL, exclude = c())
 }
 \arguments{
 \item{object}{an of class TestFacets}
 
 \item{model}{a text string with an cfa model}
+
+\item{what}{can be "SetNegativeVar"}
+
+\item{exclude}{a list of items to be deleted}
+}
+\value{
+a new Psychometric model with a new CFA for model
 }
 \description{
 A Psychometric CFA estimator
