@@ -15,13 +15,12 @@
 #' @param plots F: no plots are shown, T: plots from psych::omega are shown
 #'
 #' @return the summary i a list object
-#' @export
 #'
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' summary(object)
-
+#' @export
 summary.Psychometric<-function(object, mean = T, sd = T, SE = T, skew = T, kurtosis = T,
                                min = T, max = T, omega = T,
                                #alpha = T,
