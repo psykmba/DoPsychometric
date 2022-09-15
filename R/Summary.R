@@ -1,15 +1,56 @@
-#' Summary
+#' pSummary
 #'
 #' Includes a set of useful estimates for the scales
 #'
 #' @param object The Psychometric object
-#' @param ... extra argument
+#' @param mean T: Shown, F: not shown
+#' @param sd  T: Shown, F: not shown
+#' @param SE  T: Shown, F: not shown
+#' @param skew  T: Shown, F: not shown
+#' @param kurtosis  T: Shown, F: not shown
+#' @param min  T: Shown, F: not shown
+#' @param max  T: Shown, F: not shown
+#' @param omega  T: Shown, F: not shown
+#' @param n  T: Shown, F: not shown
+#' @param plots F: no plots are shown, T: plots from psych::omega are shown
+#' @return the summary i a list object
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
-#' summary(object)
+#' pSsummary(object)
 #' @export
-summary.Psychometric<-function(object, ...)
+pSummary.Psychometric<-function(object, mean = T, sd = T, SE = T, skew = T, kurtosis = T,
+                                min = T, max = T, omega = T,
+                                #alpha = T,
+                                n = T, plots = F)
+{
+  UseMethod("pSummary", object)
+}
+#' pSummary
+#'
+#' Includes a set of useful estimates for the scales
+#'
+#' @param object The Psychometric object
+#' @param mean T: Shown, F: not shown
+#' @param sd  T: Shown, F: not shown
+#' @param SE  T: Shown, F: not shown
+#' @param skew  T: Shown, F: not shown
+#' @param kurtosis  T: Shown, F: not shown
+#' @param min  T: Shown, F: not shown
+#' @param max  T: Shown, F: not shown
+#' @param omega  T: Shown, F: not shown
+#' @param n  T: Shown, F: not shown
+#' @param plots F: no plots are shown, T: plots from psych::omega are shown
+#' @return the summary i a list object
+#' @examples
+#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
+#'  responseScale = list(c(0,4)), itemLength = 4)
+#' pSsummary(object)
+#' @export
+pSummary.Psychometric<-function(object, mean = T, sd = T, SE = T, skew = T, kurtosis = T,
+                               min = T, max = T, omega = T,
+                               #alpha = T,
+                               n = T, plots = F)
 {
   y <- object$ScaleFrame
   sumx <- data.frame(Tillf = c(1:ncol(y)))
