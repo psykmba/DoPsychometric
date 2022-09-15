@@ -9,28 +9,7 @@
 \arguments{
 \item{object}{The Psychometric object}
 
-\item{mean}{T: Shown, F: not shown}
-
-\item{sd}{T: Shown, F: not shown}
-
-\item{SE}{T: Shown, F: not shown}
-
-\item{skew}{T: Shown, F: not shown}
-
-\item{kurtosis}{T: Shown, F: not shown}
-
-\item{min}{T: Shown, F: not shown}
-
-\item{max}{T: Shown, F: not shown}
-
-\item{omega}{T: Shown, F: not shown}
-
-\item{n}{T: Shown, F: not shown}
-
-\item{plots}{F: no plots are shown, T: plots from psych::omega are shown}
-}
-\value{
-the summary i a list object
+\item{...}{extra argument}
 }
 \description{
 Includes a set of useful estimates for the scales
