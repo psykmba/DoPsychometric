@@ -13,9 +13,7 @@
 #' @param omega  T: Shown, F: not shown
 #' @param n  T: Shown, F: not shown
 #' @param plots F: no plots are shown, T: plots from psych::omega are shown
-#'
 #' @return the summary i a list object
-#'
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
