@@ -2,31 +2,49 @@
 % Please edit documentation in R/Summary.R
 \name{summary.Psychometric}
 \alias{summary.Psychometric}
-\title{summary
-Includes a set of useful estimates for the scales}
+\title{Summary}
 \usage{
-\method{summary}{Psychometric}(object, ...)
+\method{summary}{Psychometric}(
+  object,
+  mean = T,
+  sd = T,
+  SE = T,
+  skew = T,
+  kurtosis = T,
+  min = T,
+  max = T,
+  omega = T,
+  n = T,
+  plots = F
+)
 }
 \arguments{
 \item{object}{The Psychometric object}
 
-\item{...}{mean T: Shown
-F: not shown
-sd  T: Shown, F: not shown
-SE  T: Shown, F: not shown
-skew  T: Shown, F: not shown
-kurtosis  T: Shown, F: not shown
-min  T: Shown, F: not shown
-max  T: Shown, F: not shown
-omega  T: Shown, F: not shown
-n  T: Shown, F: not shown
-plots F: no plots are shown, T: plots from psych::omega are shown}
+\item{mean}{T: Shown, F: not shown}
+
+\item{sd}{T: Shown, F: not shown}
+
+\item{SE}{T: Shown, F: not shown}
+
+\item{skew}{T: Shown, F: not shown}
+
+\item{kurtosis}{T: Shown, F: not shown}
+
+\item{min}{T: Shown, F: not shown}
+
+\item{max}{T: Shown, F: not shown}
+
+\item{omega}{T: Shown, F: not shown}
+
+\item{n}{T: Shown, F: not shown}
+
+\item{plots}{F: no plots are shown, T: plots from psych::omega are shown}
 }
 \value{
 the summary i a list object
 }
 \description{
-summary
 Includes a set of useful estimates for the scales
 }
 \examples{
