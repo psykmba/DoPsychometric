@@ -12,7 +12,6 @@
 #' @export
 GetReliabilityTest <- function(object, what = "Alpha", ...)
 {
-
   reslist2 <- NULL
   printres <- NULL
   GetAlphaCommands <- function()
@@ -54,7 +53,6 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
     return(res)
 
   }
-
   if (what == "Alpha")
   {
     resList2 <- lapply(object$ScaleItemFrames, FUN = function(x) {return(psych::alpha(x, check.keys = T))})
@@ -107,7 +105,6 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
 #' @param object A Reliability object
 #' @param ... which scale
 #' @return A Reliability object that can be used for analyses
-#' @export summary.Reliability
 #' @export
 summary.Reliability <- function(object, ...)
 {
@@ -147,7 +144,6 @@ print.Reliability <- function(x, ...)
 #' @export
 plot.Reliability <- function(x, ...)
 {
-  browser()
   arg <- list(...)
   if ("scale" %in% names(arg))
     scale <- arg$scale
@@ -178,5 +174,40 @@ plot.Reliability <- function(x, ...)
         psych::fa.parallel(x$ScaleItemFrames[[scale]], main = paste("Analysis for ", scale), plot = T)
     }
 
+  }
+}
+
+#' Get the reliability commands
+#'
+#' @param object A reliability object
+#' @param scale Either "All" or a scale among those in ScaleNames
+#'
+#' @return a character string
+#' @export
+getCommand <- function(object, scale){
+  UseMethod("getCommand", object)
+}
+
+#' Get the reliability commands
+#'
+#' @param object A reliability object
+#' @param scale Either "All" or a scale among those in ScaleNames
+#'
+#' @return a character string
+#' @export
+getCommand.Reliability <- function(object, scale)
+{
+  res <- NULL
+  if (scale == "All")
+  {
+    for (s in object$ScaleNames)
+    {
+      res <- append(res, object$RCommands[s])
+    }
+    return(res)
+  }
+  else
+  {
+    return(object$RCommands[scale])
   }
 }
