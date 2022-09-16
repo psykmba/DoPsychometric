@@ -19,7 +19,7 @@
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' summary(object)
-#' @export
+#' @export summary.Psychometric
 summary.Psychometric <- function(object, ...)
 {
   GetExtraArgument <- function(a)

@@ -105,7 +105,7 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
 #' @param object A Reliability object
 #' @param ... which scale
 #' @return A Reliability object that can be used for analyses
-#' @export
+#' @export summary.Reliability
 summary.Reliability <- function(object, ...)
 {
   arg <- list(...)
