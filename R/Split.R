@@ -11,7 +11,7 @@
 #'  splitPsychometric(object, group = "Sex", f = Summary)
 #'
 
-#' @export
+#' @export split.Psychometric
 split.Psychometric <- function(object, group, f,...)
 {
   splitDataFrames <- split(object$OriginalData, object$OriginalData[c(group)])

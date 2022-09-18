@@ -9,7 +9,7 @@
 #' @param parcel whether the observed variables should be in parcels
 #' @param estimator any estimator that is admissible for cfa
 #'
-#' @return a new Psychometric model with a new CFA for model
+#' @return TestFacet model
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly", ),
 #'    responseScale = list(c(0,4)), itemLength = 4)
@@ -31,12 +31,13 @@ TestFacets <- function(object,scale, subscales, fixed = F,
 #' @param parcel whether the observed variables should be in parcels
 #' @param estimator any estimator that is admissible for cfa
 #'
-#' @return a new Psychometric model with a new CFA for model
-#' @export
+#' @return a TestFacet model
+#' @export TestFacets.Psychometric
 TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
                                     fixedScales = F,parcel = T,
                                     tries = 1, estimator = "ML", zeroVar = c())
 {
+  library(lavaan)
   commands <- list()
   GetItemWithParcels <- function(subscales,ScaleItemFrames)
   {
@@ -366,7 +367,9 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 
     object$ResultList <- append(append(hierModel, result), simpModel)
     object$RCommands <- commands
-    return(object)
+    class(object) <- c("TestFacets", "Psychometric")
+
+     return(object)
   }
   if (tries == 1)
     return(MainCall())
@@ -449,13 +452,11 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
     return(res)
   }
 
-  browser()
   if (is.numeric(model))
   {
     if (is.null(what))
     {
-      object$ResultList <- list(cfa(data = GetAllScaleItemFrames(), model = object$RCommands[[model]]))
-      object$RCommands <- object$RCommands[[model]]
+      object$ResultList[model] <- list(cfa(data = GetAllScaleItemFrames(), model = object$RCommands[[model]]))
       return(object)
     }
     if (what == "SetNegativeVar")
@@ -470,7 +471,6 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
         }
       com <- DeleteVar(com)
       object$RCommands <- list(com)
-      p
       object$ResultList <- list(cfa(data = GetAllScaleItemFrames(), model = com))
       return(object)
     }
@@ -481,27 +481,16 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
   return(object)
 }
 
-#' mySummary to get all the output
-#'
-#' @param object  an object of class TestFacets
-#' @param model which model to print
-#' @param standardized whether the standardized values should be printed
-#'
-#' @return Results
-#' @export
-mySummary <-function(object, model=NULL, standardized = F) {
-  UseMethod("mySummary", object)
-}
 
-#' Title
+#' summary for TestFacets
 #'
 #' @param object an object of class TestFacets
 #' @param model which model to print
 #' @param standardized whether the standardized values should be printed
 #'
 #' @return summary of the lavaan results in the object
-#' @export
-mySummary.Psychometric <- function(object, model=NULL, standardized = F)
+#' @export summary.TestFacets
+summary.TestFacets <- function(object, model=NULL, standardized = F)
 {
   if (is.numeric(model))
   {
@@ -545,7 +534,7 @@ mySummary.Psychometric <- function(object, model=NULL, standardized = F)
 #' @param mdoel which model to print
 #'
 #' @return summary of the lavaan results in the object
-#' @export
+#' @export print.TestFacets
 print.TestFacets <- function(object, model=NULL, standardized = F)
 {
   if (is.numeric(model))
@@ -560,25 +549,15 @@ print.TestFacets <- function(object, model=NULL, standardized = F)
   }
 }
 
-#' myAnova
-#'
-#' @param object  an object of class TestFacets
-#' @param type  an be "Bifactor" or "Hiearchical" or "B" or "H"
-#'
-#' @return summary of the lavaan results in the object
-#' @export
-myAnova <-function(object, type="Bifactor") {
-  UseMethod("myAnova")
-}
-
-#' Title
+#
+#' anova TestFacets
 #'
 #' @param object an object of class TestFacets
 #' @param mdoel which model to print
 #'
 #' @return summary of the lavaan results in the object
-#' @export
-myAnova.Psychometric <- function(object, type)
+#' @export anova.TestFacets
+anova.TestFacets <- function(object, type)
 {
   if (type == "Hiearchical" || type == "H")
     compModel <- 1
@@ -602,5 +581,29 @@ myAnova.Psychometric <- function(object, type)
 }
 
 
+#' getCommand TestFacets
+#'
+#' @param object a TestFacets object created by TestFacets function
+#' @param ... model either "All" or a number
+#'
+#' @return
+#' @export getCommand.TestFacets
+getCommand.TestFacets <- function(object, ...)
+{
+  GetExtraArgument <- function(a)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return("All")
 
+  }
+  model = GetExtraArgument("model")
+
+  if (model == "All")
+    return(object$RCommands)
+  else
+    return(object$RCommands[model])
+}
 

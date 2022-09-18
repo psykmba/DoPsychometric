@@ -32,7 +32,7 @@
 \item{scale}{a Scale name}
 }
 \value{
-a new Psychometric model with a new CFA for model
+a TestFacet model
 }
 \description{
 Facet test with CFA

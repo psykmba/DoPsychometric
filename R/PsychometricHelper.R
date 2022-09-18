@@ -112,7 +112,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
 #' examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #' names(object)
-#' @export
+#' @export names.Psychometric
 
 names.Psychometric <- function(x)
 {
@@ -156,8 +156,8 @@ getData.Psychometric <- function(object, items = F)
 #' @param row.names T if you like to write row names
 #'
 #' @return NULL
-#' @export
-write.csv.Psychometrics <- function(object, fileName, colnames = T, rownames = F)
+#' @export write.csv.Psychometric
+write.csv.Psychometric <- function(object, fileName, colnames = T, rownames = F)
 {
   write.csv(x = getData(object, items = T),file = fileName)
   return(NULL)

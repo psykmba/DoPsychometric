@@ -184,7 +184,7 @@ plot.Reliability <- function(x, ...)
 #'
 #' @return a character string
 #' @export
-getCommand <- function(object, scale){
+getCommand <- function(object, ...){
   UseMethod("getCommand", object)
 }
 
@@ -194,9 +194,19 @@ getCommand <- function(object, scale){
 #' @param scale Either "All" or a scale among those in ScaleNames
 #'
 #' @return a character string
-#' @export
-getCommand.Reliability <- function(object, scale)
+#' @export getCommand.Reliability
+getCommand.Reliability <- function(object, ...)
 {
+  GetExtraArgument <- function(a)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(NULL)
+
+  }
+  scale = GetExtraArgument("scale")
   res <- NULL
   if (scale == "All")
   {

@@ -4,7 +4,7 @@
 \alias{getCommand.Reliability}
 \title{Get the reliability commands}
 \usage{
-\method{getCommand}{Reliability}(object, scale)
+\method{getCommand}{Reliability}(object, ...)
 }
 \arguments{
 \item{object}{A reliability object}

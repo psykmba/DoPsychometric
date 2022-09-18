@@ -32,7 +32,7 @@ TestFacets(
 \item{estimator}{any estimator that is admissible for cfa}
 }
 \value{
-a new Psychometric model with a new CFA for model
+TestFacet model
 }
 \description{
 Facet test with CFA

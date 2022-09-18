@@ -15,11 +15,11 @@
 #' @param reverseList a vector with numbers for all items that should be reversed, if any
 #' @param missings a vector with numbers to be converted to NA, e.g., -99 should be converted to NA
 #' @return A Psychometric object that can be used for analyses
-#' @export
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #'
+#' @export
 GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
                             typeSum = "Mean", itemLength = 6,  #item skall ha samma namn som skalan plus tecken
                             reverse = T, idVar = "ID", name = "Psychometric",
@@ -28,17 +28,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
 {
   # if there is a variable called "ID" this variable is added to all the data
   # frame
-  IDVar <- NULL
-  if (!is.null(data[[idVar]]))
-  {
-    IDVar <- data[[idVar]]
-    data <- dplyr::select(data, -idVar)
-  }
-  else
-  {
-    IDVar <- as.data.frame(1:nrow(data))
 
-  }
   if (FALSE %in% sapply(scaleNames, FUN = function(x) return(nchar(x) >= itemLength)))
   {
     print(paste("Error: itemLength = ", itemLength, "is larger than the string length of the shortes scale name"))
@@ -265,7 +255,18 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   }
   if (!is.null(itemList))
     data <- CreateItemNames()
-   otherVariables <- GetNonItemVar()
+  IDVar <- NULL
+  if (!is.null(data[[idVar]]))
+  {
+    IDVar <- data[[idVar]]
+    data <- dplyr::select(data, -idVar)
+  }
+  else
+  {
+    IDVar <- as.data.frame(1:nrow(data))
+
+  }
+  otherVariables <- GetNonItemVar()
   responseScale <- expandResponsScale(responseScale, scaleNames)
   scaleItemFrames <- GetScaleItemFrames(data, responseScale)
   scaleFrames <- GetScalesFrame(scaleItemFrames, scaleNames)
