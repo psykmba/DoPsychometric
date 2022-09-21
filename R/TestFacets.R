@@ -581,29 +581,4 @@ anova.TestFacets <- function(object, type)
 }
 
 
-#' getCommand TestFacets
-#'
-#' @param object a TestFacets object created by TestFacets function
-#' @param ... model either "All" or a number
-#'
-#' @return
-#' @export getCommand.TestFacets
-getCommand.TestFacets <- function(object, ...)
-{
-  GetExtraArgument <- function(a)
-  {
-    arg <- list(...)
-    if (a %in% names(arg))
-      return(arg[[a]])
-    else
-      return("All")
-
-  }
-  model = GetExtraArgument("model")
-
-  if (model == "All")
-    return(object$RCommands)
-  else
-    return(object$RCommands[model])
-}
 

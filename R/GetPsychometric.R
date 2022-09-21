@@ -197,7 +197,10 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     Reverse <- function(col, resp)
     {
       if (reverse == T)
+      {
+        RCommands <<- append(RCommands, paste("Data$",names(col), " <- (", resp[1], "+", resp[2], ") - ", "Data$",names(col),"\n", sep = ""))
         return((resp[1]+resp[2]) - col)
+      }
       else
         return(col)
     }
@@ -224,12 +227,23 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     return(resFrames)
   }
 
+  GetColNames <- function(dFrame)
+  {
+    res <- ""
+    for (name in names(dFrame))
+    {
+      res <- paste(res, '"', name, '",', sep = "")
+    }
+    return(substr(res, 1, stringr::str_length(res)-1))
+  }
+
   GetScalesFrame <- function(frames, nameV)
   {
     res <- NULL
     for (index in 1:length(frames))
     {
-      res <- cbind(res, rowMeans(as.data.frame(frames[index]), na.rm = T))
+      res <- cbind(res, rowMeans(as.data.frame(frames[[index]]), na.rm = T))
+      RCommands <<- append(RCommands, list(paste("Data$",nameV[index], "<- rowMeans(Data[", GetColNames(as.data.frame(frames[[index]])), "])\n", sep = "")))
     }
     res <- as.data.frame(res)
     row.names(res) <- 1:nrow(res)
@@ -266,11 +280,13 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     IDVar <- as.data.frame(1:nrow(data))
 
   }
+  RCommands <- list()
   otherVariables <- GetNonItemVar()
   responseScale <- expandResponsScale(responseScale, scaleNames)
   scaleItemFrames <- GetScaleItemFrames(data, responseScale)
-  scaleFrames <- GetScalesFrame(scaleItemFrames, scaleNames)
-  data <- ChangeOriginalDataNames(data)
+   scaleFrames <- GetScalesFrame(scaleItemFrames, scaleNames)
+  if (is.null(itemList))
+    data <- ChangeOriginalDataNames(data)
   names(scaleItemFrames) <- scaleNames
   if (!is.null(itemDictionary))
     itemDictionary <- GetDictionary()
@@ -279,7 +295,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   MyObject <- list(ResponseScales = responseScale, ScaleItemFrames = scaleItemFrames, ScaleFrame = scaleFrames,
                    ScaleNames = scaleNames, OtherVariables = otherVariables, OriginalData = data,
                    Name = name, ItemDictionary = itemDictionary,
-                   ItemLength = itemLength, ResultList = list(), PrintRes = list(), RCommands = list())
+                   ItemLength = itemLength, ResultList = list(), PrintRes = list(), RCommands = RCommands)
 
   class(MyObject) <- "Psychometric"
   return(MyObject)
