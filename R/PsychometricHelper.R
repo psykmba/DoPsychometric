@@ -53,7 +53,7 @@ handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
 #' newObject <- handleOutliers(object)
 #' @export
 handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = .001,
-                                        missing = "None", otherVar = F)
+                                        missing = "None", otherVar = c())
 {
   getInsideRange <- function(s, r)
   {
@@ -79,7 +79,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
       noMissObject <- imputeMissing(object, handleMissing = missing)
     else
       noMissObject <- object
-    newFrame <- NULL
+    newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
     for(scale in noMissObject$ScaleFrame)
     {
       m <- mean(scale)
@@ -88,28 +88,29 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
       newFrame <- cbind(newFrame, deleteOutsideRange(scale, r))
     }
     noMissObject$ScaleFrame <- newFrame
-    if (isTRUE(otherVar))
+    if (length(otherVar) > 0)
     {
-      newFrame <- NULL
-      for(var in noMissObject$OtherVariables)
+      newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
+      for(v in otherVar)
       {
-        if (is.numeric(var))
+        if (is.numeric(noMissObject$OtherVariables[v]))
         {
-          m <- mean(var)
-          sd <- sd(var) * stats::qnorm(1 - limit)
+          m <- mean(noMissObject$OtherVariables[v])
+          sd <- sd(noMissObject$OtherVariables[v]) * stats::qnorm(1 - limit)
           r <- range(m+sd, m-sd)
-          newFrame <- cbind(newFrame, deleteOutsideRange(scale, r))
+          newFrame <- cbind(newFrame, deleteOutsideRange(noMissObject$OtherVariables[v], r))
         }
         else
         {
-          newFrame <- cbind(newFrame, var)
+          newFrame <- cbind(newFrame, noMissObject$OtherVariables[v])
         }
       }
       noMissObject$OtherVariables <- newFrame
+
     }
 
-    return(imputeMissing(noMissObject, scales = T))
 
+    return(noMissObject, scales = T)
   }
   if (method == "Winsorizing" || method == "Change")
   {
@@ -117,7 +118,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
       noMissObject <- imputeMissing(object, handleMissing = missing)
     else
       noMissObject <- object
-    newFrame <- NULL
+    newFrame <- data.frame(row.names = 1:nrow(object$ScaleFrame))
     for(scale in noMissObject$ScaleFrame)
     {
       m <- mean(scale)
@@ -126,30 +127,34 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
       newFrame <- cbind(newFrame, getInsideRange(scale, r))
     }
     noMissObject$ScaleFrame <- newFrame
-    if (isTRUE(otherVar))
+    if (length(otherVar) > 0)
     {
-      newFrame <- NULL
-      for(v in noMissObject$OtherVariables)
+      newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
+      for(v in otherVar)
       {
-        if (is.numeric(v))
+        if (is.numeric(noMissObject$OtherVariables[v]))
         {
-          m <- mean(v)
-          sd <- sd(v) * stats::qnorm(1 - limit)
+          m <- mean(noMissObject$OtherVariables[v])
+          sd <- sd(noMissObject$OtherVariables[v]) * stats::qnorm(1 - limit)
           r <- range(m+sd, m-sd)
-          newFrame <- cbind(newFrame, getInsideRange(v, r))
+          newFrame <- cbind(newFrame, getInsideRange(noMissObject$OtherVariables[v], r))
         }
         else
         {
-          newFrame <- cbind(newFrame, v)
+          newFrame <- cbind(newFrame, noMissObject$OtherVariables[v])
         }
       }
       noMissObject$OtherVariables <- newFrame
-    }
 
+
+
+
+    }
     return(noMissObject)
   }
-}
+  return(object)
 
+}
 #' Names
 #'
 #' @param x a Psychometric object to work with
