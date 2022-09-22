@@ -30,23 +30,30 @@ MakeMissing <- function(data, miss)
 #' @param method there are three ways, "Mahalanobis", "SD" and "Change"
 #' @param limit the probability value for handeling an outlier
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
+#' @param otherVar whether the variables not among the scales shall be included, only for check and SD
 #'
-#' @return a Psychometric object with handled outliers
+#' @return an updated Psychometric object
 #'
+#' @export
+handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
+                           missing = "None", otherVar = F) {
+  UseMethod("handleOutliers", object)
+}
+
+#' Handle outliers methods
+#' @param object a Psychometric object to work with
+#' @param method there are three ways, "Mahalanobis", "SD" and "Change"
+#' @param limit the probability value for handeling an outlier
+#' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
+#' @param otherVar whether the variables not among the scales shall be included, only for check and SD
+#' @return an updated Psychometric object
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' newObject <- handleOutliers(object)
-
-#' @export
-handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
-                           missing = "None") {
-  UseMethod("handleOutliers", object)
-}
-
 #' @export
 handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = .001,
-                                        missing = "None")
+                                        missing = "None", otherVar = F)
 {
   getInsideRange <- function(s, r)
   {
@@ -81,6 +88,25 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
       newFrame <- cbind(newFrame, deleteOutsideRange(scale, r))
     }
     noMissObject$ScaleFrame <- newFrame
+    if (isTRUE(otherVar))
+    {
+      newFrame <- NULL
+      for(var in noMissObject$OtherVariables)
+      {
+        if (is.numeric(var))
+        {
+          m <- mean(var)
+          sd <- sd(var) * stats::qnorm(1 - limit)
+          r <- range(m+sd, m-sd)
+          newFrame <- cbind(newFrame, deleteOutsideRange(scale, r))
+        }
+        else
+        {
+          newFrame <- cbind(newFrame, var)
+        }
+      }
+      noMissObject$OtherVariables <- newFrame
+    }
 
     return(imputeMissing(noMissObject, scales = T))
 
@@ -100,6 +126,26 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
       newFrame <- cbind(newFrame, getInsideRange(scale, r))
     }
     noMissObject$ScaleFrame <- newFrame
+    if (isTRUE(otherVar))
+    {
+      newFrame <- NULL
+      for(var in noMissObject$OtherVariables)
+      {
+        if (is.numeric(var))
+        {
+          m <- mean(var)
+          sd <- sd(var) * stats::qnorm(1 - limit)
+          r <- range(m+sd, m-sd)
+          newFrame <- cbind(newFrame, getInsideRange(scale, r))
+        }
+        else
+        {
+          newFrame <- cbind(newFrame, var)
+        }
+      }
+      noMissObject$OtherVariables <- newFrame
+    }
+
     return(noMissObject)
   }
 }
@@ -237,7 +283,7 @@ getCommand.Psychometric <- function(object, ...)
 #' @param object a TestFacets object created by TestFacets function
 #' @param ... model either "All" or a number
 #'
-#' @return
+#' @return  text with commands to use
 #' @export getCommand.TestFacets
 getCommand.TestFacets <- function(object, ...)
 {

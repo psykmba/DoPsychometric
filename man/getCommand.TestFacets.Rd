@@ -11,6 +11,9 @@
 
 \item{...}{model either "All" or a number}
 }
+\value{
+text with commands to use
+}
 \description{
 getCommand TestFacets
 }
