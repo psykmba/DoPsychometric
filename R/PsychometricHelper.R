@@ -129,18 +129,18 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
     if (isTRUE(otherVar))
     {
       newFrame <- NULL
-      for(var in noMissObject$OtherVariables)
+      for(v in noMissObject$OtherVariables)
       {
-        if (is.numeric(var))
+        if (is.numeric(v))
         {
-          m <- mean(var)
-          sd <- sd(var) * stats::qnorm(1 - limit)
+          m <- mean(v)
+          sd <- sd(v) * stats::qnorm(1 - limit)
           r <- range(m+sd, m-sd)
-          newFrame <- cbind(newFrame, getInsideRange(scale, r))
+          newFrame <- cbind(newFrame, getInsideRange(v, r))
         }
         else
         {
-          newFrame <- cbind(newFrame, var)
+          newFrame <- cbind(newFrame, v)
         }
       }
       noMissObject$OtherVariables <- newFrame
