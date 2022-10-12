@@ -9,7 +9,7 @@
   method = "Mahalanobis",
   limit = 0.001,
   missing = "None",
-  otherVar = F
+  otherVar = c()
 )
 }
 \arguments{
