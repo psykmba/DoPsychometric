@@ -90,7 +90,7 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T, skew = T, kurto
   {
     mystars3 <- ifelse(summaryy$Omega < 0.75, "*", "")
     summaryy$Omega<-paste(summaryy$Omega, mystars3, sep=" ")
-    O <- ifelse(summaryy$Omega > 0.75, NA, summaryy$Omega )
+    O <- ifelse(summaryy$Omega < 0.75, NA, summaryy$Omega )
     if(any(is.na(O))) warning('You have scales with poor reliability, see which values end with "*"')
   }
   return(summaryy)
