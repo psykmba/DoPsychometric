@@ -63,6 +63,8 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   {
     return(ifelse (s < r[1], NA, ifelse(s > r[2], NA, s) ))
   }
+  browser()
+
   if (method == "Mahalanobis") {
     if (missing != "None")
       noMissObject <- imputeMissing(object, handleMissing = missing)
@@ -110,7 +112,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
     }
 
 
-    return(noMissObject, scales = T)
+    return(noMissObject)
   }
   if (method == "Winsorizing" || method == "Change")
   {

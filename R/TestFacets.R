@@ -470,8 +470,8 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
           com <- paste(com, "\n", NegVar, "~~0*", NegVar )
         }
       com <- DeleteVar(com)
-      object$RCommands <- list(com)
-      object$ResultList <- list(cfa(data = GetAllScaleItemFrames(), model = com))
+      object$RCommands[[model]] <- list(com)
+      object$ResultList[[model]] <-cfa(data = GetAllScaleItemFrames(), model = com)
       return(object)
     }
   }
