@@ -22,7 +22,98 @@ MakeMissing <- function(data, miss)
   return(data)
 }
 
+#' Title
+#'
+#' @param object a Psychometric object
+#' @param scales the scales that should be included in the result
+#'
+#' @return an Psychometric object with only the scales
+#' @examples
+select.Psychometric <- function(object, scales)
+{
+  newObject <- object
+  newObject$ScaleFrame <- object$ScaleFrame[scales]
+  newObject$ScaleItemFrames <- object$ScaleItemFrames[scales]
+  return(newObject)
+}
 
+GetItemWithParcels <- function(object, parcel, subscales)
+{
+  GetItemNum <- function(n, maxItems)
+  {
+    res <- maxItems
+    if ((n - (maxItems*2)) == (maxItems-1))
+      return(c(maxItems, maxItems*2, n))
+    else
+      return(c(maxItems,  maxItems*2-1, n))
+  }
+  GetRandomItemNum <- function( itemVector, nLength)
+  {
+
+    itemNums <- sample(1:nLength, nLength, replace = F)
+    return(list(itemNums[1:itemVector[1]],
+                itemNums[(itemVector[1]+1):itemVector[2]],
+                itemNums[(itemVector[2]+1):itemVector[3]]))
+
+  }
+  MakeParcels <- function(data)
+  {
+    if (isTRUE(parcel))
+    {
+      s <- ncol(data) / 3
+      numItemVector <- 0
+      if (trunc(s) == s)
+        numItemVector <- c(s,s*2,s*3)
+      else
+      {
+        maxItems <- trunc(s) + 1
+        numItemVector <- GetItemNum(ncol(data), maxItems)
+      }
+      randomParcelNum<- GetRandomItemNum( numItemVector, ncol(data))
+      return(list(data[randomParcelNum[[1]]],
+                  data[randomParcelNum[[2]]],
+                  data[randomParcelNum[[3]]]))
+    }
+    else
+    {
+      res <- list()
+      for (index in 1:ncol(data))
+        res <- append(res, list(data[index]))
+      return(res)
+    }
+  }
+  CombineParcels <- function(data)
+  {
+    res <- data.frame(row.names = 1:nrow(data[[1]]))
+    for (d in data)
+    {
+      if(ncol(d) == 1)
+      {
+        newColumn <- data.frame(d)
+      }
+      else
+      {
+        newColumn <- data.frame(rowMeans(d))
+      }
+      names(newColumn) <- names(d[1])
+      res <- cbind(res, newColumn)
+    }
+    return(res)
+  }
+  res <- list()
+
+  object <- select.Psychometric(object, subscales)
+  for(subscale in subscales)
+  {
+    dataFrames <- object$ScaleItemFrames[[subscale]]
+    dataFrames <- MakeParcels(dataFrames)
+    dataFrames <- list(CombineParcels(dataFrames))
+
+    names(dataFrames) <- subscale
+    res <- append(res, dataFrames)
+  }
+  return(res)
+}
 
 #' Handle outliers methods
 #'
@@ -179,29 +270,57 @@ names.Psychometric <- function(x)
 #' Gets data from Psychometric object
 #'
 #' @param object the object to get data from
-#'
-#' @return a dataframe with all scales and other variablesof the Psychometric object
+#' @param scales scales to extract, if null all scales
+#' @param itemsFrames  if true also items
+#' @param scaleFrames  if true also items
+#' @param otherVar  if true also items
+#' @return a dataframe with all scales and other variables from the Psychometric object
 #'
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' data <- getData(object)
 #' @export
-getData <- function(object, items) {
+getData <- function(object,  scales = NULL, items) {
   UseMethod("getData", object)
 }
 
 #' @export
-getData.Psychometric <- function(object, items = F)
+getData.Psychometric <- function(object, scales,  otherVar = T, scaleFrame = T, itemFrames = T)
 {
-  if (!items)
-    return(as.data.frame(cbind(object$ScaleFrame, object$OtherVariables)))
+  if (is.null(scales))
+  {
+    res <- data.frame(row.names = 1:nrow(object$ScaleItemFrames[[1]]))
+
+    if (isTRUE(scaleFrame))
+      res <- cbind(res, object$ScaleFrame)
+    if (isTRUE(otherVar))
+      res <- cbind(res, object$OtherVariables)
+    if (isTRUE(itemFrames))
+    {
+      for(itemFrame in object$ScaleItemFrames)
+        res <- cbind(res, itemFrame)
+    }
+
+    return(res)
+  }
   else
   {
-    itemFrames <- data.frame(row.names = 1:nrow(object$ScaleItemFrames[[1]]))
-    for(itemFrame in object$ScaleItemFrames)
-      itemFrames <- cbind(itemFrames, itemFrame)
-    return(cbind(object$ScaleFrame, object$OtherVariable,as.data.frame(itemFrames)))
+    res <- data.frame(row.names = 1:nrow(object$ScaleItemFrames[[1]]))
+
+    if (isTRUE(scaleFrame))
+      res <- cbind(res, object$ScaleFrame[scales])
+    if (isTRUE(otherVar))
+      res <- cbind(res, object$OtherVariables)
+    if (isTRUE(itemFrames))
+    {
+      for(itemFrame in object$ScaleItemFrames[scales])
+        res <- cbind(res, itemFrame)
+    }
+
+    return(res)
+
+
   }
 
 }

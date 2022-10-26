@@ -11,6 +11,7 @@
   fixed = F,
   fixedScales = F,
   parcel = T,
+  fixedSubScales = c(),
   tries = 1,
   estimator = "ML",
   zeroVar = c()
@@ -26,6 +27,8 @@
 \item{fixedScales}{whether the scales should be fixed to 1}
 
 \item{parcel}{whether the observed variables should be in parcels}
+
+\item{fixedSubScales}{fix these subscales to 1}
 
 \item{estimator}{any estimator that is admissible for cfa}
 

@@ -44,10 +44,10 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
         if (!is.character(item))
         {
           if (item %in% reverseList)
-            names(data)[item] <- paste(substr(scale, 1, itemLength),
+            names(data)[item] <- paste(substr(scale, 1, itemLength),"_",
                                        names(data[item]), "R", sep = "")
           else
-            names(data)[item] <- paste(substr(scale, 1, itemLength),
+            names(data)[item] <- paste(substr(scale, 1, itemLength),"_",
                                        names(data[item]), sep = "")
 
         }
@@ -56,14 +56,14 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
           if (item %in% reverseList)
           {
             cn <- which( colnames(data)==item )
-            names(data)[cn] <- paste(substr(scale, 1, itemLength),
+            names(data)[cn] <- paste(substr(scale, 1, itemLength),"_",
                                      item, "R", sep = "")
           }
           else
           {
             cn <- which( colnames(data)==item )
 
-            names(data)[cn] <- paste(substr(scale, 1, itemLength),
+            names(data)[cn] <- paste(substr(scale, 1, itemLength),"_",
                                      item, sep = "")
           }
 
@@ -219,6 +219,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     resFrames <- NULL
     for(index in 1:length(scaleNames))
     {
+      browser()
       interm <- GetData(scaleNames[index])
       interm <- getSignItemName(interm,scaleNames[index], itemLength )
       resFrames <- append(resFrames, list(as.data.frame(GetReverse(interm, responses[index]))))
@@ -268,7 +269,9 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     return(data.frame(cbind(d[2], d[3], d[4], row.names = rowNames)))
   }
   if (!is.null(itemList))
+  {
     data <- CreateItemNames()
+   }
   IDVar <- NULL
   if (!is.null(data[[idVar]]))
   {

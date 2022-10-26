@@ -4,13 +4,21 @@
 \alias{getData}
 \title{Gets data from Psychometric object}
 \usage{
-getData(object, items)
+getData(object, scales = NULL, items)
 }
 \arguments{
 \item{object}{the object to get data from}
+
+\item{scales}{scales to extract, if null all scales}
+
+\item{itemsFrames}{if true also items}
+
+\item{scaleFrames}{if true also items}
+
+\item{otherVar}{if true also items}
 }
 \value{
-a dataframe with all scales and other variablesof the Psychometric object
+a dataframe with all scales and other variables from the Psychometric object
 }
 \description{
 Gets data from Psychometric object

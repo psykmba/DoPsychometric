@@ -6,6 +6,7 @@
 #' @param subscales a vector of facet names
 #' @param fixed whether the bi-factor should be fixed to 1
 #' @param fixedScales whether the scales should be fixed to 1
+#' @param fixedSubScales fix these subscales to 1
 #' @param parcel whether the observed variables should be in parcels
 #' @param estimator any estimator that is admissible for cfa
 #'
@@ -16,7 +17,7 @@
 #' TestFacets(object, "Cons", c("Achievement", "Dutifulness", "Orderly"))
 #' @export
 TestFacets <- function(object,scale, subscales, fixed = F,
-                       fixedScales = F,parcel = T,
+                       fixedScales = F,parcel = T, fixedSubScales = c(),
                        tries = 1, estimator = "ML", zeroVar = c()) {
   UseMethod("TestFacets", object)
 }
@@ -28,13 +29,14 @@ TestFacets <- function(object,scale, subscales, fixed = F,
 #' @param subscales a vector of facet names
 #' @param fixed whether the bi-factor should be fixed to 1
 #' @param fixedScales whether the scales should be fixed to 1
+#' @param fixedSubScales fix these subscales to 1
 #' @param parcel whether the observed variables should be in parcels
 #' @param estimator any estimator that is admissible for cfa
 #'
 #' @return a TestFacet model
 #' @export TestFacets.Psychometric
 TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
-                                    fixedScales = F,parcel = T,
+                                    fixedScales = F,parcel = T,fixedSubScales = c(),
                                     tries = 1, estimator = "ML", zeroVar = c())
 {
   library(lavaan)
@@ -196,6 +198,11 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
       {
         ind <-getSubScaleNamesOne(subScaleData[[scale]])
       }
+      else if (scale %in% fixedSubScales)
+      {
+        ind <-getSubScaleNamesOne(subScaleData[[scale]])
+
+      }
       else
       {
         ind <-getSubScaleNames(subScaleData[[scale]])
@@ -228,6 +235,11 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
       {
         ind <-getSubScaleNamesOne(subScaleData[[scale]])
       }
+      else if (scale %in% fixedSubScales)
+      {
+        ind <-getSubScaleNamesOne(subScaleData[[scale]])
+
+      }
       else
       {
         ind <-getSubScaleNames(subScaleData[[scale]])
@@ -255,6 +267,11 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
       if (isTRUE(fixedScales))
       {
         ind <-getSubScaleNamesOne(subScaleData[[scale]])
+      }
+      else if (scale %in% fixedSubScales)
+      {
+        ind <-getSubScaleNamesOne(subScaleData[[scale]])
+
       }
       else
       {
@@ -318,6 +335,11 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
         {
           ind <-getSubScaleNamesOne(subScaleData[[scale]])
         }
+        else if (scale %in% fixedSubScales)
+        {
+          ind <-getSubScaleNamesOne(subScaleData[[scale]])
+
+        }
         else
         {
           ind <-getSubScaleNames(subScaleData[[scale]])
@@ -364,6 +386,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
       result <- append(result,tillf)
     }
     simpModel <- list(GetSimpleModel(scales, subScaleData))
+    names(simpModel) <- "Factor model"
 
     object$ResultList <- append(append(hierModel, result), simpModel)
     object$RCommands <- commands
@@ -571,14 +594,41 @@ anova.TestFacets <- function(object, type)
   print(fitmeasures(object$ResultList[[compModel]],c("cfi", "rmsea" ,"srmr_mplus")))
 
   if (length(object$ResultList)>2)
-    for(index in 3:length(object$ResultList))
+  {
+    if (compModel == 1)
     {
-      print(names(object$ResultList[index]))
-      print(fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr_mplus")))
-      print(lavaan::lavTestLRT(object$ResultList[[index]],
+      print(names(object$ResultList[2]))
+      print(fitmeasures(object$ResultList[[2]],c("cfi", "rmsea" ,"srmr_mplus")))
+      print(lavaan::lavTestLRT(object$ResultList[[2]],
                                object$ResultList[[compModel]]))
+      print(names(object$ResultList[length(object$ResultList)]))
+      print(fitmeasures(object$ResultList[[length(object$ResultList)]],c("cfi", "rmsea" ,"srmr_mplus")))
+      print(lavaan::lavTestLRT(object$ResultList[[length(object$ResultList)]],
+                               object$ResultList[[compModel]]))
+
     }
+    else
+
+      for(index in 3:length(object$ResultList))
+      {
+        print(names(object$ResultList[index]))
+        print(fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr_mplus")))
+        print(lavaan::lavTestLRT(object$ResultList[[index]],
+                                 object$ResultList[[compModel]]))
+      }
+  }
 }
 
-
+#' Get factor scores
+#'
+#' @param object a TestFacet object
+#' @param model which model to return
+#'
+#' @return a dataframe with factor scores
+#' @export
+getPredict.TestFacets <- function(object, model)
+{
+  res <- data.frame(lavaan::predict(object$ResultList[[model]]))
+  return(res)
+}
 
