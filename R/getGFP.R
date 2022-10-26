@@ -29,8 +29,7 @@ getGFP.Psychometric <- function(object, scales = NULL,
                                 parceling = F, fixed = F, fixedScales = F,
                                 fixedSubScales = c())
 {
-  browser()
-  if (is.null(scales))
+   if (is.null(scales))
   {
       gPCA <-psych::pca(object$ScaleFrame, nfactors = 1)
       PCA <-psych::pca(object$OriginalData, nfactors = 1)

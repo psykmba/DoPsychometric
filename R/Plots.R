@@ -54,8 +54,8 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
         }
         if (type == "Boxplot")
         {
-          p <- ggplot2::ggplot(object$ScaleFrame[s], aes_string(y = s)) +
-            geom_boxplot()
+          p <- ggplot2::ggplot(object$ScaleFrame[s], ggplot2::aes_string(y = s)) +
+            ggplot2::geom_boxplot()
           return(p)
 
         }
@@ -70,7 +70,7 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
             external %in% names(object$OtherVariables))
         {
           d <- cbind(object$ScaleFrame[[s]], object$OtherVariables[external])
-          ggplot2::ggplot(data = d, aes_string(x = s, y = external)) +
+          ggplot2::ggplot(data = d, ggplot2::aes_string(x = s, y = external)) +
             ggplot2::geom_point(col = "gray") +
             ggplot2::ggtitle(paste("Distribution of ", object$Name))
         }

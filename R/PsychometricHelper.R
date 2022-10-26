@@ -154,7 +154,6 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   {
     return(ifelse (s < r[1], NA, ifelse(s > r[2], NA, s) ))
   }
-  browser()
 
   if (method == "Mahalanobis") {
     if (missing != "None")
@@ -219,6 +218,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
       r <- range(m+sd, m-sd)
       newFrame <- cbind(newFrame, getInsideRange(scale, r))
     }
+    names(newFrame) <- object$ScaleNames
     noMissObject$ScaleFrame <- newFrame
     if (length(otherVar) > 0)
     {
