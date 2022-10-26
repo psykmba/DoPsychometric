@@ -87,16 +87,17 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
 #' Plot scales from Psychometric
 #'
 #' @param x a Psychometric object
+#' @param y optional not used
 #' @param ... extra argument is: scale = scaleName
 #'
 #' @return nothing
-#' @export
 #'
 #' @examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #'  plot(object, scale = "Achievement")
-plot.Psychometric <- function(x, ...)
+#' @export
+plot.Psychometric <- function(x, y, ...)
 {
   GetExtraArgument <- function(a)
   {
