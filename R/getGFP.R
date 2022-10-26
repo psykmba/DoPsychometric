@@ -32,7 +32,7 @@ getGFP.Psychometric <- function(object, scales = NULL,
    if (is.null(scales))
   {
       gPCA <-psych::pca(object$ScaleFrame, nfactors = 1)
-      PCA <-psych::pca(object$OriginalData, nfactors = 1)
+#      PCA <-psych::pca(object$OriginalData, nfactors = 1)
 
       testF <- TestFacets(object, scale = "GFP", subscales = object$ScaleNames,
                           parcel = parceling, fixed = fixed, fixedScales = fixedScales,
