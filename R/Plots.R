@@ -54,7 +54,7 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
         }
         if (type == "Boxplot")
         {
-          p <- ggplot(object$ScaleFrame[s], aes_string(y = s)) +
+          p <- ggplot2::ggplot(object$ScaleFrame[s], aes_string(y = s)) +
             geom_boxplot()
           return(p)
 

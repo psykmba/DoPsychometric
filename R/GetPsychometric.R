@@ -219,8 +219,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     resFrames <- NULL
     for(index in 1:length(scaleNames))
     {
-      browser()
-      interm <- GetData(scaleNames[index])
+       interm <- GetData(scaleNames[index])
       interm <- getSignItemName(interm,scaleNames[index], itemLength )
       resFrames <- append(resFrames, list(as.data.frame(GetReverse(interm, responses[index]))))
     }
