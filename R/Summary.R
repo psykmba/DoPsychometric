@@ -119,6 +119,7 @@ summary.Psychometric<-function(object, ...)
     O <- ifelse(summaryy$Omega < 0.75, NA, summaryy$Omega )
     if(any(is.na(O))) warning('You have scales with poor reliability, see which values end with "*"')
   }
+  print(summary(sumx,...))
   return(summaryy)
 }
 

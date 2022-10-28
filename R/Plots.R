@@ -111,6 +111,7 @@ plot.Psychometric <- function(x, y, ...)
   scale = GetExtraArgument("scale")
   if (scale == "All")
   {
+    plot(data, ...)
 
     for(data in x$ScaleItemFrames )
     {
