@@ -281,12 +281,12 @@ names.Psychometric <- function(x)
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' data <- getData(object)
 #' @export
-getData <- function(object,  scales = NULL, items) {
+getData <- function(object,  scales = NULL, otherVar = T, scaleFrame = T, itemFrames = T) {
   UseMethod("getData", object)
 }
 
 #' @export
-getData.Psychometric <- function(object, scales,  otherVar = T, scaleFrame = T, itemFrames = T)
+getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFrame = T, itemFrames = T)
 {
   if (is.null(scales))
   {
@@ -430,3 +430,21 @@ getCommand.TestFacets <- function(object, ...)
     return(cat(paste(object$RCommands[model], collapse = "")))
 }
 
+#' Title
+#'
+#' @param Psychometric object
+#'
+#' @return names of all scale and items
+#' @export
+getSubScaleNames <- function(object)
+{
+  res <- list()
+  for(index in 1:length(object$ScaleNames))
+  {
+    nam1 <- object$ScaleNames[index]
+    nam2 <-  names(object$ScaleItemFrames[[index]])
+    res <- append(res, list(c(nam1,nam2)))
+
+  }
+  return(res)
+}
