@@ -44,41 +44,44 @@ summary.Psychometric<-function(object, ...)
   sumx <- data.frame(Tillf = c(1:ncol(y)))
   for (i in 1:ncol(y))
   {
-    if(mean.s==TRUE)
+    if(isTRUE(mean.s) )
     {sumx$Mean[i]<-mean(as.numeric(y[,i]), na.rm = TRUE)}
-    if(sd.s==TRUE)
+    if(isTRUE(sd.s) )
     {sumx$SD[i]<-sd(as.numeric(y[,i]), na.rm = TRUE)}
-    if(SE.s==TRUE)
+    if(isTRUE(SE.s))
     {sumx$SE[i]<-sd(y[,i])/sqrt(sum(!is.na(y[,i])))} # need library(plotrix))
-    if(skew.s==TRUE)
+    if(isTRUE(skew.s))
     {sumx$Skew[i]<-psych::skew(as.numeric(y[,i]), na.rm = TRUE)}
-    if(kurtosis.s==TRUE)
+    if(isTRUE(kurtosis.s))
     {sumx$Kurtosis[i]<-psych::kurtosi(as.numeric(y[,i]), na.rm = TRUE)}
-    if(min.s==TRUE)
+    if(isTRUE(min.s))
     {sumx$Min[i]<-min(as.numeric(y[,i]), na.rm = TRUE)}
-    if(max.s==TRUE)
+    if(isTRUE(max.s))
     {sumx$Max[i]<-max(as.numeric(y[,i]), na.rm = TRUE)}
-    if(omega.s==TRUE && length(object$ScaleItemFrames[[i]])>5)
+    if(isTRUE(omega.s))
     {
+      if (length(object$ScaleItemFrames[[i]])>5)
+      {
 
-       omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plots.s)
-       sumx$Omega[i]<-as.vector(omeg$omega.tot)
-    }
-    else
-    {
-      omeg<-psych::alpha(object$ScaleItemFrames[[i]])
-      sumx$Omega[i]<-as.vector(omeg$total$raw_alpha)
-      warning("Number of items to small for omega (<6), alpha estimated instead")
+        omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plots.s)
+        sumx$Omega[i]<-as.vector(omeg$omega.tot)
+      }
+      else
+      {
+        omeg<-psych::alpha(object$ScaleItemFrames[[i]])
+        sumx$Omega[i]<-as.vector(omeg$total$raw_alpha)
+        warning("Number of items to small for omega (<6), alpha estimated instead")
+      }
     }
 
-    if(n.s==TRUE)
+    if(isTRUE(n.s))
     {sumx$N[i]<-length(y[,i][!is.na(y[,i])]) }
   }
   sumx <- sumx[-1]
   summaryy<-sumx
   rownames(summaryy)<-object$ScaleNames
   summaryy<-round(summaryy,3) #round amount of decimals
-  if (kurtosis.s==TRUE)
+  if (isTRUE(kurtosis.s))
   {
     if (nrow(y)<300)
     {
@@ -96,7 +99,7 @@ summary.Psychometric<-function(object, ...)
     }
 
   }
-  if (skew.s==TRUE)
+  if (isTRUE(skew.s))
   {
     if (nrow(y)<300)
     {
@@ -112,7 +115,7 @@ summary.Psychometric<-function(object, ...)
     if(any(is.na(k))) warning('You have scales with high skew, see which values end with "*"')
 
   }
-  if(omega.s==TRUE)
+  if(isTRUE(omega.s))
   {
     mystars3 <- ifelse(summaryy$Omega < 0.75, "*", "")
     summaryy$Omega<-paste(summaryy$Omega, mystars3, sep=" ")
