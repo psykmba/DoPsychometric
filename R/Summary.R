@@ -60,7 +60,7 @@ summary.Psychometric<-function(object, ...)
     {sumx$Max[i]<-max(as.numeric(y[,i]), na.rm = TRUE)}
     if(isTRUE(omega.s))
     {
-      if (length(object$ScaleItemFrames[[i]])>5)
+      if (length(object$ScaleItemFrames[[i]])>7)
       {
 
         omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plots.s)
