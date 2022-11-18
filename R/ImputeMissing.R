@@ -18,7 +18,7 @@ UseMethod("imputeMissing", object)
 }
 
 #' @export
-imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scales = F,...)
+imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scales = T,...)
 {
   GetExtraArgument <- function(a, default)
   {

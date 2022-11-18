@@ -240,8 +240,9 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   GetScalesFrame <- function(frames, nameV)
   {
     res <- NULL
-    for (index in 1:length(frames))
+     for (index in 1:length(frames))
     {
+
       res <- cbind(res, rowMeans(as.data.frame(frames[[index]]), na.rm = T))
       RCommands <<- append(RCommands, list(paste("Data$",nameV[index], "<- rowMeans(Data[", GetColNames(as.data.frame(frames[[index]])), "])\n", sep = "")))
     }
