@@ -5,7 +5,8 @@
 #' @param object A Reliability object
 #' @param handleMissing can be:  Listwise, Mean, Impute, Bayesian, Regression, Pmm, BayesianMean, and check
 #' @param scales T = do missing on scale level F = on item level
-#' @param ... k = kan be used to create BayesianMean based on k imputations
+#' @param ... k = can be used to create BayesianMean based on k imputations
+#'            printFlag = T can be used to get information about imputations
 #' @return A Psychometric object that can be used for analyses
 #' @examples
 #' dat <- as.data.frame(list(pItem1 = c(2,3,4,4,3,4,NA,4), pItem2 = c(2,3,4,4,2,4,2,3)))
@@ -14,7 +15,7 @@
 #' @export
 
 imputeMissing <- function(object, handleMissing = "Listwise", scales = T, ...) {
-UseMethod("imputeMissing", object)
+  UseMethod("imputeMissing", object)
 }
 
 #' @export
@@ -108,12 +109,21 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
   }
   if (scales == T)
   {
-    object$ScaleFrame <- HandleMissing(object$ScaleFrame)
+
+    NewScaleFrame <- HandleMissing(object$ScaleFrame)
+    if (isTRUE(pf))
+      print(summary(arsenal::comparedf(NewScaleFrame, object$ScaleFrame)))
+    object$ScaleFrame <- NewScaleFrame
   }
   else {
     for(index in 1:length(object$ScaleItemFrames))
     {
-      object$ScaleItemFrames[[index]] <- HandleMissing(object$ScaleItemFrames[[index]])
+      if (isTRUE(pf))
+        print(names(object$ScaleItemFrames[index]))
+      NewScaleFrame <- HandleMissing(object$ScaleItemFrames[[index]])
+      if (isTRUE(pf))
+        print(summary(arsenal::comparedf(NewScaleFrame, object$ScaleItemFrames[[index]])))
+      object$ScaleItemFrames[[index]] <-  NewScaleFrame
     }
     object$ScaleFrame <- GetScalesFrame(object$ScaleItemFrames, object$ScaleNames)
   }

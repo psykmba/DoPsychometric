@@ -13,7 +13,8 @@ imputeMissing(object, handleMissing = "Listwise", scales = T, ...)
 
 \item{scales}{T = do missing on scale level F = on item level}
 
-\item{...}{k = kan be used to create BayesianMean based on k imputations}
+\item{...}{k = can be used to create BayesianMean based on k imputations
+printFlag = T can be used to get information about imputations}
 }
 \value{
 A Psychometric object that can be used for analyses
