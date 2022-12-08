@@ -34,7 +34,7 @@ TestFacets <- function(object,scale, subscales, fixed = F,
 #' @param estimator any estimator that is admissible for cfa
 #'
 #' @return a TestFacet model
-#' @export TestFacets.Psychometric
+#' @export
 TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
                                     fixedScales = F,parcel = T,fixedSubScales = c(),
                                     tries = 1, estimator = "ML", zeroVar = c())
@@ -512,7 +512,7 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
 #' @param standardized whether the standardized values should be printed
 #'
 #' @return summary of the lavaan results in the object
-#' @export summary.TestFacets
+#' @export
 summary.TestFacets <- function(object, model=NULL, standardized = F)
 {
   if (is.numeric(model))
@@ -557,7 +557,7 @@ summary.TestFacets <- function(object, model=NULL, standardized = F)
 #' @param mdoel which model to print
 #'
 #' @return summary of the lavaan results in the object
-#' @export print.TestFacets
+#' @export
 print.TestFacets <- function(object, model=NULL, standardized = F)
 {
   if (is.numeric(model))
@@ -579,7 +579,7 @@ print.TestFacets <- function(object, model=NULL, standardized = F)
 #' @param mdoel which model to print
 #'
 #' @return summary of the lavaan results in the object
-#' @export anova.TestFacets
+#' @export
 anova.TestFacets <- function(object, type)
 {
   if (type == "Hiearchical" || type == "H")
@@ -617,6 +617,18 @@ anova.TestFacets <- function(object, type)
                                  object$ResultList[[compModel]]))
       }
   }
+}
+
+
+#' Get factor scores
+#'
+#' @param object a TestFacet object
+#' @param model which model to return
+#'
+#' @return a dataframe with factor scores
+#' @export
+getPredict <- function(object, model) {
+  UseMethod("getPredict.TestFacets", object)
 }
 
 #' Get factor scores

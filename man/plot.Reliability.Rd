@@ -4,7 +4,7 @@
 \alias{plot.Reliability}
 \title{Summary of plot}
 \usage{
-\method{plot}{Reliability}(x, ...)
+\method{plot}{Reliability}(x, scale = NULL)
 }
 \arguments{
 \item{x}{A Reliability object}

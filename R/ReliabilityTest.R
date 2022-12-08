@@ -142,18 +142,25 @@ print.Reliability <- function(x, ...)
 #' @param ... Other arguments
 #' @return A Reliability object that can be used for analyses
 #' @export
-plot.Reliability <- function(x, ...)
+plot.Reliability <- function(x, scale = NULL)
 {
-  arg <- list(...)
-  if ("scale" %in% names(arg))
-    scale <- arg$scale
-  else
-    scale <- NULL
+#  arg <- list(...)
+#  if ("scale" %in% names(arg))
+#    scale <- arg$scale
+#  else
+#    scale <- NULL
   if (class(x)[1] == "Reliability")
   {
     if (x$Name == "Alpha")
     {
+      if (is.null(scale))
+      {
+        lapply(x$ScaleItemFrames, FUN = psych::corPlot)
+      }
+      else
+      {
       print(psych::corPlot(x$ScaleItemFrames[[scale]]))
+      }
     }
     if (x$Name == "Omega")
     {
