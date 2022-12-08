@@ -268,6 +268,10 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
       rowNames <- c(rowNames, paste(substr(d[index, 4],1,itemLength), d[index,1], sep = ""))
     return(data.frame(cbind(d[2], d[3], d[4], row.names = rowNames)))
   }
+  GetExplainText <- function(commands)
+  {
+    return(append(RCommands, list("To use the commands change Data in the script above to the name of your dataframe")))
+  }
   if (!is.null(itemList))
   {
     data <- CreateItemNames()
@@ -298,7 +302,8 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   MyObject <- list(ResponseScales = responseScale, ScaleItemFrames = scaleItemFrames, ScaleFrame = scaleFrames,
                    ScaleNames = scaleNames, OtherVariables = otherVariables, OriginalData = data,
                    Name = name, ItemDictionary = itemDictionary,
-                   ItemLength = itemLength, ResultList = list(), PrintRes = list(), RCommands = RCommands)
+                   ItemLength = itemLength, ResultList = list(), PrintRes = list(),
+                   RCommands = GetExplainText(RCommands))
 
   class(MyObject) <- "Psychometric"
   return(MyObject)

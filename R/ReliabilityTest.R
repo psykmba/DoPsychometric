@@ -105,7 +105,7 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
 #' @param object A Reliability object
 #' @param ... which scale
 #' @return A Reliability object that can be used for analyses
-#' @export summary.Reliability
+#' @export
 summary.Reliability <- function(object, ...)
 {
   arg <- list(...)
@@ -151,6 +151,10 @@ plot.Reliability <- function(x, ...)
     scale <- NULL
   if (class(x)[1] == "Reliability")
   {
+    if (x$Name == "Alpha")
+    {
+      print(psych::corPlot(x$ScaleItemFrames[[scale]]))
+    }
     if (x$Name == "Omega")
     {
       if (is.null(scale))

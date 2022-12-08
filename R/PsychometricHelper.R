@@ -28,7 +28,6 @@ MakeMissing <- function(data, miss)
 #' @param scales the scales that should be included in the result
 #'
 #' @return an Psychometric object with only the scales
-#' @examples
 select.Psychometric <- function(object, scales)
 {
   newObject <- object
@@ -256,7 +255,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
 #' examples
 #' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
 #' names(object)
-#' @export names.Psychometric
+#' @export
 
 names.Psychometric <- function(x)
 {
@@ -358,7 +357,7 @@ getCommand <- function(object, ...){
 #' @param scale Either "All" or a scale among those in ScaleNames
 #'
 #' @return a character string
-#' @export getCommand.Reliability
+#' @export
 getCommand.Reliability <- function(object, ...)
 {
   GetExtraArgument <- function(a)
@@ -393,7 +392,7 @@ getCommand.Reliability <- function(object, ...)
 #' @param ...
 #'
 #' @return text with commands to use
-#' @export getCommand.Psychometric
+#' @export
 getCommand.Psychometric <- function(object, ...)
 {
   res<-""
@@ -410,7 +409,7 @@ getCommand.Psychometric <- function(object, ...)
 #' @param ... model either "All" or a number
 #'
 #' @return  text with commands to use
-#' @export getCommand.TestFacets
+#' @export
 getCommand.TestFacets <- function(object, ...)
 {
   GetExtraArgument <- function(a)

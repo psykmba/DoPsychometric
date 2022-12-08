@@ -18,7 +18,8 @@ Imports:
     ggcorrplot,
     lavaan,
     GPArotation,
-    arsenal
+    arsenal,
+    corrplot
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
