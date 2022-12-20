@@ -65,7 +65,7 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
       if (length(object$ScaleItemFrames[[i]])>=7)
       {
 
-        omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plots.s)
+        omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plots)
         sumx$Omega[i]<-as.vector(omeg$omega.tot)
       }
       else
