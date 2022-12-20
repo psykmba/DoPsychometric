@@ -271,8 +271,8 @@ names.Psychometric <- function(x)
 #' @param object the object to get data from
 #' @param scales scales to extract, if null all scales
 #' @param itemsFrames  if true also items
-#' @param scaleFrames  if true also items
-#' @param otherVar  if true also items
+#' @param scaleFrames  if true also scales
+#' @param otherVar  if true also other variables
 #' @return a dataframe with all scales and other variables from the Psychometric object
 #'
 #' @examples
@@ -335,7 +335,8 @@ getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFram
 #' @export write.csv.Psychometric
 write.csv.Psychometric <- function(object, fileName, colnames = T, rownames = F)
 {
-  write.csv(x = getData(object, items = T),file = fileName)
+  write.csv(x = getData(object, items = T),file = fileName, col.names = colnames,
+            row.names = rownames)
   return(NULL)
 
 }

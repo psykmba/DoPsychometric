@@ -10,7 +10,7 @@
   subscales,
   fixed = F,
   fixedScales = F,
-  parcel = T,
+  parcel = F,
   fixedSubScales = c(),
   tries = 1,
   estimator = "ML",

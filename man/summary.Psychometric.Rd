@@ -2,7 +2,7 @@
 % Please edit documentation in R/Summary.R
 \name{summary.Psychometric}
 \alias{summary.Psychometric}
-\title{Summary}
+\title{summary}
 \usage{
 \method{summary}{Psychometric}(
   object,

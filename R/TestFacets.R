@@ -36,7 +36,7 @@ TestFacets <- function(object,scale, subscales, fixed = F,
 #' @return a TestFacet model
 #' @export
 TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
-                                    fixedScales = F,parcel = T,fixedSubScales = c(),
+                                    fixedScales = F,parcel = F,fixedSubScales = c(),
                                     tries = 1, estimator = "ML", zeroVar = c())
 {
   library(lavaan)
@@ -612,9 +612,9 @@ anova.TestFacets <- function(object, type)
       for(index in 3:length(object$ResultList))
       {
         print(names(object$ResultList[index]))
-        print(fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr_mplus")))
+        print(fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr")))
         print(lavaan::lavTestLRT(object$ResultList[[index]],
-                                 object$ResultList[[compModel]]))
+                                 object$ResultList[[compModel]], type = "Chisq"))
       }
   }
 }

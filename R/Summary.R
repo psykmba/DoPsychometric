@@ -1,4 +1,4 @@
-#' Summary
+#' summary
 #'
 #' Includes a set of useful estimates for the scales
 #'

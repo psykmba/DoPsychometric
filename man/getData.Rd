@@ -11,11 +11,11 @@ getData(object, scales = NULL, otherVar = T, scaleFrame = T, itemFrames = T)
 
 \item{scales}{scales to extract, if null all scales}
 
-\item{otherVar}{if true also items}
+\item{otherVar}{if true also other variables}
 
 \item{itemsFrames}{if true also items}
 
-\item{scaleFrames}{if true also items}
+\item{scaleFrames}{if true also scales}
 }
 \value{
 a dataframe with all scales and other variables from the Psychometric object

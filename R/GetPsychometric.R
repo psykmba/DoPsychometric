@@ -310,4 +310,3 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
 
 }
 
-

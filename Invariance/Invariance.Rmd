@@ -1,0 +1,92 @@
+---
+title: "Tutorial"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(readr)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Invariansanalys
+
+### CFA and invariance analysis 
+
+Confirmatory factor analysis (CFA) is a method to estimate the measurement model (MM) in
+structrual equation modeling SEM. Wikipedia writes the following about CFA: 
+"In statistics, confirmatory factor analysis (CFA) is a special form of factor analysis, most commonly used in social research.[1] It is used to test whether measures of a construct are consistent with a researcher's understanding of the nature of that construct (or factor). As such, the objective of confirmatory factor analysis is to test whether the data fit a hypothesized measurement model. This hypothesized model is based on theory and/or previous analytic research.[2] CFA was first developed by Jöreskog (1969)[3] and has built upon and replaced older methods of analyzing construct validity such as the MTMM Matrix as described in Campbell & Fiske (1959)." (https://en.wikipedia.org/wiki/Confirmatory_factor_analysis, downloaded 221213)
+Wikipedia writes the following about testing invariance:
+"Measurement invariance or measurement equivalence is a statistical property of measurement that indicates that the same construct is being measured across some specified groups. For example, measurement invariance can be used to study whether a given measure is interpreted in a conceptually similar manner by respondents representing different genders or cultural backgrounds. Violations of measurement invariance may preclude meaningful interpretation of measurement data. Tests of measurement invariance are increasingly used in fields such as psychology to supplement evaluation of measurement quality rooted in classical test theory.
+Measurement invariance is often tested in the framework of multiple-group confirmatory factor analysis (CFA). In the context of structural equation models, including CFA, measurement invariance is often termed factorial invariance." (https://en.wikipedia.org/wiki/Measurement_invariance, downloaded 221213)
+
+
+This tutorial will be a starter on estimating invariance when you have an 
+inventory with two set of scales that are from two different factors/domain.
+
+This tutorial will combine R using the lavaan package with the same analyses 
+using the semj - SEM package for Jamovi.
+
+First, the observed variables used will be presented, together with some 
+alternatives to CFA. 
+
+Write the R code required to add two plus two:
+
+```{r two-plus-two, exercise=TRUE}
+
+```
+
+### Exercise with Code
+
+*Here's an exercise with some prepopulated code as well as `exercise.lines = 5` to provide a bit more initial room to work.*
+
+Now write a function that adds any two numbers and then call it:
+
+```{r add-function, exercise=TRUE, exercise.lines = 5}
+add <- function() {
+  
+}
+```
+
+## Topic 2
+
+### Exercise with Hint
+
+*Here's an exercise where the chunk is pre-evaluated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
+
+Modify the following code to limit the number of rows printed to 5:
+
+```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
+mtcars
+```
+
+```{r print-limit-hint}
+head(mtcars)
+```
+
+### Quiz
+
+*You can include any number of single or multiple choice questions as a quiz. Use the `question` function to define a question and the `quiz` function for grouping multiple questions together.*
+
+Some questions to verify that you understand the purposes of various base and recommended R packages:
+
+```{r quiz}
+quiz(
+  question("Which package contains functions for installing other R packages?",
+    answer("base"),
+    answer("tools"),
+    answer("utils", correct = TRUE),
+    answer("codetools")
+  ),
+  question("Which of the R packages listed below are used to create plots?",
+    answer("lattice", correct = TRUE),
+    answer("tools"),
+    answer("stats"),
+    answer("grid", correct = TRUE)
+  )
+)
+```
+
