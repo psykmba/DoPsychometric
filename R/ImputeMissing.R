@@ -79,7 +79,7 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
       {
         sumStart <- sumStart + imputed[[index]]
       }
-      sumStart <- sumStart / 10
+      sumStart <- sumStart / k
 
 
       return(sumStart)
@@ -116,16 +116,13 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     object$ScaleFrame <- NewScaleFrame
   }
   else {
-    for(index in 1:length(object$ScaleItemFrames))
+     for(index in 1:length(object$ScaleItemFrames))
     {
-      if (isTRUE(pf))
-        print(names(object$ScaleItemFrames[index]))
-      NewScaleFrame <- HandleMissing(object$ScaleItemFrames[[index]])
-      if (isTRUE(pf))
-        print(summary(arsenal::comparedf(NewScaleFrame, object$ScaleItemFrames[[index]])))
-      object$ScaleItemFrames[[index]] <-  NewScaleFrame
-    }
-    object$ScaleFrame <- GetScalesFrame(object$ScaleItemFrames, object$ScaleNames)
+       object$ScaleItemFrames[[index]] <- HandleMissing(object$ScaleItemFrames[[index]])
+
+     }
+    object$ScaleFrame <- GetScalesFrame( object$ScaleItemFrames, object$ScaleNames)
+
   }
 
   return(object)
