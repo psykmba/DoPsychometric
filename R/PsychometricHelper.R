@@ -222,6 +222,20 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
     if (length(otherVar) > 0)
     {
       newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
+      library(data.table)
+
+      newFrame <- data.table(row.names = 1:nrow(object$ScaleFrame))
+      otherVar <- lapply(otherVar, function(v) {
+        ifelse(is.numeric(noMissObject$OtherVariables[v]), {
+          m <- mean(noMissObject$OtherVariables[v], na.rm = TRUE)
+          sd <- sd(noMissObject$OtherVariables[v], na.rm = TRUE) * stats::qnorm(1 - limit)
+          r <- range(m+sd, m-sd)
+          noMissObject$OtherVariables[v][which(noMissObject$OtherVariables[v] >= r[1] & noMissObject$OtherVariables[v] <= r[2])]
+        }, {
+          noMissObject$OtherVariables[v]
+        })
+      })
+      newFrame <- cbind(newFrame, otherVar)
       for(v in otherVar)
       {
         if (is.numeric(noMissObject$OtherVariables[v]))
