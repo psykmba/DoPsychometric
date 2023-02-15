@@ -4,16 +4,18 @@
 \alias{GetReliabilityTest}
 \title{Getting the Reliability object based on a Psychometric object}
 \usage{
-GetReliabilityTest(object, what = "Alpha", check = T, ...)
+GetReliabilityTest(object, what = "Alpha", check = T, imp = "NULL", ...)
 }
 \arguments{
 \item{object}{A Psychometric object}
 
 \item{what}{what type of analyses: Alpha, Omega or Parallel}
 
-\item{check}{whether to check keys in alpha: Alpha, Omega or Parallel}
+\item{check}{whether to check keys in alpha}
 
 \item{...}{more arguments}
+
+\item{impute}{how to impute variables in alpha:}
 }
 \value{
 A Reliability object based on a Psychometric object that can be used for analyses
