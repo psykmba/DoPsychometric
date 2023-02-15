@@ -11,6 +11,7 @@
 #' @param min  T: Shown, F: not shown
 #' @param max  T: Shown, F: not shown
 #' @param omega  T: Shown, F: not shown
+#' @param alpha  T: Shown, F: not shown
 #' @param n  T: Shown, F: not shown
 #' @param plots F: no plots are shown, T: plots from psych::omega are shown
 #' @return the summary i a list object
@@ -21,7 +22,7 @@
 #' @export
 summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
                                skew = T, kurtosis = T, min = T,
-                               max = T, omega = T, n = T, plots = F)
+                               max = T, omega = T, alpha = T, n = T, plots = F)
 {
 #  GetExtraArgument <- function(a, default)
 # {
@@ -60,6 +61,13 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
     {sumx$Min[i]<-min(as.numeric(y[,i]), na.rm = TRUE)}
     if(isTRUE(max))
     {sumx$Max[i]<-max(as.numeric(y[,i]), na.rm = TRUE)}
+    if (isTRUE(alpha))
+    {
+      a<-psych::alpha(object$ScaleItemFrames[[i]])
+      sumx$Alpha[i]<-as.vector(a$total$raw_alpha)
+
+    }
+
     if(isTRUE(omega))
     {
       if (length(object$ScaleItemFrames[[i]])>=7)
@@ -67,6 +75,7 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
 
         omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plots)
         sumx$Omega[i]<-as.vector(omeg$omega.tot)
+        sumx$OmegaHier[i]<-as.vector(omeg$omega_h)
       }
       else
       {

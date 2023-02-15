@@ -14,6 +14,7 @@
   min = T,
   max = T,
   omega = T,
+  alpha = T,
   n = T,
   plots = F
 )
@@ -36,6 +37,8 @@
 \item{max}{T: Shown, F: not shown}
 
 \item{omega}{T: Shown, F: not shown}
+
+\item{alpha}{T: Shown, F: not shown}
 
 \item{n}{T: Shown, F: not shown}
 

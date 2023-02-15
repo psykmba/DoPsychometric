@@ -3,6 +3,8 @@
 #' Makes it simple to do basic psychometrics
 #' @param object A Psychometric object
 #' @param what what type of analyses: Alpha, Omega or Parallel
+#' @param check whether to check keys in alpha
+#' @param impute how to impute variables in alpha:
 #' @param ... more arguments
 #' @return A Reliability object based on a Psychometric object that can be used for analyses
 #' @examples
@@ -10,7 +12,7 @@
 #'  responseScale = list(c(0,4)), itemLength = 4)
 #' relObject <- GetReliabilityTest(object)
 #' @export
-GetReliabilityTest <- function(object, what = "Alpha", ...)
+GetReliabilityTest <- function(object, what = "Alpha", check = T, imp = "NULL", ...)
 {
   reslist2 <- NULL
   printres <- NULL
@@ -24,7 +26,7 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
       res <- append(res, list(paste("psych::alpha(object$OriginalData[cs(", n, ")], check.keys = T,keys=NULL,",
                                     "cumulative=FALSE, title=NULL, max=10,na.rm = TRUE, ",
                                     "n.iter=1,delete=TRUE,use='pairwise',warnings=TRUE,",
-                                    "n.obs=NULL,impute=NULL)", sep = "")))
+                                    "n.obs=NULL)", sep = "")))
     }
     return(res)
   }
@@ -55,12 +57,13 @@ GetReliabilityTest <- function(object, what = "Alpha", ...)
   }
   if (what == "Alpha")
   {
-    resList2 <- lapply(object$ScaleItemFrames, FUN = function(x) {return(psych::alpha(x, check.keys = T))})
+    resList2 <- lapply(object$ScaleItemFrames, FUN = function(x) {return(psych::alpha(x, check.keys = check))})
     printres <- as.data.frame(lapply(resList2, FUN = function(x) return(x$total$raw_alpha)))
     object$RCommands <- GetAlphaCommands()
     object$Name <- "Alpha"
 
   }
+
   else if (what == "Omega")
   {
     resList2 <- lapply(object$ScaleItemFrames, FUN = psych::omega, nfactors=3,plot=FALSE)
