@@ -21,8 +21,3 @@ all results from the f function
 \description{
 Makes it simple to work with groups
 }
-\examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
- splitPsychometric(object, group = "Sex", f = Summary)
-
-}

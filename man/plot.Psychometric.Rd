@@ -19,8 +19,3 @@ nothing
 \description{
 Plot scales from Psychometric
 }
-\examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
- responseScale = list(c(0,4)), itemLength = 4)
- plot(object, scale = "Achievement")
-}

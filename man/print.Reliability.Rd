@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{A Reliability object}
 
-\item{...}{Other arguments}
+\item{...}{if not NULL it only plots for scale}
 }
 \value{
 A Reliability object that can be used for analyses

@@ -9,7 +9,9 @@
 \arguments{
 \item{object}{an object of class TestFacets}
 
-\item{mdoel}{which model to print}
+\item{model}{which model to print}
+
+\item{standardized}{whether standardized solution should be printed}
 }
 \value{
 summary of the lavaan results in the object

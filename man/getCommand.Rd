@@ -9,7 +9,7 @@ getCommand(object, ...)
 \arguments{
 \item{object}{A reliability object}
 
-\item{scale}{Either "All" or a scale among those in ScaleNames}
+\item{...}{scale Either "All" or a scale among those in ScaleNames}
 }
 \value{
 a character string

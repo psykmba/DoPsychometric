@@ -7,7 +7,7 @@
 getSubScaleNames(object)
 }
 \arguments{
-\item{Psychometric}{object}
+\item{object}{a Psychometric object}
 }
 \value{
 names of all scale and items

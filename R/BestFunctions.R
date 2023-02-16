@@ -6,12 +6,6 @@
 #'
 #' @return best item object
 #' @export
-#'
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
-#' res <- bestItems(object, "Achievement", 3)
-#'
 bestItems <- function(object,  scale, nItems) {
   UseMethod("bestItems", object)
 }
@@ -35,17 +29,18 @@ bestItems.Psychometric <- function(object, scale, nItems)
 #'
 #' @return Psychometric object with scale means using the best nItems items
 #' @export
-#'
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
-#' res <- bestScales(object,  5)
-
 bestScales <- function(object, nItems, deleteItems = F) {
   UseMethod("bestScales",object)
 }
 
 
+#' BestScales
+#'
+#' @param object Psychometric object
+#' @param nItems Number of items in new scales
+#' @param deleteItems F = allitems are left in the object. T: items not selected are deleted
+#'
+#' @return Psychometric object with scale means using the best nItems items
 #' @export
 bestScales.Psychometric <- function(object, nItems, deleteItems = F)
 {

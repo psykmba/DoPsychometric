@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{a Psychometric object}
 
-\item{...}{}
+\item{...}{more commands}
 }
 \value{
 text with commands to use

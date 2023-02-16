@@ -29,8 +29,3 @@ an updated Psychometric object
 \description{
 Handle outliers methods
 }
-\examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
- responseScale = list(c(0,4)), itemLength = 4)
-newObject <- handleOutliers(object)
-}

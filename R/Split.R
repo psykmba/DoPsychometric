@@ -6,11 +6,6 @@
 #' @param f  A function to apply to the groups
 #' @param ... more arguments to the f function
 #' @return all results from the f function
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  splitPsychometric(object, group = "Sex", f = Summary)
-#'
-
 #' @export split.Psychometric
 split.Psychometric <- function(object, group, f,...)
 {

@@ -2,21 +2,19 @@
 #' Facet test with CFA
 #'
 #' @param object  a Psychometric object
-#' @param scale a Scale name
+#' @param scales a Scale name
 #' @param subscales a vector of facet names
 #' @param fixed whether the bi-factor should be fixed to 1
 #' @param fixedScales whether the scales should be fixed to 1
 #' @param fixedSubScales fix these subscales to 1
+#' @param tries how many attempt to estimate model
 #' @param parcel whether the observed variables should be in parcels
 #' @param estimator any estimator that is admissible for cfa
+#' @param zeroVar var set to zero error variance
 #'
 #' @return TestFacet model
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly", ),
-#'    responseScale = list(c(0,4)), itemLength = 4)
-#' TestFacets(object, "Cons", c("Achievement", "Dutifulness", "Orderly"))
 #' @export
-TestFacets <- function(object,scale, subscales, fixed = F,
+TestFacets <- function(object,scales, subscales, fixed = F,
                        fixedScales = F,parcel = T, fixedSubScales = c(),
                        tries = 1, estimator = "ML", zeroVar = c()) {
   UseMethod("TestFacets", object)
@@ -25,13 +23,15 @@ TestFacets <- function(object,scale, subscales, fixed = F,
 #' Facet test with CFA
 #'
 #' @param object  a Psychometric object
-#' @param scale a Scale name
+#' @param scales a Scale name
 #' @param subscales a vector of facet names
 #' @param fixed whether the bi-factor should be fixed to 1
 #' @param fixedScales whether the scales should be fixed to 1
 #' @param fixedSubScales fix these subscales to 1
+#' @param tries how many attempt to estimate model
 #' @param parcel whether the observed variables should be in parcels
 #' @param estimator any estimator that is admissible for cfa
+#' @param zeroVar var set to zero error variance
 #'
 #' @return a TestFacet model
 #' @export
@@ -39,7 +39,6 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
                                     fixedScales = F,parcel = F,fixedSubScales = c(),
                                     tries = 1, estimator = "ML", zeroVar = c())
 {
-  library(lavaan)
   commands <- list()
   GetItemWithParcels <- function(subscales,ScaleItemFrames)
   {
@@ -218,11 +217,10 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 
     dataFrame <- getDataFrameSubScale(subScaleData)
 
-    write.table(dataFrame, "DataParcels.txt", sep = ",", col.names = T, row.names = F)
 
     commands <<- append(commands, list(lines))
 
-    return(cfa(model = lines, data = dataFrame, estimator=estimator))
+    return(lavaan::cfa(model = lines, data = dataFrame, estimator=estimator))
   }
   GetSimpleModel <- function(scales, subScaleData)
   {
@@ -256,7 +254,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 
     commands <<- append(commands, list(lines))
 
-    return(cfa(model = lines, data = dataFrame, estimator=estimator))
+    return(lavaan::cfa(model = lines, data = dataFrame, estimator=estimator))
   }
   GetTestSubscaleAll <-function(dependent, subScaleData)
   {
@@ -302,7 +300,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 
     commands <<- append(commands, list(lines))
 
-    return(cfa(model = lines, data = dataFrame, estimator=estimator))
+    return(lavaan::cfa(model = lines, data = dataFrame, estimator=estimator))
 
   }
 
@@ -368,7 +366,7 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
 
     commands <<- append(commands, list(lines))
 
-    return(cfa(model = lines, data = dataFrame, estimator=estimator))
+    return(lavaan::cfa(model = lines, data = dataFrame, estimator=estimator))
 
   }
 
@@ -479,7 +477,7 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
   {
     if (is.null(what))
     {
-      object$ResultList[model] <- list(cfa(data = GetAllScaleItemFrames(), model = object$RCommands[[model]]))
+      object$ResultList[model] <- list(lavaan::cfa(data = GetAllScaleItemFrames(), model = object$RCommands[[model]]))
       return(object)
     }
     if (what == "SetNegativeVar")
@@ -494,12 +492,12 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
         }
       com <- DeleteVar(com)
       object$RCommands[[model]] <- list(com)
-      object$ResultList[[model]] <-cfa(data = GetAllScaleItemFrames(), model = com)
+      object$ResultList[[model]] <-lavaan::cfa(data = GetAllScaleItemFrames(), model = com)
       return(object)
     }
   }
   object$RCommands[model] <- model
-  object$ResultList[model] <- list(cfa(data = GetAllScaleItemFrames(), model = model))
+  object$ResultList[model] <- list(lavaan::cfa(data = GetAllScaleItemFrames(), model = model))
 
   return(object)
 }
@@ -554,7 +552,8 @@ summary.TestFacets <- function(object, model=NULL, standardized = F)
 #' Title
 #'
 #' @param object an object of class TestFacets
-#' @param mdoel which model to print
+#' @param model which model to print
+#' @param standardized whether standardized solution should be printed
 #'
 #' @return summary of the lavaan results in the object
 #' @export
@@ -576,7 +575,7 @@ print.TestFacets <- function(object, model=NULL, standardized = F)
 #' anova TestFacets
 #'
 #' @param object an object of class TestFacets
-#' @param mdoel which model to print
+#' @param type which model to print
 #'
 #' @return summary of the lavaan results in the object
 #' @export
@@ -586,23 +585,23 @@ anova.TestFacets <- function(object, type)
     compModel <- 1
   else
     compModel <-2
-  if (!isTRUE(lavInspect(object$ResultList[[compModel]], "post.check")))
+  if (!isTRUE(lavaan::lavInspect(object$ResultList[[compModel]], "post.check")))
     return("Comparison model has not converged")
   if (type == "H") print("Comparison modell hierarchical")
   else
     print("Comparison modell bifactor")
-  print(fitmeasures(object$ResultList[[compModel]],c("cfi", "rmsea" ,"srmr_mplus")))
+  print(lavaan::fitmeasures(object$ResultList[[compModel]],c("cfi", "rmsea" ,"srmr_mplus")))
 
   if (length(object$ResultList)>2)
   {
     if (compModel == 1)
     {
       print(names(object$ResultList[2]))
-      print(fitmeasures(object$ResultList[[2]],c("cfi", "rmsea" ,"srmr_mplus")))
+      print(lavaan::fitmeasures(object$ResultList[[2]],c("cfi", "rmsea" ,"srmr_mplus")))
       print(lavaan::lavTestLRT(object$ResultList[[2]],
                                object$ResultList[[compModel]]))
       print(names(object$ResultList[length(object$ResultList)]))
-      print(fitmeasures(object$ResultList[[length(object$ResultList)]],c("cfi", "rmsea" ,"srmr_mplus")))
+      print(lavaan::fitmeasures(object$ResultList[[length(object$ResultList)]],c("cfi", "rmsea" ,"srmr_mplus")))
       print(lavaan::lavTestLRT(object$ResultList[[length(object$ResultList)]],
                                object$ResultList[[compModel]]))
 
@@ -612,7 +611,7 @@ anova.TestFacets <- function(object, type)
       for(index in 3:length(object$ResultList))
       {
         print(names(object$ResultList[index]))
-        print(fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr")))
+        print(lavaan::fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr")))
         print(lavaan::lavTestLRT(object$ResultList[[index]],
                                  object$ResultList[[compModel]], type = "Chisq"))
       }

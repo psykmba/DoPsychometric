@@ -137,10 +137,6 @@ handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
 #' @param otherVar whether the variables not among the scales shall be included, only for check and SD
 #' @return an updated Psychometric object
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
-#' newObject <- handleOutliers(object)
 #' @export
 handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = .001,
                                         missing = "None", otherVar = c())
@@ -222,9 +218,8 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
     if (length(otherVar) > 0)
     {
       newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
-      library(data.table)
 
-      newFrame <- data.table(row.names = 1:nrow(object$ScaleFrame))
+      newFrame <- data.table::data.table(row.names = 1:nrow(object$ScaleFrame))
       otherVar <- lapply(otherVar, function(v) {
         ifelse(is.numeric(noMissObject$OtherVariables[v]), {
           m <- mean(noMissObject$OtherVariables[v], na.rm = TRUE)
@@ -284,20 +279,25 @@ names.Psychometric <- function(x)
 #'
 #' @param object the object to get data from
 #' @param scales scales to extract, if null all scales
-#' @param itemsFrames  if true also items
-#' @param scaleFrames  if true also scales
+#' @param itemFrames  if true also items
+#' @param scaleFrame  if true also scales
 #' @param otherVar  if true also other variables
 #' @return a dataframe with all scales and other variables from the Psychometric object
 #'
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
-#' data <- getData(object)
 #' @export
 getData <- function(object,  scales = NULL, otherVar = T, scaleFrame = T, itemFrames = T) {
   UseMethod("getData", object)
 }
 
+#' Gets data from Psychometric object
+#'
+#' @param object the object to get data from
+#' @param scales scales to extract, if null all scales
+#' @param itemFrames  if true also items
+#' @param scaleFrame  if true also scales
+#' @param otherVar  if true also other variables
+#' @return a dataframe with all scales and other variables from the Psychometric object
+#'
 #' @export
 getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFrame = T, itemFrames = T)
 {
@@ -338,18 +338,32 @@ getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFram
 
 }
 
+
 #' Write all data
 #'
 #' @param object A psychometric object
 #' @param fileName A filename with pathinformation
-#' @param col.names T if you like to write column names
-#' @param row.names T if you like to write row names
+#' @param colnames T if you like to write column names
+#' @param rownames T if you like to write row names
 #'
 #' @return NULL
-#' @export write.csv.Psychometric
-write.csv.Psychometric <- function(object, fileName, colnames = T, rownames = F)
+#' @export
+writeP <- function(object, fileName, colnames = T, rownames = F) {
+  UseMethod("writeP", object)
+}
+
+#' Write all data
+#'
+#' @param object A psychometric object
+#' @param fileName A filename with pathinformation
+#' @param colnames T if you like to write column names
+#' @param rownames T if you like to write row names
+#'
+#' @return NULL
+#' @export
+writeP.Psychometric <- function(object, fileName, colnames = T, rownames = F)
 {
-  write.csv(x = getData(object, items = T),file = fileName, col.names = colnames,
+  write.csv(x = getData(object, itemFrames = T),file = fileName, col.names = colnames,
             row.names = rownames)
   return(NULL)
 
@@ -358,7 +372,7 @@ write.csv.Psychometric <- function(object, fileName, colnames = T, rownames = F)
 #' Get commands
 #'
 #' @param object A reliability object
-#' @param scale Either "All" or a scale among those in ScaleNames
+#' @param ... scale Either "All" or a scale among those in ScaleNames
 #'
 #' @return a character string
 #' @export getCommand
@@ -369,7 +383,7 @@ getCommand <- function(object, ...){
 #' Get the reliability commands
 #'
 #' @param object A reliability object
-#' @param scale Either "All" or a scale among those in ScaleNames
+#' @param ...  scale Either "All" or a scale among those in ScaleNames
 #'
 #' @return a character string
 #' @export
@@ -404,7 +418,7 @@ getCommand.Reliability <- function(object, ...)
 #' getCommand for Psychometric
 #'
 #' @param object a Psychometric object
-#' @param ...
+#' @param ... more commands
 #'
 #' @return text with commands to use
 #' @export
@@ -446,7 +460,7 @@ getCommand.TestFacets <- function(object, ...)
 
 #' Title
 #'
-#' @param Psychometric object
+#' @param object a Psychometric object
 #'
 #' @return names of all scale and items
 #' @export

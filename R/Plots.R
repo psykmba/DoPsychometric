@@ -46,7 +46,7 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
       {
         if (type == "Histogram")
         {
-          hist(object$ScaleFrame[[s]],
+          graphics::hist(object$ScaleFrame[[s]],
                main = ifelse(missing(main),
                              paste("Histogram of", s, object$Name),
                              main),
@@ -92,10 +92,6 @@ plotScale.Psychometric <- function(object, scale = "All", group = NULL,
 #'
 #' @return nothing
 #'
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
-#'  plot(object, scale = "Achievement")
 #' @export
 plot.Psychometric <- function(x, y, ...)
 {
@@ -115,7 +111,7 @@ plot.Psychometric <- function(x, y, ...)
 
     for(data in x$ScaleItemFrames )
     {
-      corr <- cor(data, use = "pairwise.complete.obs");
+      corr <- stats::cor(data, use = "pairwise.complete.obs");
 
       print(ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                                    lab = TRUE))
@@ -123,10 +119,10 @@ plot.Psychometric <- function(x, y, ...)
   }
   if (scale != "All")
   {
-    if (any(scale == object$ScaleNames))
+    if (any(scale == x$ScaleNames))
     {
       data <- x$ScaleItemFrames[[scale]]
-      corr <- cor(data, use = "pairwise.complete.obs")
+      corr <- stats::cor(data, use = "pairwise.complete.obs")
       print(ggcorrplot::ggcorrplot(corr, hc.order = TRUE, type = "lower",
                                    lab = TRUE))
     }

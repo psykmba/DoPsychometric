@@ -15,10 +15,6 @@
 #' @param n  T: Shown, F: not shown
 #' @param plots F: no plots are shown, T: plots from psych::omega are shown
 #' @return the summary i a list object
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
-#' summary(object)
 #' @export
 summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
                                skew = T, kurtosis = T, min = T,
@@ -80,7 +76,7 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
       else
       {
         omeg<-psych::alpha(object$ScaleItemFrames[[i]])
-        sumx$Omega[i]<-as.vector(omeg$total$raw_alpha)
+        sumx$Alpha[i]<-as.vector(omeg$total$raw_alpha)
         warning("Number of items to small for omega (<7), alpha estimated instead")
       }
     }
@@ -127,11 +123,21 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
 
   }
   if(isTRUE(omega))
-  {
+    if (length(object$ScaleItemFrames[[i]])>=7)
+    {
+
     mystars3 <- ifelse(summaryy$Omega < 0.75, "*", "")
     summaryy$Omega<-paste(summaryy$Omega, mystars3, sep=" ")
     O <- ifelse(summaryy$Omega < 0.75, NA, summaryy$Omega )
     if(any(is.na(O))) warning('You have scales with poor reliability, see which values end with "*"')
+    }
+  else
+  {
+    mystars3 <- ifelse(summaryy$Alpha < 0.75, "*", "")
+    summaryy$Alpha<-paste(summaryy$Alpha, mystars3, sep=" ")
+    O <- ifelse(summaryy$Alpha < 0.75, NA, summaryy$Alpha )
+    if(any(is.na(O))) warning('You have scales with poor reliability, see which values end with "*"')
+
   }
   print(warnings())
   return(summaryy)

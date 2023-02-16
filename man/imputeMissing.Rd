@@ -22,8 +22,3 @@ A Psychometric object that can be used for analyses
 \description{
 Makes it simple to do basic psychometrics
 }
-\examples{
-dat <- as.data.frame(list(pItem1 = c(2,3,4,4,3,4,NA,4), pItem2 = c(2,3,4,4,2,4,2,3)))
-myObject <- GetPsychometric(dat, "p", responseScale = list(c(0,4)), itemLength = 1)
-myObject <- imputeMissing(myObject)
-}

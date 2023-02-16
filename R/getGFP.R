@@ -4,7 +4,9 @@
 #' @param scales a sublist of scales
 #' @param parceling should facets be parceled
 #' @param fixed should general factors be fixed to 1
-#' @param scales should scales be fixed to 1
+#' @param fixedScales should scales be fixed to 1
+#' @param fixedSubScales should subScales be fixed to 1
+#'
 #' @return an extended TestFacet object
 #' @export
 getGFP <- function(object, scales = NULL,
@@ -21,7 +23,8 @@ getGFP <- function(object, scales = NULL,
 #' @param scales a sublist of scales
 #' @param parceling should facets be parceled
 #' @param fixed should general factors be fixed to 1
-#' @param scales should scales be fixed to 1
+#' @param fixedScales should scales be fixed to 1
+#' @param fixedSubScales should subScales be fixed to 1
 #'
 #' @return an extended TestFacet object
 #' @export
@@ -34,7 +37,7 @@ getGFP.Psychometric <- function(object, scales = NULL,
       gPCA <-psych::pca(object$ScaleFrame, nfactors = 1)
 #      PCA <-psych::pca(object$OriginalData, nfactors = 1)
 
-      testF <- TestFacets(object, scale = "GFP", subscales = object$ScaleNames,
+      testF <- TestFacets(object, scales = "GFP", subscales = object$ScaleNames,
                           parcel = parceling, fixed = fixed, fixedScales = fixedScales,
                           fixedSubScales = fixedSubScales)
        om <- psych::omega(object$OriginalData, nfactors = length(object$ScaleNames))
@@ -71,14 +74,26 @@ getGFP.Psychometric <- function(object, scales = NULL,
 }
 
 
-
 #' Get correlation GFPs
 #'
-#' @param object
+#' @param object a Psychometric object
 #'
 #' @return crrrelation matrix
 #' @export
-cor2.Psychometric <- function(object)
+corGFP <- function(object)
+{
+  UseMethod("corGFP", object)
+}
+
+
+
+#' Get correlation GFPs
+#'
+#' @param object a Psychometric object
+#'
+#' @return crrrelation matrix
+#' @export
+corGFP.Psychometric <- function(object)
 {
   v1 <- data.frame(object$ResultList[[length(object$ResultList)-2]]$scores)
   v2 <- data.frame(object$ResultList[[length(object$ResultList)-1]]$scores)

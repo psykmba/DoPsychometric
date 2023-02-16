@@ -20,6 +20,8 @@
 \arguments{
 \item{object}{a Psychometric object}
 
+\item{scales}{a Scale name}
+
 \item{subscales}{a vector of facet names}
 
 \item{fixed}{whether the bi-factor should be fixed to 1}
@@ -30,9 +32,11 @@
 
 \item{fixedSubScales}{fix these subscales to 1}
 
+\item{tries}{how many attempt to estimate model}
+
 \item{estimator}{any estimator that is admissible for cfa}
 
-\item{scale}{a Scale name}
+\item{zeroVar}{var set to zero error variance}
 }
 \value{
 a TestFacet model

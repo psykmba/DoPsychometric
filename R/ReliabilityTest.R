@@ -4,13 +4,9 @@
 #' @param object A Psychometric object
 #' @param what what type of analyses: Alpha, Omega or Parallel
 #' @param check whether to check keys in alpha
-#' @param impute how to impute variables in alpha:
+#' @param imp how to impute variables in alpha:
 #' @param ... more arguments
 #' @return A Reliability object based on a Psychometric object that can be used for analyses
-#' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
-#' relObject <- GetReliabilityTest(object)
 #' @export
 GetReliabilityTest <- function(object, what = "Alpha", check = T, imp = "NULL", ...)
 {
@@ -130,7 +126,8 @@ summary.Reliability <- function(object, ...)
 #'
 #' Makes it simple to do basic psychometrics
 #' @param x A Reliability object
-#' @param ... Other arguments
+#' @param ... if not NULL it only plots for scale
+#'
 #' @return A Reliability object that can be used for analyses
 #' @export
 print.Reliability <- function(x, ...)
@@ -142,16 +139,16 @@ print.Reliability <- function(x, ...)
 #'
 #' Makes it simple to do basic psychometrics
 #' @param x A Reliability object
-#' @param ... Other arguments
+#' @param ... scale if not NULL it only plots for scale
 #' @return A Reliability object that can be used for analyses
 #' @export
-plot.Reliability <- function(x, scale = NULL)
+plot.Reliability <- function(x, ...)
 {
-#  arg <- list(...)
-#  if ("scale" %in% names(arg))
-#    scale <- arg$scale
-#  else
-#    scale <- NULL
+ arg <- list(...)
+ if ("scale" %in% names(arg))
+   scale <- arg$scale
+ else
+   scale <- NULL
   if (class(x)[1] == "Reliability")
   {
     if (x$Name == "Alpha")

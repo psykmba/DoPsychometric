@@ -8,10 +8,6 @@
 #' @param ... k = can be used to create BayesianMean based on k imputations
 #'            printFlag = T can be used to get information about imputations
 #' @return A Psychometric object that can be used for analyses
-#' @examples
-#' dat <- as.data.frame(list(pItem1 = c(2,3,4,4,3,4,NA,4), pItem2 = c(2,3,4,4,2,4,2,3)))
-#' myObject <- GetPsychometric(dat, "p", responseScale = list(c(0,4)), itemLength = 1)
-#' myObject <- imputeMissing(myObject)
 #' @export
 
 imputeMissing <- function(object, handleMissing = "Listwise", scales = T, ...) {
@@ -73,7 +69,7 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     if (handleMissing == "BayesianMean")
     {
       imputed <- mice::mice(dataToHandle, m = k, method = "norm", printFlag=pf)
-      imputed <-  complete(imputed, "all")
+      imputed <-  mice::complete(imputed, "all")
       sumStart <- imputed[[1]]
       for(index in 2:k)
       {

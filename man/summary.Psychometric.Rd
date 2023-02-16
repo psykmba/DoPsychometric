@@ -50,8 +50,3 @@ the summary i a list object
 \description{
 Includes a set of useful estimates for the scales
 }
-\examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
- responseScale = list(c(0,4)), itemLength = 4)
-summary(object)
-}

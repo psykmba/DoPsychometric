@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{an object of class TestFacets}
 
-\item{mdoel}{which model to print}
+\item{type}{which model to print}
 }
 \value{
 summary of the lavaan results in the object

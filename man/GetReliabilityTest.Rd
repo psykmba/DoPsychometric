@@ -13,18 +13,13 @@ GetReliabilityTest(object, what = "Alpha", check = T, imp = "NULL", ...)
 
 \item{check}{whether to check keys in alpha}
 
-\item{...}{more arguments}
+\item{imp}{how to impute variables in alpha:}
 
-\item{impute}{how to impute variables in alpha:}
+\item{...}{more arguments}
 }
 \value{
 A Reliability object based on a Psychometric object that can be used for analyses
 }
 \description{
 Makes it simple to do basic psychometrics
-}
-\examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
- responseScale = list(c(0,4)), itemLength = 4)
-relObject <- GetReliabilityTest(object)
 }

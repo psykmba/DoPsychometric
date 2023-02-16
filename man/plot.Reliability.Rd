@@ -4,12 +4,12 @@
 \alias{plot.Reliability}
 \title{Summary of plot}
 \usage{
-\method{plot}{Reliability}(x, scale = NULL)
+\method{plot}{Reliability}(x, ...)
 }
 \arguments{
 \item{x}{A Reliability object}
 
-\item{...}{Other arguments}
+\item{...}{scale if not NULL it only plots for scale}
 }
 \value{
 A Reliability object that can be used for analyses

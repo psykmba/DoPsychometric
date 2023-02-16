@@ -19,9 +19,3 @@ best item object
 \description{
 Title
 }
-\examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
- responseScale = list(c(0,4)), itemLength = 4)
-res <- bestItems(object, "Achievement", 3)
-
-}

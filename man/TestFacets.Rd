@@ -6,7 +6,7 @@
 \usage{
 TestFacets(
   object,
-  scale,
+  scales,
   subscales,
   fixed = F,
   fixedScales = F,
@@ -20,7 +20,7 @@ TestFacets(
 \arguments{
 \item{object}{a Psychometric object}
 
-\item{scale}{a Scale name}
+\item{scales}{a Scale name}
 
 \item{subscales}{a vector of facet names}
 
@@ -32,16 +32,15 @@ TestFacets(
 
 \item{fixedSubScales}{fix these subscales to 1}
 
+\item{tries}{how many attempt to estimate model}
+
 \item{estimator}{any estimator that is admissible for cfa}
+
+\item{zeroVar}{var set to zero error variance}
 }
 \value{
 TestFacet model
 }
 \description{
 Facet test with CFA
-}
-\examples{
-object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly", ),
-   responseScale = list(c(0,4)), itemLength = 4)
-TestFacets(object, "Cons", c("Achievement", "Dutifulness", "Orderly"))
 }

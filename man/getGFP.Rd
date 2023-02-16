@@ -16,11 +16,15 @@ getGFP(
 \arguments{
 \item{object}{a TestFacet object}
 
-\item{scales}{should scales be fixed to 1}
+\item{scales}{a sublist of scales}
 
 \item{parceling}{should facets be parceled}
 
 \item{fixed}{should general factors be fixed to 1}
+
+\item{fixedScales}{should scales be fixed to 1}
+
+\item{fixedSubScales}{should subScales be fixed to 1}
 }
 \value{
 an extended TestFacet object
