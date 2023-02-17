@@ -119,7 +119,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     return(data.frame(res))
 
   }
-  getSignItemName <- function(x, scales, itemLength)
+  getSignItemName <- function(x, scales , itemLength)
   {
     signPart <- strtrim(scales, itemLength)
 
