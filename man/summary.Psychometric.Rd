@@ -4,45 +4,23 @@
 \alias{summary.Psychometric}
 \title{summary}
 \usage{
-\method{summary}{Psychometric}(
-  object,
-  mean = T,
-  sd = T,
-  SE = T,
-  skew = T,
-  kurtosis = T,
-  min = T,
-  max = T,
-  omega = T,
-  alpha = T,
-  n = T,
-  plots = F
-)
+\method{summary}{Psychometric}(object, ...)
 }
 \arguments{
 \item{object}{The Psychometric object}
 
-\item{mean}{T: Shown, F: not shown}
-
-\item{sd}{T: Shown, F: not shown}
-
-\item{SE}{T: Shown, F: not shown}
-
-\item{skew}{T: Shown, F: not shown}
-
-\item{kurtosis}{T: Shown, F: not shown}
-
-\item{min}{T: Shown, F: not shown}
-
-\item{max}{T: Shown, F: not shown}
-
-\item{omega}{T: Shown, F: not shown}
-
-\item{alpha}{T: Shown, F: not shown}
-
-\item{n}{T: Shown, F: not shown}
-
-\item{plots}{F: no plots are shown, T: plots from psych::omega are shown}
+\item{...}{extra arguments
+mean T: Shown, F: not shown
+sd  T: Shown, F: not shown
+SE  T: Shown, F: not shown
+skew  T: Shown, F: not shown
+kurtosis  T: Shown, F: not shown
+min  T: Shown, F: not shown
+max  T: Shown, F: not shown
+omega  T: Shown, F: not shown
+alpha  T: Shown, F: not shown
+n  T: Shown, F: not shown
+plots F: no plots are shown, T: plots from psych::omega are shown}
 }
 \value{
 the summary i a list object

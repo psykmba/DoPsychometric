@@ -37,7 +37,7 @@ getGFP.Psychometric <- function(object, scales = NULL,
       gPCA <-psych::pca(object$ScaleFrame, nfactors = 1)
 #      PCA <-psych::pca(object$OriginalData, nfactors = 1)
 
-      testF <- TestFacets(object, scales = "GFP", subscales = object$ScaleNames,
+      testF <- TestFacets(object, scale = "GFP", subscales = object$ScaleNames,
                           parcel = parceling, fixed = fixed, fixedScales = fixedScales,
                           fixedSubScales = fixedSubScales)
        om <- psych::omega(object$OriginalData, nfactors = length(object$ScaleNames))
@@ -104,14 +104,14 @@ corGFP.Psychometric <- function(object)
   names(d) <- c("gCFA", "CFA", "Omega", "Hiearch", "Bifactor")
   d <- cbind(d, object$ScaleFrame)
   print("Correlation with original variables")
-  print(round(cor(d),2))
+  print(round(stats::cor(d),2))
 
   v5 <- data.frame(getPredict.TestFacets(object, 2))
   d <- cbind(v1, v2, v3, v4)
   names(d) <- c("gCFA", "CFA", "Omega", "Hiearch")
   d <- cbind(d, v5)
   print("Correlation with bifactor variables")
-  print(round(cor(d),2))
+  print(round(stats::cor(d),2))
 
 }
 

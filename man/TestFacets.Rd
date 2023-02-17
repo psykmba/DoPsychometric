@@ -6,7 +6,7 @@
 \usage{
 TestFacets(
   object,
-  scales,
+  scale,
   subscales,
   fixed = F,
   fixedScales = F,
@@ -20,7 +20,7 @@ TestFacets(
 \arguments{
 \item{object}{a Psychometric object}
 
-\item{scales}{a Scale name}
+\item{scale}{a Scale name}
 
 \item{subscales}{a vector of facet names}
 

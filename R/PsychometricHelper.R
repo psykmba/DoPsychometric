@@ -363,7 +363,7 @@ writeP <- function(object, fileName, colnames = T, rownames = F) {
 #' @export
 writeP.Psychometric <- function(object, fileName, colnames = T, rownames = F)
 {
-  write.csv(x = getData(object, itemFrames = T),file = fileName, col.names = colnames,
+  utils::write.csv(x = getData(object, itemFrames = T),file = fileName, col.names = colnames,
             row.names = rownames)
   return(NULL)
 

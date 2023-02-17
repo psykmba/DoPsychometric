@@ -4,14 +4,12 @@
 \alias{summary.TestFacets}
 \title{summary for TestFacets}
 \usage{
-\method{summary}{TestFacets}(object, model = NULL, standardized = F)
+\method{summary}{TestFacets}(object, ...)
 }
 \arguments{
 \item{object}{an object of class TestFacets}
 
-\item{model}{which model to print}
-
-\item{standardized}{whether the standardized values should be printed}
+\item{...}{model and standardized and more which model to print amd whether standardized solution should be printed}
 }
 \value{
 summary of the lavaan results in the object

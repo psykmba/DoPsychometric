@@ -2,7 +2,7 @@
 #' Facet test with CFA
 #'
 #' @param object  a Psychometric object
-#' @param scales a Scale name
+#' @param scale a Scale name
 #' @param subscales a vector of facet names
 #' @param fixed whether the bi-factor should be fixed to 1
 #' @param fixedScales whether the scales should be fixed to 1
@@ -14,7 +14,7 @@
 #'
 #' @return TestFacet model
 #' @export
-TestFacets <- function(object,scales, subscales, fixed = F,
+TestFacets <- function(object,scale, subscales, fixed = F,
                        fixedScales = F,parcel = T, fixedSubScales = c(),
                        tries = 1, estimator = "ML", zeroVar = c()) {
   UseMethod("TestFacets", object)
@@ -23,7 +23,7 @@ TestFacets <- function(object,scales, subscales, fixed = F,
 #' Facet test with CFA
 #'
 #' @param object  a Psychometric object
-#' @param scales a Scale name
+#' @param scale a Scale name
 #' @param subscales a vector of facet names
 #' @param fixed whether the bi-factor should be fixed to 1
 #' @param fixedScales whether the scales should be fixed to 1
@@ -35,7 +35,7 @@ TestFacets <- function(object,scales, subscales, fixed = F,
 #'
 #' @return a TestFacet model
 #' @export
-TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
+TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
                                     fixedScales = F,parcel = F,fixedSubScales = c(),
                                     tries = 1, estimator = "ML", zeroVar = c())
 {
@@ -373,17 +373,17 @@ TestFacets.Psychometric <- function(object, scales, subscales, fixed = F,
   MainCall <- function()
   {
     subScaleData <- GetItemWithParcels(subscales, object$ScaleItemFrames)
-    hierModel <- list(GetHierarchicalModel(scales, subScaleData))
+    hierModel <- list(GetHierarchicalModel(scale, subScaleData))
     names(hierModel) <- "Hierarchical Model"
-    result <- list(GetTestSubscaleAll(scales, subScaleData))
+    result <- list(GetTestSubscaleAll(scale, subScaleData))
     names(result) <- "Bifactor Total"
     for (subscale in names(subScaleData))
     {
-      tillf <- list(GetTestSubscale(scales, subscale,subScaleData))
+      tillf <- list(GetTestSubscale(scale, subscale,subScaleData))
       names(tillf) <- subscale
       result <- append(result,tillf)
     }
-    simpModel <- list(GetSimpleModel(scales, subScaleData))
+    simpModel <- list(GetSimpleModel(scale, subScaleData))
     names(simpModel) <- "Factor model"
 
     object$ResultList <- append(append(hierModel, result), simpModel)
@@ -506,13 +506,23 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
 #' summary for TestFacets
 #'
 #' @param object an object of class TestFacets
-#' @param model which model to print
-#' @param standardized whether the standardized values should be printed
+#' @param ... model and standardized and more which model to print amd whether standardized solution should be printed
 #'
 #' @return summary of the lavaan results in the object
 #' @export
-summary.TestFacets <- function(object, model=NULL, standardized = F)
+summary.TestFacets <- function(object, ...)
 {
+  GetExtraArgument <- function(a, default = NULL)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(default)
+
+  }
+  model = GetExtraArgument("model")
+  standardized = GetExtraArgument("standardized", F)
   if (is.numeric(model))
   {
     if (isTRUE(standardized))
@@ -551,23 +561,34 @@ summary.TestFacets <- function(object, model=NULL, standardized = F)
 
 #' Title
 #'
-#' @param object an object of class TestFacets
-#' @param model which model to print
-#' @param standardized whether standardized solution should be printed
+#' @param x an object of class TestFacets
+#' @param ... model and standardized and more which model to print amd whether standardized solution should be printed
 #'
 #' @return summary of the lavaan results in the object
 #' @export
-print.TestFacets <- function(object, model=NULL, standardized = F)
+print.TestFacets <- function(x, ...)
 {
+  GetExtraArgument <- function(a, default = NULL)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(default)
+
+  }
+  model = GetExtraArgument("model", "all")
+  standardized = GetExtraArgument("standardized", F)
+
   if (is.numeric(model))
   {
-    return(lavaan::summary(object$ResultList[[model]]))
+    return(lavaan::summary(x$ResultList[[model]]))
 
   }
   else
   {
 
-    return (object$ResultList)
+    return (x$ResultList)
   }
 }
 
@@ -575,12 +596,23 @@ print.TestFacets <- function(object, model=NULL, standardized = F)
 #' anova TestFacets
 #'
 #' @param object an object of class TestFacets
-#' @param type which model to print
+#' @param ... type which model to print and more extra
 #'
 #' @return summary of the lavaan results in the object
 #' @export
-anova.TestFacets <- function(object, type)
+anova.TestFacets <- function(object, ...)
 {
+  GetExtraArgument <- function(a)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return("All")
+
+  }
+  type = GetExtraArgument("type")
+
   if (type == "Hiearchical" || type == "H")
     compModel <- 1
   else

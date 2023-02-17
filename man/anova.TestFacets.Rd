@@ -4,12 +4,12 @@
 \alias{anova.TestFacets}
 \title{anova TestFacets}
 \usage{
-\method{anova}{TestFacets}(object, type)
+\method{anova}{TestFacets}(object, ...)
 }
 \arguments{
 \item{object}{an object of class TestFacets}
 
-\item{type}{which model to print}
+\item{...}{type which model to print and more extra}
 }
 \value{
 summary of the lavaan results in the object

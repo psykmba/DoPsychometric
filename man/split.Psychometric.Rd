@@ -4,16 +4,16 @@
 \alias{split.Psychometric}
 \title{Split Psychometric}
 \usage{
-\method{split}{Psychometric}(object, group, f, ...)
+\method{split}{Psychometric}(x, f, drop, ...)
 }
 \arguments{
-\item{object}{A Psychometric object}
-
-\item{group}{A group variables among other variables}
+\item{x}{A Psychometric object}
 
 \item{f}{A function to apply to the groups}
 
-\item{...}{more arguments to the f function}
+\item{drop}{A group variables among other variables}
+
+\item{...}{group to split for and more arguments to the f function}
 }
 \value{
 all results from the f function

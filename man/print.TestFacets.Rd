@@ -4,14 +4,12 @@
 \alias{print.TestFacets}
 \title{Title}
 \usage{
-\method{print}{TestFacets}(object, model = NULL, standardized = F)
+\method{print}{TestFacets}(x, ...)
 }
 \arguments{
-\item{object}{an object of class TestFacets}
+\item{x}{an object of class TestFacets}
 
-\item{model}{which model to print}
-
-\item{standardized}{whether standardized solution should be printed}
+\item{...}{model and standardized and more which model to print amd whether standardized solution should be printed}
 }
 \value{
 summary of the lavaan results in the object

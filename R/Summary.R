@@ -3,73 +3,73 @@
 #' Includes a set of useful estimates for the scales
 #'
 #' @param object The Psychometric object
-#' @param mean T: Shown, F: not shown
-#' @param sd  T: Shown, F: not shown
-#' @param SE  T: Shown, F: not shown
-#' @param skew  T: Shown, F: not shown
-#' @param kurtosis  T: Shown, F: not shown
-#' @param min  T: Shown, F: not shown
-#' @param max  T: Shown, F: not shown
-#' @param omega  T: Shown, F: not shown
-#' @param alpha  T: Shown, F: not shown
-#' @param n  T: Shown, F: not shown
-#' @param plots F: no plots are shown, T: plots from psych::omega are shown
+#' @param ... extra arguments
+#' mean T: Shown, F: not shown
+#' sd  T: Shown, F: not shown
+#' SE  T: Shown, F: not shown
+#' skew  T: Shown, F: not shown
+#' kurtosis  T: Shown, F: not shown
+#' min  T: Shown, F: not shown
+#' max  T: Shown, F: not shown
+#' omega  T: Shown, F: not shown
+#' alpha  T: Shown, F: not shown
+#' n  T: Shown, F: not shown
+#' plots F: no plots are shown, T: plots from psych::omega are shown
 #' @return the summary i a list object
 #' @export
-summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
-                               skew = T, kurtosis = T, min = T,
-                               max = T, omega = T, alpha = T, n = T, plots = F)
+summary.Psychometric<-function(object, ...)
 {
-#  GetExtraArgument <- function(a, default)
-# {
-#    arg <- list(...)
-#    if (a %in% names(arg))
-#      return(arg[[a]])
-#    else
-#      return(default)
+  GetExtraArgument <- function(a, default)
+ {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(default)
 
-#  }
-#  mean.s <- GetExtraArgument("mean", T)
-# sd.s <- GetExtraArgument("sd", T)
-  # SE.s <- GetExtraArgument("SE", T)
-  # skew.s <- GetExtraArgument("skew", T)
-  # kurtosis.s <- GetExtraArgument("kurtosis", T)
-  # min.s <- GetExtraArgument("min", T)
-  # max.s <- GetExtraArgument("max", T)
-  # omega.s <- GetExtraArgument("omega", T)
-  # n.s <- GetExtraArgument("n", T)
-  # plots.s <- GetExtraArgument("plots", T)
+  }
+  meanS <- GetExtraArgument("mean", T)
+ sdS <- GetExtraArgument("sd", T)
+  SES <- GetExtraArgument("SE", T)
+  skewS <- GetExtraArgument("skew", T)
+  kurtosisS <- GetExtraArgument("kurtosis", T)
+  minS <- GetExtraArgument("min", T)
+  maxS <- GetExtraArgument("max", T)
+  omegaS <- GetExtraArgument("omega", T)
+  alphaS <- GetExtraArgument("omega", T)
+  nS <- GetExtraArgument("n", T)
+  plotsS <- GetExtraArgument("plots", F)
   y <- object$ScaleFrame
   sumx <- data.frame(Tillf = c(1:ncol(y)))
   for (i in 1:ncol(y))
   {
-    if(isTRUE(mean) )
+    if(isTRUE(meanS) )
     {sumx$Mean[i]<-mean(as.numeric(y[,i]), na.rm = TRUE)}
-    if(isTRUE(sd) )
-    {sumx$SD[i]<-sd(as.numeric(y[,i]), na.rm = TRUE)}
-    if(isTRUE(SE))
-    {sumx$SE[i]<-sd(y[,i])/sqrt(sum(!is.na(y[,i])))} # need library(plotrix))
-    if(isTRUE(skew))
+    if(isTRUE(sdS) )
+    {sumx$SD[i]<-stats::sd(as.numeric(y[,i]), na.rm = TRUE)}
+    if(isTRUE(SES))
+    {sumx$SE[i]<-stats::sd(y[,i])/sqrt(sum(!is.na(y[,i])))} # need library(plotrix))
+    if(isTRUE(skewS))
     {sumx$Skew[i]<-psych::skew(as.numeric(y[,i]), na.rm = TRUE)}
-    if(isTRUE(kurtosis))
+    if(isTRUE(kurtosisS))
     {sumx$Kurtosis[i]<-psych::kurtosi(as.numeric(y[,i]), na.rm = TRUE)}
-    if(isTRUE(min))
+    if(isTRUE(minS))
     {sumx$Min[i]<-min(as.numeric(y[,i]), na.rm = TRUE)}
-    if(isTRUE(max))
+    if(isTRUE(maxS))
     {sumx$Max[i]<-max(as.numeric(y[,i]), na.rm = TRUE)}
-    if (isTRUE(alpha))
+    if (isTRUE(alphaS))
     {
       a<-psych::alpha(object$ScaleItemFrames[[i]])
       sumx$Alpha[i]<-as.vector(a$total$raw_alpha)
 
     }
 
-    if(isTRUE(omega))
+    if(isTRUE(omegaS))
     {
       if (length(object$ScaleItemFrames[[i]])>=7)
       {
 
-        omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plots)
+        omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plotsS)
         sumx$Omega[i]<-as.vector(omeg$omega.tot)
         sumx$OmegaHier[i]<-as.vector(omeg$omega_h)
       }
@@ -81,14 +81,14 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
       }
     }
 
-    if(isTRUE(n))
+    if(isTRUE(nS))
     {sumx$N[i]<-length(y[,i][!is.na(y[,i])]) }
   }
   sumx <- sumx[-1]
   summaryy<-sumx
   rownames(summaryy)<-object$ScaleNames
   summaryy<-round(summaryy,3) #round amount of decimals
-  if (isTRUE(kurtosis))
+  if (isTRUE(kurtosisS))
   {
     if (nrow(y)<300)
     {
@@ -106,7 +106,7 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
     }
 
   }
-  if (isTRUE(skew))
+  if (isTRUE(skewS))
   {
     if (nrow(y)<300)
     {
@@ -122,7 +122,7 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
     if(any(is.na(k))) warning('You have scales with high skew, see which values end with "*"')
 
   }
-  if(isTRUE(omega))
+  if(isTRUE(omegaS))
     if (length(object$ScaleItemFrames[[i]])>=7)
     {
 
@@ -142,4 +142,3 @@ summary.Psychometric<-function(object, mean = T, sd = T, SE = T,
   print(warnings())
   return(summaryy)
 }
-
