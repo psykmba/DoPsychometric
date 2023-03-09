@@ -117,7 +117,7 @@ GetItemWithParcels <- function(object, parcel, subscales)
 #' Handle outliers methods
 #'
 #' @param object a Psychometric object to work with
-#' @param method there are three ways, "Mahalanobis", "SD" and "Change"
+#' @param method there are three ways, "Mahalanobis","Quartile", "SD" and "Change"
 #' @param limit the probability value for handeling an outlier
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
 #' @param otherVar whether the variables not among the scales shall be included, only for check and SD
@@ -132,7 +132,7 @@ handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
 
 #' Handle outliers methods
 #' @param object a Psychometric object to work with
-#' @param method there are three ways, "Mahalanobis", "SD" and "Change"
+#' @param method there are three ways, "Mahalanobis", "Quartile", SD" and "Change"
 #' @param limit the probability value for handeling an outlier
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
 #' @param otherVar whether the variables not among the scales shall be included, only for check and SD
@@ -149,12 +149,12 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   {
     return(ifelse (s < r[1], NA, ifelse(s > r[2], NA, s) ))
   }
+  if (missing != "None")
+    noMissObject <- imputeMissing(object, handleMissing = missing)
+  else
+    noMissObject <- object
 
   if (method == "Mahalanobis") {
-    if (missing != "None")
-      noMissObject <- imputeMissing(object, handleMissing = missing)
-    else
-      noMissObject <- object
     scaleCor <- stats::cov(noMissObject$ScaleFrame)
     Outliers <- stats::mahalanobis(noMissObject$ScaleFrame, colMeans(noMissObject$ScaleFrame), scaleCor)
     object <- dplyr::filter(noMissObject, Outliers < stats::qchisq(1-limit, length(object$ScaleNames)))
@@ -162,10 +162,6 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   }
   if (method == "SD")
   {
-    if (missing != "None")
-      noMissObject <- imputeMissing(object, handleMissing = missing)
-    else
-      noMissObject <- object
     newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
     for(scale in noMissObject$ScaleFrame)
     {
@@ -199,12 +195,56 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
 
     return(noMissObject)
   }
+  if (method == "Quartile")
+  {
+    x <- noMissObject
+    IQR_list<-list()
+    Outlier__rowNum <- c()
+    for(i in 1:ncol(x$ScaleFrame))
+    {
+      #first and third quartile
+      qnt <- quantile(x$ScaleFrame[,i], probs = c(0.25, 0.75), na.rm = TRUE)
+      #identifying outliers above and below iQR * 1.5
+      outliers_above <-  x$ScaleFrame[i][x$ScaleFrame[,i]  > (qnt[2] + 1.5*IQR(x$ScaleFrame[,i], na.rm = T)),]
+      outliers_below <- x$ScaleFrame[i][x$ScaleFrame[,i] < (qnt[1] - 1.5*IQR(x$ScaleFrame[,i], na.rm = T)),]
+      #adding outliers as well as outlier boundaries into a dataframe
+      outliers<-data.frame(outliers=c(outliers_below, outliers_above),
+                           fence=c(rep(qnt[1] - 1.5*IQR(x$ScaleFrame[,i], na.rm = T), length(outliers_below)), rep(qnt[2] + 1.5*IQR(x$ScaleFrame[,i], na.rm = T), length(outliers_above))))
+      #remove NA:s if added
+      outliers<-na.omit(outliers)
+      #order the row names
+      if(nrow(outliers) == 0){
+        outliers
+      }else{
+        rownames(outliers)<-c(1:nrow(outliers))
+      }
+      #identifying the row numbers and then the ID of the outliers
+      rows_with_numbers <- c(which(x$ScaleFrame[,i] %in% outliers_above),which(x$ScaleFrame[,i] %in% outliers_below)) # the row indices where the numbers are found
+      Outlier__id<-x$OtherVariables$ID[c(rows_with_numbers)]
+      Outlier__rowNum<- c(Outlier__rowNum, rows_with_numbers)
+
+      #combine the dataframes and add it to the outlier list
+      result_df <- data.frame(Outlier__id,outliers)
+      colnames(result_df)[2] <- colnames(x$ScaleFrame[i])
+      IQR_list[[i]]<-result_df
+      # delete outliers for new object
+    }
+
+
+    Outlier__rowNum <- unique(Outlier__rowNum)
+    noMissObject$ScaleFrame <- x$ScaleFrame[-Outlier__rowNum,]
+    noMissObject$OtherVariables <- x$OtherVariables[-Outlier__rowNum,]
+    for (index in  seq_along(noMissObject$ScaleItemFrames))
+    {
+      noMissObject$ItemScaleFrames[[index]] <- noMissObject$ItemScaleFrames[[index]][-Outlier__rowNum,]
+    }
+
+    print(IQR_list)
+    return(noMissObject)
+
+  }
   if (method == "Winsorizing" || method == "Change")
   {
-    if (missing != "None")
-      noMissObject <- imputeMissing(object, handleMissing = missing)
-    else
-      noMissObject <- object
     newFrame <- data.frame(row.names = 1:nrow(object$ScaleFrame))
     for(scale in noMissObject$ScaleFrame)
     {
@@ -256,6 +296,9 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   return(object)
 
 }
+
+
+
 #' Names
 #'
 #' @param x a Psychometric object to work with

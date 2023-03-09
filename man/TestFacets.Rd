@@ -10,11 +10,12 @@ TestFacets(
   subscales,
   fixed = F,
   fixedScales = F,
-  parcel = T,
+  parcel = F,
   fixedSubScales = c(),
   tries = 1,
   estimator = "ML",
-  zeroVar = c()
+  zeroVar = c(),
+  delVar = c()
 )
 }
 \arguments{

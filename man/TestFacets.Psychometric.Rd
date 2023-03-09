@@ -14,7 +14,8 @@
   fixedSubScales = c(),
   tries = 1,
   estimator = "ML",
-  zeroVar = c()
+  zeroVar = c(),
+  delVar = c()
 )
 }
 \arguments{

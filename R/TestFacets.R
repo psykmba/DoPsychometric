@@ -15,8 +15,9 @@
 #' @return TestFacet model
 #' @export
 TestFacets <- function(object,scale, subscales, fixed = F,
-                       fixedScales = F,parcel = T, fixedSubScales = c(),
-                       tries = 1, estimator = "ML", zeroVar = c()) {
+                       fixedScales = F,parcel = F, fixedSubScales = c(),
+                       tries = 1, estimator = "ML", zeroVar = c(),
+                       delVar = c()) {
   UseMethod("TestFacets", object)
 }
 
@@ -37,7 +38,8 @@ TestFacets <- function(object,scale, subscales, fixed = F,
 #' @export
 TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
                                     fixedScales = F,parcel = F,fixedSubScales = c(),
-                                    tries = 1, estimator = "ML", zeroVar = c())
+                                    tries = 1, estimator = "ML", zeroVar = c(),
+                                    delVar = c())
 {
   commands <- list()
   GetItemWithParcels <- function(subscales,ScaleItemFrames)
@@ -139,7 +141,7 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
     res <- ""
     for (subScale in names(subScaleData))
     {
-      res <- paste(res, "1*",subScale, " + ", sep="")
+       res <- paste(res, "1*",subScale, " + ", sep="")
     }
     return(substr(res, 1, stringr::str_length(res)-2))
   }
@@ -154,6 +156,17 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
     }
     return(substr(res, 1, stringr::str_length(res)-2))
   }
+  getScaleNamesOne <- function(scaleNames)
+  {
+    res <- ""
+
+    for (scale in scaleNames)
+    {
+      res <- paste(res, "1*",scale, " + ", sep = "")
+    }
+    return(substr(res, 1, stringr::str_length(res)-2))
+  }
+
   getDataFrameSubScale <-function(subScaleData)
   {
     dataFrame <- data.frame(row.names = 1:nrow(subScaleData[[1]]))
@@ -210,9 +223,14 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
       line <- paste(scale, "=~" , ind, "\n", sep=" ")
       lines <- paste(lines, " ", line, sep=" ")
     }
-    dep <-  getScaleNames(names(subScaleData))
-    covariance <- getZeroCovariance(names(subScaleData))
-    lines <- paste(lines, scales, "=~", dep,"\n ", covariance,"\n ", sep = "")
+    if (isTRUE(fixed))
+      dep <-  getScaleNamesOne(names(subScaleData))
+    else
+      dep <-  getScaleNames(names(subScaleData))
+
+      covariance <- getZeroCovariance(names(subScaleData))
+
+      lines <- paste(lines, scales, "=~", dep,"\n ", covariance,"\n ", sep = "")
     lines <- paste(lines, GetZeroVarList(),"\n ", sep = "")
 
     dataFrame <- getDataFrameSubScale(subScaleData)
@@ -222,7 +240,7 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
 
     return(lavaan::cfa(model = lines, data = dataFrame, estimator=estimator))
   }
-  GetSimpleModel <- function(scales, subScaleData)
+  GetSimpleModel <- function(scales, subScaleData, corr = F)
   {
 
     lines <- ""
@@ -246,9 +264,13 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
       lines <- paste(lines, " ", line, sep=" ")
     }
     dep <-  getScaleNames(names(subScaleData))
-    covariance <- getZeroCovariance(names(subScaleData))
-    lines <- paste(lines, covariance,"\n ", sep = "")
-    lines <- paste(lines, GetZeroVarList(),"\n ", sep = "")
+    if (!isTRUE(corr))
+    {
+        covariance <- getZeroCovariance(names(subScaleData))
+        lines <- paste(lines, covariance, sep = "\n")
+    }
+
+#    lines <- paste(lines, GetZeroVarList(),"\n ", sep = "")
 
     dataFrame <- getDataFrameSubScale(subScaleData)
 
@@ -370,9 +392,24 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
 
   }
 
+  DeleteItems <- function(object, delVar)
+  {
+   for (x in 1:length(object$ScaleItemFrames))
+    {
+      for (v in delVar)
+      {
+        if (v %in% names(object$ScaleItemFrames[[x]]))
+        {
+          object$ScaleItemFrames[[x]] <- object$ScaleItemFrames[[x]][ , -which(names(object$ScaleItemFrames[[x]]) %in% v)]
+         }
+      }
+   }
+    return(object)
+  }
   MainCall <- function()
   {
-    subScaleData <- GetItemWithParcels(subscales, object$ScaleItemFrames)
+    object <- DeleteItems(object, delVar)
+   subScaleData <- GetItemWithParcels(subscales, object$ScaleItemFrames)
     hierModel <- list(GetHierarchicalModel(scale, subScaleData))
     names(hierModel) <- "Hierarchical Model"
     result <- list(GetTestSubscaleAll(scale, subScaleData))
@@ -384,9 +421,11 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
       result <- append(result,tillf)
     }
     simpModel <- list(GetSimpleModel(scale, subScaleData))
+    simpModel2 <- list(GetSimpleModel(scale, subScaleData, corr = T))
     names(simpModel) <- "Factor model"
+    names(simpModel2) <- "Factor model with cor"
 
-    object$ResultList <- append(append(hierModel, result), simpModel)
+    object$ResultList <- append(append(append(hierModel, result), simpModel), simpModel2)
     object$RCommands <- commands
     class(object) <- c("TestFacets", "Psychometric")
 
@@ -503,6 +542,83 @@ RunCFA.Psychometric <- function(object, model, what = NULL, exclude = c())
 }
 
 
+#' A Psychometric FA estimator
+#'
+#' @param object an of class TestFacets
+#' @param subscales the subscales that are included
+#' @param ... extra argument to the fa
+#' @return a psych::fa result based on the selected subscales
+#' @export
+RunFA <- function(object, subscales, ...) {
+  UseMethod("RunFA", object)
+}
+
+#' A Psychometric FA estimator
+#'
+#' @param object an of class TestFacets
+#' @param subscales the subscales that are included
+#' @return a psych::fa result based on the selected subscales
+#' @export
+RunFA <- function(object, subscales,...)
+{
+  GetExtraArgument <- function(a, default = NULL)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(default)
+
+  }
+  nfactors = GetExtraArgument("nfactors", NULL)
+  rotate = GetExtraArgument("rotate", "promax")
+  dataF <- data.frame(row.names = 1:nrow(object$ScaleFrame))
+  for (itemF in object$ScaleItemFrames[subscales])
+  {
+    dataF <- cbind(dataF, itemF)
+  }
+  if (is.null(nfactors))
+    return (psych::fa.sort(psych::fa(dataF, nfactors = length(subscales), rotate = rotate)))
+  else
+    return (psych::fa.sort(psych::fa(dataF, nfactors = nfactors, rotate = rotate)))
+
+}
+#' A Psychometric FA estimator
+#'
+#' @param object an of class TestFacets
+#' @param subscales the subscales that are included
+#' @param ... extra argument to the fa
+#' @return a psych::fa result based on the selected subscales
+#' @export
+RunPCA <- function(object, subscales, ...) {
+  UseMethod("RunPCA", object)
+}
+
+RunPCA <- function(object, subscales,...)
+{
+  GetExtraArgument <- function(a, default = NULL)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(default)
+
+  }
+  nfactors = GetExtraArgument("nfactors", NULL)
+  rotate = GetExtraArgument("rotate", "promax")
+  dataF <- data.frame(row.names = 1:nrow(object$ScaleFrame))
+  for (itemF in object$ScaleItemFrames[subscales])
+  {
+    dataF <- cbind(dataF, itemF)
+  }
+  if (is.null(nfactors))
+    return (psych::fa.sort(psych::pca(dataF, nfactors = length(subscales), rotate = rotate)))
+  else
+    return (psych::fa.sort(psych::pca(dataF, nfactors = nfactors, rotate = rotate)))
+
+}
+
 #' summary for TestFacets
 #'
 #' @param object an object of class TestFacets
@@ -541,7 +657,7 @@ summary.TestFacets <- function(object, ...)
     if (isTRUE(standardized))
     {
       return(sapply(object$ResultList, FUN = function(x) {
-        print(lavaan::standardizedSolution(x, type = "std.all"))}))
+        lavaan::standardizedSolution(x, type = "std.all")}))
 
 
 
@@ -633,8 +749,8 @@ anova.TestFacets <- function(object, ...)
       print(lavaan::lavTestLRT(object$ResultList[[2]],
                                object$ResultList[[compModel]]))
       print(names(object$ResultList[length(object$ResultList)]))
-      print(lavaan::fitmeasures(object$ResultList[[length(object$ResultList)]],c("cfi", "rmsea" ,"srmr_mplus")))
-      print(lavaan::lavTestLRT(object$ResultList[[length(object$ResultList)]],
+      print(lavaan::fitmeasures(object$ResultList[[length(object$ResultList)-1]],c("cfi", "rmsea" ,"srmr_mplus")))
+      print(lavaan::lavTestLRT(object$ResultList[[length(object$ResultList)-1]],
                                object$ResultList[[compModel]]))
 
     }
@@ -643,9 +759,12 @@ anova.TestFacets <- function(object, ...)
       for(index in 3:length(object$ResultList))
       {
         print(names(object$ResultList[index]))
-        print(lavaan::fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr")))
-        print(lavaan::lavTestLRT(object$ResultList[[index]],
-                                 object$ResultList[[compModel]], type = "Chisq"))
+        fRes <- lavaan::fitmeasures(object$ResultList[[index]],c("cfi", "rmsea" ,"srmr"))
+        print(fRes)
+        lRes <- lavaan::lavTestLRT(object$ResultList[[index]],
+                                   object$ResultList[[compModel]], type = "Chisq")
+        row.names(lRes) <- c(names(object$ResultList[compModel]),names(object$ResultList[index]))
+        print(lRes)
       }
   }
 }
