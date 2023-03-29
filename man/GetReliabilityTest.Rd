@@ -23,3 +23,12 @@ A Reliability object based on a Psychometric object that can be used for analyse
 \description{
 Makes it simple to do basic psychometrics
 }
+\details{
+This function creates a new object that are an extension of the
+Psychometric object. The functions implement reliability analyses using either
+'alpha' or 'omega'. The 'Reliabilty' can be used to get detailed information
+about items. In addition, using the function "GetCommand" you can get all the
+necessary commands to do more extensive reliabilty analyses.
+Another function is to estimate a parallel analyses using the psych::fa.parallel,
+and to both commands and plots for this using the plot command.
+}

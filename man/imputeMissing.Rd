@@ -22,3 +22,13 @@ A Psychometric object that can be used for analyses
 \description{
 Makes it simple to do basic psychometrics
 }
+\details{
+Essentially this is a wrapper for the mice package. It takes a
+Psychometric object and impute (or deletes listwise) data-cells that are missing.
+One feature is that you can impute also on item level and if you do, the
+ScaleFrame is automatically re-estimated based on the new item columns. The
+imputation is in that case based on all items of a scale. Otherwise imputation
+is based on all scales in the scale frame.
+The function do not handle stochastic imputation using more than one dataframe,
+maybe it will be implemented in the future.
+}

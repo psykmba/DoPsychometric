@@ -29,3 +29,15 @@ an updated Psychometric object
 \description{
 Handle outliers methods
 }
+\details{
+Essentially this function takes a Psychometric object and checks for
+outliers. The resulting object is sometimes changed, for example Mahalanobis and
+SD and Quartile filters out the outliers and return an updated Psychometric object.
+'Change' winsorizes the scales, e.g., changes the data values to be inside the
+distribution.
+The limit argument defines an outlier in terms of probabilty, either based on
+chi2 value or SD.
+The missing argument impute (or deletes cases). See the ImputeMissing function.
+Using the 'OtherVariables' flag makes it possible to also handle other variables
+not included in some of the scales.
+}

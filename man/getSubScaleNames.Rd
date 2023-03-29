@@ -10,8 +10,13 @@ getSubScaleNames(object)
 \item{object}{a Psychometric object}
 }
 \value{
-names of all scale and items
+a list of all names starting with the
 }
 \description{
 Title
+}
+\details{
+When the ScaleItemFrames is created it changes the variable names of
+the items. This functions return all the names together with the scale names.
+The functions can be used to check that everything has been defined correctly.
 }
