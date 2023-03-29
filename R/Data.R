@@ -1,6 +1,6 @@
 #' Personality inventory NB5I with 20 subscales
 #'
-#' A dataset with 120 items, 20 scales and 5 factors (BigFive)
+#' A dataset with  20 scales and 5 factors (BigFive)
 #'
 #' @format A data frame with 200 rows and 125 variables:
 #' \describe{
