@@ -115,15 +115,7 @@ GetItemWithParcels <- function(object, parcel, subscales)
 }
 
 #' Handle outliers methods
-#'
-#' @param object a Psychometric object to work with
-#' @param method there are three ways, "Mahalanobis","Quartile", "SD" and "Change"
-#' @param limit the probability value for handeling an outlier
-#' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
-#' @param otherVar whether the variables not among the scales shall be included, only for check and SD
-#'
 #' @return an updated Psychometric object
-#'
 #' @export
 handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
                            missing = "None", otherVar = F) {
@@ -137,6 +129,16 @@ handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
 #' @param otherVar whether the variables not among the scales shall be included, only for check and SD
 #' @return an updated Psychometric object
+#' @details Essentially this function takes a Psychometric object and checks for
+#' outliers. The resulting object is sometimes changed, for example Mahalanobis and
+#' SD and Quartile filters out the outliers and return an updated Psychometric object.
+#' 'Change' winsorizes the scales, e.g., changes the data values to be inside the
+#' distribution.
+#' The limit argument defines an outlier in terms of probabilty, either based on
+#' chi2 value or SD.
+#' The missing argument impute (or deletes cases). See the ImputeMissing function.
+#' Using the 'OtherVariables' flag makes it possible to also handle other variables
+#' not included in some of the scales.
 #' @export
 handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = .001,
                                         missing = "None", otherVar = c())
@@ -505,17 +507,20 @@ getCommand.TestFacets <- function(object, ...)
 #'
 #' @param object a Psychometric object
 #'
-#' @return names of all scale and items
+#' @return a list of all names starting with the
+#' @details When the ScaleItemFrames is created it changes the variable names of
+#' the items. This functions return all the names together with the scale names.
+#' The functions can be used to check that everything has been defined correctly.
 #' @export
 getSubScaleNames <- function(object)
 {
   res <- list()
   for(index in 1:length(object$ScaleNames))
   {
-    nam1 <- object$ScaleNames[index]
     nam2 <-  names(object$ScaleItemFrames[[index]])
-    res <- append(res, list(c(nam1,nam2)))
+    res <- append(res, list(c(nam2)))
 
   }
+  names(res) <- object$ScaleNames
   return(res)
 }

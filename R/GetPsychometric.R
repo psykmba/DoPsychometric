@@ -14,10 +14,59 @@
 #' @param itemList items do not conform to above they can be addressed by number instead, new item names will be created based on scale names
 #' @param reverseList a vector with numbers for all items that should be reversed, if any
 #' @param missings a vector with numbers to be converted to NA, e.g., -99 should be converted to NA
-#' @return A Psychometric object that can be used for analyses
+#' @details The GetPsychometric functions create a class that can be used to simplify
+#' psychometric evaluation of a scale or an inventory. The function takes a dataframe
+#' with items that are automatically aggregated to scales based on one of two different
+#' methods.
+#'
+#' 1. Either you name the item columns in a consistent way based on the scale names
+#' you like to have, e.g., all items from the extraversion scale starts with 'extr'
+#' 2. You send an list with vectors that have the column numbers of the items for
+#' each scale
+#'
+#'
+#' You always provide a vector of scale names, e.g., c("Achievement", "Dutifulness", "Orderly"),
+#' to the argument scaleNames and you also provide a itemLength argument, that define the number of characters
+#' that define you items, e.g., itemLength = 4 suggesting that the first four characters
+#' defines the items belonging to the scale. If an item should be reversed you should
+#' add an 'R' to the end of the name and also set the reverse flag to TRUE
+#' When you are Using alternative 1 above and has Achievement as scale name, the items should
+#' start with column name "Achi", like "Achive10" or "Achive12".
+#' Using alternative 2 above, you add an itemList with column numbers like this:
+#' list(c(4,5,6,7), c(8,9,10,11), c(12,13,14,15)) representing three scales. Item than
+#' need to be reversed should be defined in a vector and sent to reverseList
+#' If there is an identity variable you can define it with the idVar argument.
+#' If there are missing values use define a vector with column numbers
+#' and send it with the missings argument.
+#'
+#' The object include a number of useful dataframes:
+#' 1. A dataframe called 'ScaleFrame' that include the value of the scale
+#' 2. A list of dataframes calles 'ScaleItemFrames' that include the items included
+#' in each of the scales.
+#' 3. All scale names in the 'ScaleNames' vector
+#' 4. Original data are in the 'OriginalData' frame
+#' 5. The variables not included in the scales are in the "OtherVariables" dataframe
+#' together with the ID variable
+#' In addition there are other objects that are used together with some of the
+#' methods/functions that can be called with the object
+#'
+#' @return A Psychometric object that can be used for analyses.
 #' @examples
-#' object <- GetPsychometric(persData, c("Achievement", "Dutifulness", "Orderly"),
-#'  responseScale = list(c(0,4)), itemLength = 4)
+#' dataObject <- GetPsychometric(persData,
+#' scaleNames = c("Extraversion", "Agreeableness",
+#'                "Conscientiousness", "Neuroticism",
+#'                "Openness"),
+#' responseScale = list(c(0,24)),
+#' itemLength = 4)
+#'
+#' dataObject <- GetPsychometric(persData,
+#'                 scaleNames = c("Extraversion", "Agreeableness",
+#'                               "Conscientiousness", "Neuroticism",
+#'                              "Openness"),
+#'                 responseScale = list(c(0,24)),
+#'                 itemList = list(c(2,9,11,19), c(7,17,18, 21),
+#'                 c(5, 12,13), c(4,8,14,15), c(6,10, 16,20)),
+#'                 itemLength = 4)
 #'
 #' @export
 GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
