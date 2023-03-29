@@ -25,7 +25,7 @@
 #' each scale
 #'
 #'
-#' You always provide a vector of scale names, e.g., c("Achievement", "Dutifulness", "Orderly"),
+#' You always always provide a vector of scale names, e.g., c("Achievement", "Dutifulness", "Orderly"),
 #' to the argument scaleNames and you also provide a itemLength argument, that define the number of characters
 #' that define you items, e.g., itemLength = 4 suggesting that the first four characters
 #' defines the items belonging to the scale. If an item should be reversed you should
