@@ -132,7 +132,7 @@ handleOutliers <- function(object, method = "Mahalanobis", limit = .001,
 
 #' Handle outliers methods
 #' @param object a Psychometric object to work with
-#' @param method there are three ways, "Mahalanobis", "Quartile", SD" and "Change"
+#' @param method there are four ways, "Mahalanobis", "Quartile", SD" and "Change"
 #' @param limit the probability value for handeling an outlier
 #' @param missing when "none", missing values are not handled, otherwise the method in missing will be used
 #' @param otherVar whether the variables not among the scales shall be included, only for check and SD

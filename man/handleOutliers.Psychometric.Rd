@@ -15,7 +15,7 @@
 \arguments{
 \item{object}{a Psychometric object to work with}
 
-\item{method}{there are three ways, "Mahalanobis", "Quartil", SD" and "Change"}
+\item{method}{there are four ways, "Mahalanobis", "Quartile", SD" and "Change"}
 
 \item{limit}{the probability value for handeling an outlier}
 
