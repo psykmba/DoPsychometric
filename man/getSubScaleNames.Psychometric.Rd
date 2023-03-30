@@ -4,7 +4,7 @@
 \alias{getSubScaleNames.Psychometric}
 \title{Title}
 \usage{
-\method{getSubScaleNames}{Psychometric}(object)
+getSubScaleNames.Psychometric(object)
 }
 \arguments{
 \item{object}{a Psychometric object}
