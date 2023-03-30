@@ -64,7 +64,7 @@
 #'                               "Conscientiousness", "Neuroticism",
 #'                              "Openness"),
 #'                 responseScale = list(c(0,24)),
-#'                 itemList = list(c(2,9,11,19), c(7,17,18, 21),
+#'                 itemList = list(c(3,9,11,19), c(7,17,18, 21),
 #'                 c(5, 12,13), c(4,8,14,15), c(6,10, 16,20)),
 #'                 itemLength = 4)
 #'

@@ -22,7 +22,7 @@
 #'   \item{OpenInnerLife}{Item for the openness scale}
 #'   \item{AgreeAltruistic}{Item for the agreeableness scale}
 #'   \item{AgreeMoral}{Item for the agreeableness scale}
-#' \item{ExtrActivez}{Item for the extraversion scale}
+#' \item{ExtrActive}{Item for the extraversion scale}
 #' \item{OpenVariabilitySeeking}{Item for the openness scale}
 #' \item{AgreeSympathetic}{Item for the agreeableness scale}
 #' \item{ConscEffective}{Item for the conscientousness scale}
