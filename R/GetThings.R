@@ -1,4 +1,5 @@
 
+
 #' Title
 #'
 #' @param object a Psychometric object
@@ -9,6 +10,21 @@
 #' The functions can be used to check that everything has been defined correctly.
 #' @export
 getSubScaleNames <- function(object)
+{
+  UseMethod("getSubScaleNames", object)
+}
+
+
+#' Title
+#'
+#' @param object a Psychometric object
+#'
+#' @return a list of all names starting with the
+#' @details When the ScaleItemFrames is created it changes the variable names of
+#' the items. This functions return all the names together with the scale names.
+#' The functions can be used to check that everything has been defined correctly.
+#' @export
+getSubScaleNames.Psychometric <- function(object)
 {
   res <- list()
   for(index in 1:length(object$ScaleNames))
@@ -22,28 +38,7 @@ getSubScaleNames <- function(object)
 }
 
 
-#' names
-#'
-#' @param x a Psychometric object to work with
-#' @return the names of Scale and Other variables
-#'
-#' @examples
-#' dataObject <- GetPsychometric(persData,
-#' scaleNames = c("Extraversion", "Agreeableness",
-#'                "Conscientiousness", "Neuroticism",
-#'                "Openness"),
-#' responseScale = list(c(0,36)),
-#' itemLength = 4)
-#' names(dataObject)
-#' @export
-names.Psychometric <- function(x)
-{
-  print("Scales")
-  print(names(x$ScaleFrame))
-  print("OtherVariables")
-  print(names(x$OtherVariables))
-  return()
-}
+
 
 #' getData
 #'
@@ -108,13 +103,24 @@ getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFram
 
 }
 
+#' selectP
+#'
+#' @param object a Psychometric object
+#' @param scales the scales that should be included in the result
+#'
+#' @return an Psychometric object with only the scales
+selectP <- function(object, scales)
+{
+  UseMethod("selectP", object);
+}
+
 #' select
 #'
 #' @param object a Psychometric object
 #' @param scales the scales that should be included in the result
 #'
 #' @return an Psychometric object with only the scales
-select.Psychometric <- function(object, scales)
+selectP.Psychometric <- function(object, scales)
 {
   newObject <- object
   newObject$ScaleFrame <- object$ScaleFrame[scales]
