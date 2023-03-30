@@ -103,6 +103,47 @@ getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFram
 
 }
 
+#' namesP
+#'
+#' @param x a Psychometric object to work with
+#' @return the names of Scale and Other variables
+#'
+#' @examples
+#' dataObject <- GetPsychometric(persData,
+#' scaleNames = c("Extraversion", "Agreeableness",
+#'                "Conscientiousness", "Neuroticism",
+#'                "Openness"),
+#' responseScale = list(c(0,36)),
+#' itemLength = 4)
+#' names(dataObject)
+#' @export
+namesP <- function(x)
+{
+  UseMethod("namesP", x)
+}
+#' namesP
+#'
+#' @param x a Psychometric object to work with
+#' @return the names of Scale and Other variables
+#'
+#' @examples
+#' dataObject <- GetPsychometric(persData,
+#' scaleNames = c("Extraversion", "Agreeableness",
+#'                "Conscientiousness", "Neuroticism",
+#'                "Openness"),
+#' responseScale = list(c(0,36)),
+#' itemLength = 4)
+#' names(dataObject)
+#' @export
+namesP.Psychometric <- function(x)
+{
+  print("Scales")
+  print(names(x$ScaleFrame))
+  print("OtherVariables")
+  print(names(x$OtherVariables))
+  return()
+}
+
 #' selectP
 #'
 #' @param object a Psychometric object
