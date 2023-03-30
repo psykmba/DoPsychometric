@@ -3,6 +3,7 @@
 S3method(imputeMissing,Psychometric)
 S3method(plot,Reliability)
 S3method(print,Reliability)
+S3method(split,Psychometric)
 S3method(summary,Psychometric)
 S3method(summary,Reliability)
 export(GetPsychometric)
