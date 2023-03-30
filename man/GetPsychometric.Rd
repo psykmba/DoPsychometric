@@ -94,14 +94,14 @@ dataObject <- GetPsychometric(persData,
 scaleNames = c("Extraversion", "Agreeableness",
                "Conscientiousness", "Neuroticism",
                "Openness"),
-responseScale = list(c(0,24)),
+responseScale = list(c(0,36)),
 itemLength = 4)
 
 dataObject <- GetPsychometric(persData,
                 scaleNames = c("Extraversion", "Agreeableness",
                               "Conscientiousness", "Neuroticism",
                              "Openness"),
-                responseScale = list(c(0,24)),
+                responseScale = list(c(0,36)),
                 itemList = list(c(3,9,11,19), c(7,17,18, 21),
                 c(5, 12,13), c(4,8,14,15), c(6,10, 16,20)),
                 itemLength = 4)
