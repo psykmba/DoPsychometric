@@ -38,6 +38,7 @@ summary.Psychometric<-function(object, ...)
   omegaS <- GetExtraArgument("omega", T)
   alphaS <- GetExtraArgument("omega", T)
   nS <- GetExtraArgument("n", T)
+  kS <- GetExtraArgument("k", T)
   plotsS <- GetExtraArgument("plots", F)
   y <- object$ScaleFrame
   sumx <- data.frame(Tillf = c(1:ncol(y)))
@@ -76,13 +77,16 @@ summary.Psychometric<-function(object, ...)
       else
       {
         omeg<-psych::alpha(object$ScaleItemFrames[[i]])
-        sumx$Alpha[i]<-as.vector(omeg$total$raw_alpha)
+        sumx$Omega[i]<-as.vector(NA)
+        sumx$OmegaHier[i]<-as.vector(NA)
         warning("Number of items to small for omega (<7), alpha estimated instead")
       }
     }
 
     if(isTRUE(nS))
     {sumx$N[i]<-length(y[,i][!is.na(y[,i])]) }
+    if(isTRUE(kS))
+    {sumx$K[i]<-ncol(object$ScaleItemFrames[[i]]) }
   }
   sumx <- sumx[-1]
   summaryy<-sumx
