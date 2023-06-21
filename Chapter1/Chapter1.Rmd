@@ -1,0 +1,209 @@
+---
+title: "Tutorial"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Concepts and tools
+
+### SEM - many names
+
+SEM = Structural equation modeling,
+
+also called:
+
+covariance structure analysis, covariance structure modeling, or analysis of covariance
+structures
+
+## What you need and get
+You need:
+<ul>
+  <li>Causal hypotheses based on theory</li>
+  <li>Questions about relation between variables, so called effects</li>
+  <li>Data from experimental, quasi-experimental or non-experimental designs</li>
+</ul>
+
+You get:
+<ul>
+  <li>Estimates for the tested effects (your questions)</li>
+  <li>Logical implications of the model, some effects are zero some not</li>
+  <li>Model fit, how well your model is supported by data</li>
+</ul>
+
+## Goal
+The goal of SEM is to find a good model, not a model that fits the data. For this
+you need theory. Models are a priori, but not only confirmatory, often you have
+alternative models, and when these are built on different theories, you can
+test which theory fits the data best. Mostly data does not fit theory perfectly, 
+you need to do adjustment (these can be suggested changes to theory, but also adjustment
+necessary because your data have methodological problems).
+
+## Probabilistic causation
+Probabilistic causation - that one outcome has higher likelihood than another, 
+given distributional assumptions such as normality. Causal relation with an 
+error.
+
+## Latent and observed
+<ul>
+  <li>Latent variables correspond to hypothetical constructs, a continuum of
+  something, e.g., intelligence</li>
+  <li>Observed variables are your data, they can be categorical or continuous</li>
+  <li>Observed variables are used as indicators of latent variables, and the
+  construct is a factor influencing the indicators/li>
+  <li>Errors or residuals are also latent variables, an error of an observed 
+  variable is variance not explained by a factor/li>
+</ul>
+
+## SEM and covariance
+
+The analysis of covariance structure is the most distinguishable feature of
+SEM. SEM can also analyze means of observed variables, but in addition means
+of latent variables, like intelligence. In SEM we talk about both a mean
+structure and a covariance structure.
+
+Evarything you can do with regression analysis, ANOVA and factor analysis can
+be estimated withing the SEM framework (and much more)
+
+What is covariance? It is an estimate of a relation, like correlation, that also
+include the variability of the included variables: 
+
+covXY = rXY*SDX*SDY
+
+It is not possible to know how "strong" a relation is just knowing the covariance
+
+## Large samples
+
+What influence how large a sample need to be:
+
+<ul>
+  <li>The complexity of the model</li>
+  <li>Non-ontinuous variables, non-linear relations and interactions</li>
+  <li>Some estimations methods/li>
+  <li>Less precise data, low reliability, missing data, and low number of
+  indicators/li>
+  <li>Factor analysis with few indicators, unequal loadings, not simple 
+  structure/li>
+</ul>
+
+### The N*q rule 
+
+This is a rather conservative way of calculating the needed sample size.
+N is often suggested to be either 20 or maybe 10, and q is the nubmer of 
+parameters that has to be estimated.
+In principle thera are two schools, but we will return to this later.
+
+## Significance
+
+SEM is about models, and therefore significance is less important and some
+approximate model-fit is more important. With large sample sizes there is a high
+risk that all models will reveal significant mis-fit, even when the effect sizes 
+of missfitting parameters is very small.
+
+There are many estimation methods, and they can give different p values, in addtion
+we can use the better estimates of effect sizes and skip significance (but I
+don't like this :) or maybe understand )
+
+## Inference frameworks
+
+SEM is a framework for causal inferences. In this course we will not concern us
+much with other frameworks, but for the
+discussion of many causual models in the book it is good to have some knowledge
+about the 
+structual causal model (SCM), but it will not be examined.
+
+The good thing about SCM is that it is possible to test a model before data is
+collected, for example it is possible to test if there are enough variables to 
+test a specific casual relationship. However, there are many special cases in
+SCM that are beyond what can be covered in the present course. Anyway, the 
+author of the book uses this here and there, so it is a good idea to have
+some understanding of the SCM.
+
+
+## GLM and SEM
+
+ANOVA, MANOVA, canonical correlation and regression analysis are part of the 
+general linear model, which is a sub-part of SEM where only observed variables 
+are estimated.
+There is a number of other models that often can be estimated by SEM-programs, 
+e.g,, latent class analysis (kind of cluster analysis), mixeture models that 
+can estimate models on different levels (participants, classes, schools). More 
+about this later
+
+
+## More on SEM
+
+SEM is a disconfirmatory procedure, it can be used to reject models 
+that does not fit to the data. If the the model corresponds with reality is
+a totally other question.
+
+Confirmation bias, that the researcher only tries to show that his/her favorite
+model fits data is a serious threat. There are often many equivalent models 
+to be concerned with, and the researcher should try to test also those.
+
+### The goal of statistical beauty
+
+A good model:
+<ul>
+  <li>"has a clear theoretical rationale"</li>
+  <li>"differentiates between what is known and what is unknown"</li>
+  <li>"sets conditions for posing new questions"</li>
+</ul>
+
+
+### Exercise with Code
+
+*Here's an exercise with some prepopulated code as well as `exercise.lines = 5` to provide a bit more initial room to work.*
+
+Now write a function that adds any two numbers and then call it:
+
+```{r add-function, exercise=TRUE, exercise.lines = 5}
+add <- function() {
+  
+}
+```
+
+## Topic 2
+
+### Exercise with Hint
+
+*Here's an exercise where the chunk is pre-evaluated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
+
+Modify the following code to limit the number of rows printed to 5:
+
+```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
+mtcars
+```
+
+```{r print-limit-hint}
+head(mtcars)
+```
+
+### Quiz
+
+*You can include any number of single or multiple choice questions as a quiz. Use the `question` function to define a question and the `quiz` function for grouping multiple questions together.*
+
+Some questions to verify that you understand the purposes of various base and recommended R packages:
+
+```{r quiz}
+quiz(
+  question("Which package contains functions for installing other R packages?",
+    answer("base"),
+    answer("tools"),
+    answer("utils", correct = TRUE),
+    answer("codetools")
+  ),
+  question("Which of the R packages listed below are used to create plots?",
+    answer("lattice", correct = TRUE),
+    answer("tools"),
+    answer("stats"),
+    answer("grid", correct = TRUE)
+  )
+)
+```
+
