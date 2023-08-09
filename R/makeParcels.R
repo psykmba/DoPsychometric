@@ -101,7 +101,7 @@ testRandomParcels <- function(object,  scales, nItems, random = FALSE) {
 }
 
 #' @export
-testRandomParcels.Psychometric <- function(object, model,  scales, k = 30, random = FALSE) {
+testRandomParcels.Psychometric <- function(object, model,  scales, k = 31, random = FALSE) {
   sumData <- list()
   for (index in 1:k)
   {
