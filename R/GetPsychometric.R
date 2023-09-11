@@ -245,7 +245,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     }
     Reverse <- function(col, resp)
     {
-      if (reverse == T)
+       if (reverse == T | reverse == "Find")
       {
         RCommands <<- append(RCommands, paste("Data$",names(col), " <- (", resp[1], "+", resp[2], ") - ", "Data$",names(col),"\n", sep = ""))
         return((resp[1]+resp[2]) - col)
@@ -255,13 +255,27 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     }
     GetReverse <- function(frame, resp)
     {
-      #      print(resp[[1]])
+      if (reverse == "Find")
+      {
+         comp <- psych::pca(frame, nfactors = 1)
+         load <- as.vector(comp$loadings)
+         for(index in 1:length(frame))
+         {
+           name <- names(frame[index])
+           frame[index] <- ifelse(load[index] < 0,
+                                  Reverse(frame[index], resp[[1]]),
+                                  frame[index])
+         }
+          return(frame)
+      }
+      else {
       for(index in 1:length(frame))
       {
         name <- names(frame[index])
         frame[index] <- ifelse(substr(name, nchar(name), nchar(name)) == "R",
                                Reverse(frame[index], resp[[1]]),
                                frame[index])
+      }
       }
       return(frame)
     }
