@@ -57,3 +57,57 @@ bestScales.Psychometric <- function(object, nItems, deleteItems = F)
   }
    return(object)
 }
+
+
+#' bestScaleItems
+#'
+#' @param object Psychometric object
+#' @export
+bestScaleItems <- function(object) {
+  UseMethod("bestScales",object)
+}
+
+bestScaleItems <- function(object)
+{
+  FindBestScaleForItem <- function(object)
+  {
+    index <- 0
+    tScaleFrame <- object$ScaleFrame
+    res <- data.frame()
+    out <- data.frame()
+    for (itemScale in object$ScaleItemFrames)
+    {
+      index <- index + 1
+      itemIndex <- 0
+      r <- list(0)
+      names(r) <- names(tScaleFrame[index])
+      res <- append(res, r)
+      out <- append(out, r)
+      for (item in itemScale)
+      {
+        itemIndex <- itemIndex + 1
+        tScaleFrame[index] <- rowMeans(itemScale[-itemIndex], na.rm = T)
+        corItem <- cor(item, tScaleFrame, use = "pairwise.complete.obs")
+        corItem <- as.data.frame(cbind(1:ncol(tScaleFrame), t(corItem)))
+        names(corItem) <- c("ItemNum", names(tScaleFrame[index]))
+        corItem <- dplyr::arrange(corItem, desc(corItem[,2]))
+        if (corItem[1,1] == index)
+        {
+          res[[index]] <- c(res[[index]], itemIndex)
+          names(res[index]) <- names(tScaleFrame[index])
+          #        print(c("Correct", corItem[1,2], names(tScaleFrame[index])))
+        }
+        else
+        {
+          out[[index]] <- c(out[[index]], itemIndex)
+          names(out[index]) <- names(tScaleFrame[index])
+          #        print(c("Fawlty", corItem[1,2], names(tScaleFrame[index])))
+        }
+
+      }
+
+      tScaleFrame[index] <- object$ScaleFrame[index]
+    }
+    return(list(res,out))
+  }
+}
