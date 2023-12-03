@@ -67,19 +67,19 @@ summary.Psychometric<-function(object, ...)
 
     if(isTRUE(omegaS))
     {
-      if (length(object$ScaleItemFrames[[i]])>=7)
-      {
-
-        omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plotsS)
-        sumx$Omega[i]<-as.vector(omeg$omega.tot)
-        sumx$OmegaHier[i]<-as.vector(omeg$omega_h)
-      }
-      else
+      if (length(object$ScaleItemFrames[[i]])<7)
       {
         omeg<-psych::alpha(object$ScaleItemFrames[[i]])
         sumx$Omega[i]<-as.vector(NA)
         sumx$OmegaHier[i]<-as.vector(NA)
         warning("Number of items to small for omega (<7), alpha estimated instead")
+
+      }
+      else
+      {
+        omeg<-psych::omega(object$ScaleItemFrames[[i]], plot = plotsS)
+        sumx$Omega[i]<-as.vector(omeg$omega.tot)
+        sumx$OmegaHier[i]<-as.vector(omeg$omega_h)
       }
     }
 
