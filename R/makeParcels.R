@@ -1,4 +1,4 @@
-#' makeParcels
+#' makeThreeParcels
 #'
 #' @param object Psychometric object
 #' @param scales, scale to find best items for
@@ -8,7 +8,7 @@
 #' @return best item object
 #' @export
 makeThreeParcels <- function(object,  scales, nItems, random = FALSE) {
-  UseMethod("makeParcels", object)
+  UseMethod("makeThreeParcels", object)
 }
 
 #' @export
@@ -97,7 +97,7 @@ sdMatrix <- function(dataList)
 #' @return best item object
 #' @export
 testRandomParcels <- function(object,  scales, nItems, random = FALSE) {
-  UseMethod("makeParcels", object)
+  UseMethod("testRandomParcels", object)
 }
 
 #' @export

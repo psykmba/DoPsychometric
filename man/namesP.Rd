@@ -22,5 +22,5 @@ scaleNames = c("Extraversion", "Agreeableness",
                "Openness"),
 responseScale = list(c(0,36)),
 itemLength = 4)
-names(dataObject)
+namesP(dataObject)
 }

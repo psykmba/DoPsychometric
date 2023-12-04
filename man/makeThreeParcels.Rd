@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeParcels.R
 \name{makeThreeParcels}
 \alias{makeThreeParcels}
-\title{makeParcels}
+\title{makeThreeParcels}
 \usage{
 makeThreeParcels(object, scales, nItems, random = FALSE)
 }
@@ -19,5 +19,5 @@ makeThreeParcels(object, scales, nItems, random = FALSE)
 best item object
 }
 \description{
-makeParcels
+makeThreeParcels
 }

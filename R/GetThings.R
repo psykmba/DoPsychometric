@@ -115,7 +115,7 @@ getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFram
 #'                "Openness"),
 #' responseScale = list(c(0,36)),
 #' itemLength = 4)
-#' names(dataObject)
+#' namesP(dataObject)
 #' @export
 namesP <- function(x)
 {
