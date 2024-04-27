@@ -1,13 +1,26 @@
 #' Split Psychometric
 #'
 #' Makes it simple to work with groups
-#' @param x A Psychometric object
-#' @param drop  A group variables among other variables
+#' @param object A Psychometric object
 #' @param f  A function to apply to the groups
-#' @param ... group to split for and more arguments to the f function
+#' @param group  A group variables among other variables
+#' @param ... more arguments to the f function
 #' @return all results from the f function
 #' @export
-split.Psychometric <- function(x, f, drop, ...)
+splitP <- function(object, f = NULL, group, ...)
+{
+  UseMethod("split", object)
+}
+#' Split Psychometric
+#'
+#' Makes it simple to work with groups
+#' @param object A Psychometric object
+#' @param f  A function to apply to the groups
+#' @param group  A group variables among other variables
+#' @param ... more arguments to the f function
+#' @return all results from the f function
+#' @export
+splitP.Psychometric <- function(object, f = NULL, group, ...)
 {
   GetExtraArgument <- function(a, default = NULL)
   {
@@ -18,20 +31,21 @@ split.Psychometric <- function(x, f, drop, ...)
       return(default)
 
   }
-  group = GetExtraArgument("group")
-  f = GetExtraArgument("f")
-  splitDataFrames <- split(x$OriginalData, x$OriginalData[c(group)])
+  splitDataFrames <- split(object$OriginalData, object$OriginalData[c(group)])
   results <- list()
   lNames <- c()
   for (data in splitDataFrames)
   {
     print(paste("Here are results for group variable ", group,
                 "category", data[1, group]))
-    Psychometric <- GetPsychometric(data, x$ScaleNames,
-                                    responseScale = x$ResponseScales,
-                                    itemLength = x$ItemLength,
+    Psychometric <- GetPsychometric(data, object$ScaleNames,
+                                    responseScale = object$ResponseScales,
+                                    itemLength = object$ItemLength,
                                     reverse = F, name = paste(group, data[1, group]))
-    res <- f(Psychometric, ...)
+    if (!is.null(f))
+      res <- f(Psychometric, ...)
+    else
+      res <- Psychometric
     lNames <- c(lNames, paste(group, as.character(data[group][1,1]), sep = ""))
     results <- append(results, list(res))
   }

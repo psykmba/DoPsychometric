@@ -22,11 +22,10 @@ GetReliabilityTest <- function(object, what = "Alpha", check = T, imp = "NULL", 
   GetAlphaCommands <- function()
   {
     res <- NULL
-    for(data in object$ScaleItemFrames )
+    for(data in names(object$ScaleFrame))
     {
-      print(deparse(substitute(object)))
-      n <- paste(names(data), collapse = ",")
-      res <- append(res, list(paste("psych::alpha(object$OriginalData[cs(", n, ")], check.keys = T,keys=NULL,",
+      n <- paste(grep(stringr::str_sub(data, 1, object$ItemLength), names(object$OriginalData), value = T), collapse = ",")
+      res <- append(res, list(paste("psych::alpha(object$OriginalData[psych::cs(", n, ")], check.keys = T,keys=NULL,",
                                     "cumulative=FALSE, title=NULL, max=10,na.rm = TRUE, ",
                                     "n.iter=1,delete=TRUE,use='pairwise',warnings=TRUE,",
                                     "n.obs=NULL)", sep = "")))
@@ -36,10 +35,10 @@ GetReliabilityTest <- function(object, what = "Alpha", check = T, imp = "NULL", 
   GetOmegaCommands <- function()
   {
     res <- NULL
-    for(data in object$ScaleItemFrames )
+    for(data in names(object$ScaleFrame))
     {
-      n <- paste(names(data), collapse = ",")
-      res <- append(res, list(paste("psych::omega(object$OriginalData[cs(", n, ")],nfactors=3,fm='minres',n.iter=1,",
+      n <- paste(grep(stringr::str_sub(data, 1, object$ItemLength), names(object$OriginalData), value = T), collapse = ",")
+      res <- append(res, list(paste("psych::omega(object$OriginalData[psych::cs(", n, ")],nfactors=3,fm='minres',n.iter=1,",
                                     "p=.05,poly=FALSE,key=NULL,flip=TRUE,digits=2, title='Omega',",
                                     "sl=TRUE,labels=NULL, plot=TRUE,n.obs=NA,rotate='oblimin',",
                                     "Phi=NULL,option='equal',covar=FALSE)", sep = "")))
@@ -50,10 +49,10 @@ GetReliabilityTest <- function(object, what = "Alpha", check = T, imp = "NULL", 
   GetParallelCommands <- function()
   {
     res <- NULL
-    for(data in object$ScaleItemFrames )
+    for(data in names(object$ScaleFrame))
     {
-      n <- paste(names(data), collapse = ",")
-      res <- append(res, list(paste("psych::fa.parallel(object$OriginalData[cs(", n, ")]", sep = "")))
+      n <- paste(grep(stringr::str_sub(data, 1, object$ItemLength), names(object$OriginalData), value = T), collapse = ",")
+      res <- append(res, list(paste("psych::fa.parallel(object$OriginalData[psych::cs(", n, ")]", sep = "")))
     }
     return(res)
 
@@ -90,7 +89,7 @@ GetReliabilityTest <- function(object, what = "Alpha", check = T, imp = "NULL", 
 
   }
   else
-    return(print("There was no such function"))
+    return(print("Argument 'what' is wrong, no such type of reliability"))
 
 
   names(resList2) <- object$ScaleNames

@@ -200,71 +200,61 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   }
   ChangeOriginalDataNames <- function(data)
   {
-    signPart <- strtrim(scaleNames, itemLength)
-    for(v in names(data))
+    for(index in 1:length(data))
     {
-      if (nchar(v) > itemLength)
+      n <- names(data[index])
+       if (itemLength < stringr::str_length(n)-3)
       {
-        if (substr(v, 1, itemLength) %in% signPart)
-        {
-          iName <- scaleNames[match(substr(v, 1, itemLength),signPart)]
-          if (nchar(iName) > itemLength)
-          {
-            c <- ""
-            for (s in itemLength+1:nchar(v))
-            {
-
-              if (substring(v, s, s) == substring(iName, s,s))
-              {
-                c <- paste(c, substring(v, s, s), sep = "")
-              }
-              else
-                break
-            }
-            if (c != "")
-              names(data)[names(data) == v] <- gsub(c, '', v)
-            else
-              names(data)[names(data) == v] <- v
-
-          }
-        }
+        signPart <- strtrim(n, itemLength)
+        l <- stringr::str_length(n)
+        names(data)[index] <-
+          paste(signPart, stringr::str_sub(n, l-3, l), sep = "")
       }
 
     }
     return(data)
   }
+  GetColNames <- function(dFrame)
+  {
+    return(paste(grep(stringr::str_sub(dFrame, 1,itemLength), names(data), value = T), collapse = ","))
+    # for (name in names(dFrame))
+    # {
+    #   res <- paste(res, '"', name, '",', sep = "")
+    # }
+    # return(substr(res, 1, stringr::str_length(res)-1))
+  }
+
   GetScaleItemFrames <- function(d, responses)
   {
 
     GetData <- function(name)
     {
-      frame <- dplyr::select(d, dplyr::starts_with(substr(name, 1, itemLength)))
+       frame <- dplyr::select(d, dplyr::starts_with(substr(name, 1, itemLength)))
        frame2 <- as.data.frame(sapply(frame, FUN = function(x) ifelse(x %in% missings, NA, x)))
        names(frame2) <- names(frame)
       return(frame2)
     }
-    Reverse <- function(col, resp)
+    Reverse <- function(col, resp,oldname)
     {
-       if (reverse == T | reverse == "Find")
+      if (reverse == T | reverse == "Find")
       {
-        RCommands <<- append(RCommands, paste("Data$",names(col), " <- (", resp[1], "+", resp[2], ") - ", "Data$",names(col),"\n", sep = ""))
+        RCommands <<- append(RCommands, paste("Data$",col, " <- (", resp[1], "+", resp[2], ") - ", "Data$",oldname,"\n", sep = ""))
         return((resp[1]+resp[2]) - col)
       }
       else
         return(col)
     }
-    GetReverse <- function(frame, resp)
+    GetReverse <- function(frame, resp, oldNames)
     {
-      if (reverse == "Find")
+       if (reverse == "Find")
       {
          comp <- psych::pca(frame, nfactors = 1)
          load <- as.vector(comp$loadings)
          for(index in 1:length(frame))
          {
            name <- names(frame[index])
-           frame[index] <- ifelse(load[index] < 0,
-                                  Reverse(frame[index], resp[[1]]),
-                                  frame[index])
+            frame[index] <- ifelse(load[index] < 0,
+                                  Reverse(frame[index], resp[[1]], oldNames[index]))
          }
           return(frame)
       }
@@ -272,9 +262,9 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
       for(index in 1:length(frame))
       {
         name <- names(frame[index])
-        frame[index] <- ifelse(substr(name, nchar(name), nchar(name)) == "R",
-                               Reverse(frame[index], resp[[1]]),
-                               frame[index])
+
+        frame[index] <- ifelse(substr(name, nchar(name), nchar(name)) %in% c("r", "R"),
+                               Reverse(frame[index], resp[[1]], oldNames[index]),frame[index])
       }
       }
       return(frame)
@@ -283,22 +273,15 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     for(index in 1:length(scaleNames))
     {
        interm <- GetData(scaleNames[index])
+       oldNames <- names(interm)
+       # interm <- ChangeOriginalDataNames(interm)
       interm <- getSignItemName(interm,scaleNames[index], itemLength )
-      resFrames <- append(resFrames, list(as.data.frame(GetReverse(interm, responses[index]))))
-    }
+      resFrames <- append(resFrames, list(as.data.frame(GetReverse(interm, responses[index], oldNames))))
+     }
     names(resFrames) <- scaleNames
     return(resFrames)
   }
 
-  GetColNames <- function(dFrame)
-  {
-    res <- ""
-    for (name in names(dFrame))
-    {
-      res <- paste(res, '"', name, '",', sep = "")
-    }
-    return(substr(res, 1, stringr::str_length(res)-1))
-  }
 
   GetScalesFrame <- function(frames, nameV)
   {
@@ -307,7 +290,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     {
 
       res <- cbind(res, rowMeans(as.data.frame(frames[[index]]), na.rm = T))
-      RCommands <<- append(RCommands, list(paste("Data$",nameV[index], "<- rowMeans(Data[c(", GetColNames(as.data.frame(frames[[index]])), ")],na.rm = TRUE)\n", sep = "")))
+        RCommands <<- append(RCommands, list(paste("Data$",nameV[index], "<- rowMeans(Data[c(", GetColNames(nameV[index]), ")],na.rm = TRUE)\n", sep = "")))
     }
     res <- as.data.frame(res)
     row.names(res) <- 1:nrow(res)
@@ -355,8 +338,8 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   responseScale <- expandResponsScale(responseScale, scaleNames)
   scaleItemFrames <- GetScaleItemFrames(data, responseScale)
    scaleFrames <- GetScalesFrame(scaleItemFrames, scaleNames)
-  if (is.null(itemList))
-    data <- ChangeOriginalDataNames(data)
+  # if (is.null(itemList))
+  #    data <- ChangeOriginalDataNames(data)
   names(scaleItemFrames) <- scaleNames
   if (!is.null(itemDictionary))
     itemDictionary <- GetDictionary()

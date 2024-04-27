@@ -60,7 +60,7 @@ summary.Psychometric<-function(object, ...)
     {sumx$Max[i]<-max(as.numeric(y[,i]), na.rm = TRUE)}
     if (isTRUE(alphaS))
     {
-      a<-psych::alpha(object$ScaleItemFrames[[i]])
+      a<-psych::alpha(object$ScaleItemFrames[[i]], check.keys = T)
       sumx$Alpha[i]<-as.vector(a$total$raw_alpha)
 
     }

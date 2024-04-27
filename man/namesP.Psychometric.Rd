@@ -15,12 +15,3 @@ the names of Scale and Other variables
 \description{
 namesP
 }
-\examples{
-dataObject <- GetPsychometric(persData,
-scaleNames = c("Extraversion", "Agreeableness",
-               "Conscientiousness", "Neuroticism",
-               "Openness"),
-responseScale = list(c(0,36)),
-itemLength = 4)
-names(dataObject)
-}

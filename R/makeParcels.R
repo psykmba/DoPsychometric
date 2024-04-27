@@ -2,12 +2,11 @@
 #'
 #' @param object Psychometric object
 #' @param scales, scale to find best items for
-#' @param nItems, number of items in new scale
 #' @param random, random parcels
 #'
 #' @return best item object
 #' @export
-makeThreeParcels <- function(object,  scales, nItems, random = FALSE) {
+makeThreeParcels <- function(object,  scales, random = FALSE) {
   UseMethod("makeThreeParcels", object)
 }
 
@@ -90,34 +89,35 @@ sdMatrix <- function(dataList)
 #' testRandomParcels
 #'
 #' @param object Psychometric object
+#' @param model Should be the model that test for
 #' @param scales, scale to find best items for
-#' @param nItems, number of items in new scale
+#' @param k, number of items in new scale
 #' @param random, random parcels
 #'
 #' @return best item object
 #' @export
-testRandomParcels <- function(object,  scales, nItems, random = FALSE) {
+testRandomParcels <- function(object, model, scales, k = 31, random = FALSE) {
   UseMethod("testRandomParcels", object)
 }
 
 #' @export
 testRandomParcels.Psychometric <- function(object, model,  scales, k = 31, random = FALSE) {
-  sumData <- list()
-  for (index in 1:k)
-  {
-    objectParcels <- makeParcels(object, scales, random)
-    data <- getData(objectParcels)
-#    fit <- sem(model = modelStruct4, data = data, missing = 'fiml', orthogonal = TRUE)
-    fit <- eval(model)
-    sumData <- append(sumData, list(summary(fit,  fit.measures = TRUE, standardized = TRUE)))
-    modificationindices(fit, maximum.number = 20, sort = T)
-  }
+
+  # sumData <- list()
+  # for (index in 1:k)
+  # {
+  #   objectParcels <- makeParcels(object, scales, random)
+  #   data <- getData(objectParcels)
+  #   fit <- sem(model = modelStruct4, data = data, missing = 'fiml', orthogonal = TRUE)
+  #   fit <- eval(model)
+  #   sumData <- append(sumData, list(summary(fit,  fit.measures = TRUE, standardized = TRUE)))
+  #   lavaan::modificationindices(fit, maximum.number = 20, sort = T)
+  # }
 
   #debugonce(sumMatrix)
-  sumMatrix(sumData)
+#  sumMatrix(sumData)
   #debugonce(sdMatrix)
-  sdMatrix(sumData)
-  View(cbind(sumMatrix(sumData), sdMatrix(sumData)))
+#  sdMatrix(sumData)
 
 }
 

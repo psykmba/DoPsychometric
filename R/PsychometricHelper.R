@@ -1,3 +1,14 @@
+#' filter
+#'
+#' @param object a Psychometric object
+#' @param keep a vector with boolean tne same lengths as the number of rows
+#'
+#' @return filtered object
+#' @export
+filterP.Psychometric<-function(object, ...)
+{
+  UseMethod("filter", object)
+}
 
 #' filter
 #'
@@ -6,19 +17,25 @@
 #'
 #' @return filtered object
 #' @export
-filter.Psychometric<-function(object, keep)
+filterP.Psychometric<-function(object, ...)
 {
-  if (nrow(object$ScaleFrame) != length(keep))
+  argnames <- sys.call()
+  form <- as.character(argnames[3])
+  allFrame <- cbind(object$ScaleFrame, object$OtherVariables)
+  myFilter <- "myFilter"
+  allFrame <-  allFrame %>% dplyr::mutate(!!paste("t", myFilter, sep = "") := !!rlang::parse_expr(form))
+  if (nrow(object$ScaleFrame) != length(allFrame$tmyFilter))
   {
     print("Logical vector not the same length as frames")
     return()
   }
-  object$ScaleFrame <- dplyr::filter(object$ScaleFrame, keep)
-  object$OtherVariables <- dplyr::filter(object$OtherVariables, keep)
-  object$OriginalData <- dplyr::filter(object$OriginalData, keep)
+  allFrame <- allFrame %>% tidyr::replace_na(list(tmyFilter = FALSE))
+  object$ScaleFrame <- dplyr::filter(object$ScaleFrame, allFrame$tmyFilter)
+  object$OtherVariables <- dplyr::filter(object$OtherVariables, allFrame$tmyFilter)
+  object$OriginalData <- dplyr::filter(object$OriginalData, allFrame$tmyFilter)
   for(index in 1:length(object$ScaleItemFrames))
     object$ScaleItemFrames[[index]] <-
-    dplyr::filter(object$ScaleItemFrames[[index]], keep)
+              dplyr::filter(object$ScaleItemFrames[[index]], allFrame$tmyFilter)
   return(object)
 }
 
@@ -97,7 +114,7 @@ GetItemWithParcels <- function(object, parcel, subscales)
   }
   res <- list()
 
-  object <- select.Psychometric(object, subscales)
+  object <- selectP.Psychometric(object, subscales)
   for(subscale in subscales)
   {
     dataFrames <- object$ScaleItemFrames[[subscale]]
@@ -165,35 +182,34 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   }
   if (method == "SD")
   {
-    newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
-    for(scale in noMissObject$ScaleFrame)
+    newFrame <-  noMissObject$ScaleFrame
+    newFrame <- as.data.frame(sapply(newFrame, FUN = function(scale)
     {
-      m <- mean(scale)
-      sd <- sd(scale) * stats::qnorm(1 - limit)
+      m <- mean(scale, na.rm = T)
+      sd <- sd(scale, na.rm = T) * stats::qnorm(1 - limit)
       r <- range(m+sd, m-sd)
-      newFrame <- cbind(newFrame, deleteOutsideRange(scale, r))
-    }
+      return(deleteOutsideRange(scale, r))
+    }))
     noMissObject$ScaleFrame <- newFrame
     if (length(otherVar) > 0)
     {
-      newFrame <-  data.frame(row.names = 1:nrow(object$ScaleFrame))
-      for(v in otherVar)
+      oFrame <-  noMissObject$OtherVariables
+      oFrame[,c(otherVar)] <-  sapply(oFrame[otherVar], FUN = function(scale)
       {
-        if (is.numeric(noMissObject$OtherVariables[v]))
-        {
-          m <- mean(noMissObject$OtherVariables[v])
-          sd <- sd(noMissObject$OtherVariables[v]) * stats::qnorm(1 - limit)
-          r <- range(m+sd, m-sd)
-          newFrame <- cbind(newFrame, deleteOutsideRange(noMissObject$OtherVariables[v], r))
-        }
-        else
-        {
-          newFrame <- cbind(newFrame, noMissObject$OtherVariables[v])
-        }
-      }
-      noMissObject$OtherVariables <- newFrame
+        m <- mean(scale, na.rm = T)
+        sd <- sd(scale, na.rm = T) * stats::qnorm(1 - limit)
+        r <- range(m+sd, m-sd)
+        d <-deleteOutsideRange(scale, r)
+        return(d)
+      })
 
     }
+    else
+    {
+      oFrame <- noMissObject$OtherVariables
+    }
+    noMissObject$OtherVariables <- oFrame
+
 
 
     return(noMissObject)
@@ -315,7 +331,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
 #'
 #' @return NULL
 #' @export
-writeP <- function(object, fileName, colnames = T, rownames = F) {
+writeP <- function(object, File, colnames = T, rownames = F) {
   UseMethod("writeP", object)
 }
 
@@ -328,10 +344,10 @@ writeP <- function(object, fileName, colnames = T, rownames = F) {
 #'
 #' @return NULL
 #' @export
-writeP.Psychometric <- function(object, fileName, colnames = T, rownames = F)
+writeP.Psychometric <- function(object, File, colnames = T, rownames = F)
 {
-  utils::write.csv(x = getData(object, itemFrames = T),file = fileName, col.names = colnames,
-            row.names = rownames)
+  write.table(x = getData(object),file = File, col.names = colnames,
+                   row.names = rownames)
   return(NULL)
 
 }
