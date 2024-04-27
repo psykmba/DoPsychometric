@@ -4,14 +4,12 @@
 \alias{makeThreeParcels}
 \title{makeThreeParcels}
 \usage{
-makeThreeParcels(object, scales, nItems, random = FALSE)
+makeThreeParcels(object, scales, random = FALSE)
 }
 \arguments{
 \item{object}{Psychometric object}
 
 \item{scales, }{scale to find best items for}
-
-\item{nItems, }{number of items in new scale}
 
 \item{random, }{random parcels}
 }

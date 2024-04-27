@@ -4,14 +4,16 @@
 \alias{testRandomParcels}
 \title{testRandomParcels}
 \usage{
-testRandomParcels(object, scales, nItems, random = FALSE)
+testRandomParcels(object, model, scales, k = 31, random = FALSE)
 }
 \arguments{
 \item{object}{Psychometric object}
 
+\item{model}{Should be the model that test for}
+
 \item{scales, }{scale to find best items for}
 
-\item{nItems, }{number of items in new scale}
+\item{k, }{number of items in new scale}
 
 \item{random, }{random parcels}
 }

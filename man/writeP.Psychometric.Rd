@@ -4,16 +4,16 @@
 \alias{writeP.Psychometric}
 \title{Write all data}
 \usage{
-\method{writeP}{Psychometric}(object, fileName, colnames = T, rownames = F)
+\method{writeP}{Psychometric}(object, File, colnames = T, rownames = F)
 }
 \arguments{
 \item{object}{A psychometric object}
 
-\item{fileName}{A filename with pathinformation}
-
 \item{colnames}{T if you like to write column names}
 
 \item{rownames}{T if you like to write row names}
+
+\item{fileName}{A filename with pathinformation}
 }
 \description{
 Write all data
