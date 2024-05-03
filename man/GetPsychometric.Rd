@@ -22,7 +22,7 @@ GetPsychometric(
 \arguments{
 \item{data}{A dataframe with the items and eventual extra variables}
 
-\item{scaleNames}{A vector with the names of the scales}
+\item{scaleNames}{A vector with the names of the scales, e.g., scaleNames = c("Extravertion", "Agreeableness", "Conscientiousnsess", "Neuroticism", "Openness")}
 
 \item{responseScale}{A list with vectors of response intervalls, either one (if all are the same) or one for each scale}
 
@@ -61,6 +61,54 @@ you like to have, e.g., all items from the extraversion scale starts with 'extr'
 \item You send an list with vectors that have the column numbers of the items for
 each scale
 }
+
+scaleNames
+A vector with the names of the scales, e.g., scaleNames = c("Extravertion",
+"Agreeableness", "Conscientiousnsess", "Neuroticism", "Openness")
+
+responseScale
+A list with vectors of response intervals, either one (if all are the same) or
+one interval for each scale, e.g., responseScale = list(c(1,5)), when all items
+have a response scale from 1 to 5 (Likert style). Alternatively, when we have
+five scales, responseScale = list(c(1,5),c(1,7), c(1,4), c(1,5), c(1,7)). The
+first and forth scale have response scales from 1 to 5, the second and fifth, from 1
+to 7, and the third from 1 to 5
+
+typeSum
+A functions used for summarizing the items to scales, the default is Mean
+
+itemLength
+The number of significant characters in the item names. Scale name and item names
+should start with the same "significant" number of characters, e.g., scale name=
+"Extravert" and item names are "ExtrItem1", "ExtrItem2"....\if{html}{\out{</br>}}
+In this case itemLength = 4. But it can be any number of characters, e.g., this
+would be itemLength = 1, scale name = "A" with item names "AFirstItem", "ASecondItem",
+"AThirdItem",.....
+
+reverse
+A boolean that sets whether items ending with 'R' should be reversed
+
+idVar
+The name of the case identifier (if none a case number variable called ID will be created)
+
+name
+The name of the object (optional)
+
+itemDictionary
+a textfile with information about all scales, items and whether they should be reversed
+
+itemList
+this is an alternative to have scale name and item names conforming to the definition
+under itemLength. Instead you can have item scale(s) name(s) and then define the
+the scales by the item's place in the dataframe, e.g., scaleNames = c("E", "A")
+and itemList = list(c(1,2,3,4,5), c(6,7,8,9,10)). The items for the "E" scale
+are in the first five columns of the dataframe, and the item of the "A" scale are
+in the columns 6 to 10.
+
+reverseList
+This is an alternative way of defining which items that should be reversed that
+goes together with the 'itemList' argument. It should be
+a vector with numbers for all columns having an item that should be reversed.
 
 You always always provide a vector of scale names, e.g., c("Achievement", "Dutifulness", "Orderly"),
 to the argument scaleNames and you also provide a itemLength argument, that define the number of characters

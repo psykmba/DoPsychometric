@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetThings.R
 \name{getSubScaleNames.Psychometric}
 \alias{getSubScaleNames.Psychometric}
-\title{Title}
+\title{getSubScaleNames}
 \usage{
 getSubScaleNames.Psychometric(object)
 }
@@ -13,7 +13,7 @@ getSubScaleNames.Psychometric(object)
 a list of all names starting with the
 }
 \description{
-Title
+getSubScaleNames
 }
 \details{
 When the ScaleItemFrames is created it changes the variable names of

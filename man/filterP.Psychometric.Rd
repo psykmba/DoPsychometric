@@ -11,7 +11,7 @@ filterP.Psychometric(object, ...)
 \arguments{
 \item{object}{a Psychometric object}
 
-\item{keep}{a vector with boolean tne same lengths as the number of rows}
+\item{...}{extra argument filter}
 }
 \value{
 filtered object

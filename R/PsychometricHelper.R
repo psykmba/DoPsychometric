@@ -1,7 +1,7 @@
 #' filter
 #'
 #' @param object a Psychometric object
-#' @param keep a vector with boolean tne same lengths as the number of rows
+#' @param ... extra argument filter
 #'
 #' @return filtered object
 #' @export
@@ -13,7 +13,7 @@ filterP.Psychometric<-function(object, ...)
 #' filter
 #'
 #' @param object a Psychometric object
-#' @param keep a vector with boolean tne same lengths as the number of rows
+#' @param ... extra argument filter
 #'
 #' @return filtered object
 #' @export
@@ -319,13 +319,15 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
 
 
 
-
+library(dplyr)
+library(lavaan)
+library(utils)
 
 
 #' writeP
 #'
 #' @param object A psychometric object
-#' @param fileName A filename with pathinformation
+#' @param File A filename with pathinformation
 #' @param colnames T if you like to write column names
 #' @param rownames T if you like to write row names
 #'
@@ -338,7 +340,7 @@ writeP <- function(object, File, colnames = T, rownames = F) {
 #' Write all data
 #'
 #' @param object A psychometric object
-#' @param fileName A filename with pathinformation
+#' @param File A filename with pathinformation
 #' @param colnames T if you like to write column names
 #' @param rownames T if you like to write row names
 #'

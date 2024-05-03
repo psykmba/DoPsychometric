@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetThings.R, R/PsychometricHelper.R
 \name{getSubScaleNames}
 \alias{getSubScaleNames}
-\title{Title}
+\title{getSubScaleNames}
 \usage{
 getSubScaleNames(object)
 
@@ -17,7 +17,7 @@ a list of all names starting with the
 a list of all names starting with the
 }
 \description{
-Title
+getSubScaleNames
 
 Title
 }

@@ -9,11 +9,11 @@ writeP(object, File, colnames = T, rownames = F)
 \arguments{
 \item{object}{A psychometric object}
 
+\item{File}{A filename with pathinformation}
+
 \item{colnames}{T if you like to write column names}
 
 \item{rownames}{T if you like to write row names}
-
-\item{fileName}{A filename with pathinformation}
 }
 \description{
 writeP

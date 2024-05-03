@@ -1,6 +1,6 @@
 
 
-#' Title
+#' getSubScaleNames
 #'
 #' @param object a Psychometric object
 #'
@@ -15,7 +15,7 @@ getSubScaleNames <- function(object)
 }
 
 
-#' Title
+#' getSubScaleNames
 #'
 #' @param object a Psychometric object
 #'
@@ -102,6 +102,61 @@ getData.Psychometric <- function(object, scales = NULL,  otherVar = T, scaleFram
   }
 
 }
+
+
+#' getItemText
+#'
+#' @param object the object to get data from
+#' @param scales scales to get item text, if null all scales
+#' @param printName whether it should print the item texts
+#' @return a dataframe with all scales and other variables from the Psychometric object
+#'
+#' @export
+getItemText <- function(object,  scales = NULL, printName = F) {
+  UseMethod("getItemText", object)
+}
+
+#' getItemText
+#'
+#' @param object the object to get data from
+#' @param scales scales to get item text, if null all scales
+#' @param printName whether it should print the item texts
+#' @return a dataframe with all scales and other variables from the Psychometric object
+#'
+#' @export
+getItemText <- function(object, scales = NULL, printName = F)
+{
+  getText <- function(name)
+  {
+    if (isTRUE(printName))
+      return (paste(object$ItemDictionary[[name]],name, sep = " | "))
+    else
+      return (object$ItemDictionary[[name]])
+
+  }
+  res <- list()
+  if (is.null(scales))
+  {
+
+   res <- lapply(object$ScaleItemFrames, FUN = function(x)
+      return(sapply(x, FUN = getText)))
+  }
+  else
+  {
+
+    res <- lapply(object$ScaleItemFrames[scales], FUN = function(x)
+    {
+      print(names(x))
+      return(sapply(names(x), FUN = getText))
+    })
+  }
+
+  return(res)
+
+
+}
+
+
 
 #' namesP
 #'

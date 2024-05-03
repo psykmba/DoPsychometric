@@ -1,0 +1,403 @@
+              Item      Mean        SD  LeaveOneOut
+1      AKTIVNEA01J 2.0760768 1.0778299  0.448672654
+2     AKTIVNEA01JB 1.6784038 1.0806941  0.518737070
+3      AKTIVNEA01x 1.4589595 1.0364184  0.415947007
+4      AKTIVNEA02J 2.3154710 1.0240739  0.658406141
+5      AKTIVNEA03J 2.8442623 0.8729151  0.513978749
+6      AKTIVNEA04J 1.9677419 1.0760977  0.458976470
+7      AKTIVNEA05J 2.4316940 1.0439550  0.547611374
+8      AKTIVNEA06J 2.0207702 1.0032422  0.562859422
+9      AKTIVNEA07J 2.4917247 0.9790491  0.664706328
+10     AKTIVNEA07m 2.3450078 1.0000771  0.703633191
+11     AKTIVNEA07x 1.6506597 1.0664645  0.496883856
+12    AKTIVNEA07xB 1.5373494 1.0008092  0.566345293
+13     AKTIVNEA08J 2.3334768 1.0020546  0.719387940
+14     AKTIVNEA09x 1.6476334 1.0416866  0.518686959
+15    AKTIVNEA09xB 1.9155767 1.0041615  0.498965708
+16       AKTIVNEA1 2.1414497 1.0279779  0.584483079
+17      AKTIVNEA10 1.8219406 1.0501161  0.547942797
+18     AKTIVNEA10e 1.7165618 1.1250758  0.446972602
+19     AKTIVNEA10J 2.2048518 1.1905385  0.482642653
+20      AKTIVNEA11 2.1645475 1.0243296  0.496579964
+21     AKTIVNEA11e 1.6510067 1.0326042  0.452800735
+22     AKTIVNEA11f 2.5388693 1.0780553  0.517689430
+23     AKTIVNEA11J 2.5697022 1.0757158  0.537587426
+24     AKTIVNEA11m 2.2952530 1.1086316  0.612884242
+25      AKTIVNEA12 1.9514121 1.0561723  0.427604780
+26     AKTIVNEA12e 2.3009050 1.0356236  0.486205477
+27     AKTIVNEA12f 1.8614916 1.0464776  0.517557416
+28     AKTIVNEA12J 1.1234568 0.8728966  0.388329658
+29     AKTIVNEA12m 1.6596750 1.1209305  0.532166682
+30     AKTIVNEA13e 2.7339450 0.8829647  0.545795791
+31     AKTIVNEA13f 2.0314136 0.9854133  0.449161686
+32     AKTIVNEA13J 1.4386921 0.9149197  0.322652918
+33     AKTIVNEA13m 1.5783911 1.0741345  0.460859354
+34     AKTIVNEA14e 2.2388393 1.0442601  0.663525355
+35     AKTIVNEA14f 2.0978648 1.0129442  0.716651617
+36     AKTIVNEA14J 1.2722892 1.0170424  0.379169031
+37     AKTIVNEA15e 2.1418764 1.0996284  0.601140706
+38     AKTIVNEA15f 1.9290780 1.0737983  0.640466677
+39     AKTIVNEA15J 1.3024390 0.9543333  0.373421031
+40     AKTIVNEA15m 1.3608355 0.9899344  0.307303952
+41     AKTIVNEA15x 2.2054986 1.0140875  0.372436665
+42     AKTIVNEA16e 2.2159091 1.0762381  0.734545217
+43     AKTIVNEA16f 2.2124431 1.0875490  0.643619291
+44     AKTIVNEA16J 2.1075269 1.1323459  0.567141285
+45     AKTIVNEA16m 1.8708282 0.9701960  0.377535985
+46     AKTIVNEA17e 2.2642369 1.0613041  0.593991150
+47     AKTIVNEA17f 1.5936953 1.1468778  0.463840900
+48     AKTIVNEA17J 2.3832458 0.9812780  0.395616958
+49     AKTIVNEA17x 1.8061889 1.0953554  0.480797794
+50     AKTIVNEA18e 1.5485327 1.0086801  0.363876548
+51     AKTIVNEA18f 1.3745520 0.9270701  0.430571215
+52     AKTIVNEA18J 2.1370622 1.0796689  0.627172825
+53     AKTIVNEA18x 1.7348399 1.0789008  0.391230208
+54      AKTIVNEA1c 2.2096774 1.0658670  0.504070413
+55      AKTIVNEA1e 2.3348315 1.0431135  0.586444501
+56      AKTIVNEA1f 2.5557522 0.9652599  0.575944592
+57       AKTIVNEA2 2.0240421 0.9707104  0.570740573
+58      AKTIVNEA2e 1.3977528 1.0425603  0.443667187
+59      AKTIVNEA2f 1.2985866 0.9726698  0.352487841
+60       AKTIVNEA3 2.3109890 0.9955844  0.533816424
+61      AKTIVNEA3e 1.7663185 1.0901646  0.665468451
+62       AKTIVNEA4 1.7200848 0.9653635  0.458542435
+63      AKTIVNEA4e 2.1594533 1.0586006  0.711831677
+64      AKTIVNEA4f 2.1628722 1.0693931  0.718019678
+65       AKTIVNEA5 1.7122571 1.0994726  0.654550478
+66      AKTIVNEA5e 1.7746806 0.9837565  0.452328344
+67       AKTIVNEA6 2.4204545 0.9828631 -0.001159215
+68      AKTIVNEA6e 1.9623086 1.0820109  0.706189810
+69      AKTIVNEA6f 1.9023091 1.0684966  0.664245793
+70       AKTIVNEA7 2.2116557 1.0072802  0.504016298
+71      AKTIVNEA7c 2.3034483 1.0249703  0.553973021
+72      AKTIVNEA7e 2.3288288 0.9988605  0.633236304
+73      AKTIVNEA7f 2.1232666 1.0600334  0.645618285
+74       AKTIVNEA8 1.8583196 1.0730847  0.538133913
+75      AKTIVNEA8e 1.1207289 1.0029652  0.509374177
+76      AKTIVNEA8f 1.3432836 0.9575199  0.384618796
+77       AKTIVNEA9 2.4146341 0.9178543  0.499093305
+78      AKTIVNEA9e 1.6765464 1.1426134  0.574239523
+79      AKTIVNEAb1 1.7910448 1.0986858  0.396353795
+80      AKTIVNEAb2 1.3544776 0.9145610  0.326438139
+81      AKTIVNEAb3 1.4402985 1.0056857  0.404106950
+82      AKTIVNEAb4 1.5639098 1.0414314  0.403670053
+83      AKTIVNEAb5 2.4106464 1.0107253  0.545281167
+84      AKTIVNEAb6 1.8351648 0.9066389 -0.012924371
+85      AKTIVNEAb7 1.7751587 0.9967017  0.361686232
+86      AKTIVNEAc1 1.6636156 1.1409310  0.468061047
+87      AKTIVNEAc3 1.7373272 1.0012178  0.453816269
+88      AKTIVNEAc4 2.1505882 1.1413770  0.553259420
+89      AKTIVNEAc5 1.7620137 0.9735604  0.353852661
+90      GLADNEH02x 2.1838518 1.0460204  0.490570588
+91      GLADNEH02y 1.8133595 1.0565156  0.519038192
+92      GLADNEH04x 2.1041120 1.1340326  0.569476100
+93      GLADNEH05x 1.8743534 1.1457437  0.519234942
+94      GLADNEH06x 2.2081340 1.1218765  0.512854942
+95      GLADNEH08x 2.1095033 1.0265145  0.402988132
+96     GLADNEH08xB 2.1877076 1.0768470  0.332590499
+97      GLADNEH09x 2.5079181 0.9818853  0.556190163
+98      GLADNEH09y 2.3597052 1.0172301  0.564770783
+99        GLADNEH1 2.3455760 0.9533130  0.471354643
+100      GLADNEH10 2.5430464 1.0317359  0.419329119
+101     GLADNEH10J 1.5702479 0.9445375 -0.104379499
+102     GLADNEH11J 1.0381471 0.9487782  0.110870186
+103      GLADNEH12 2.8397329 0.9751206  0.440676313
+104      GLADNEH13 2.4300169 1.0178688  0.511266341
+105      GLADNEH14 2.4213115 1.0209006  0.369799288
+106      GLADNEH15 2.6979866 1.1736874  0.475587914
+107      GLADNEH16 2.4173623 0.9411260  0.279878159
+108      GLADNEH1J 2.3278689 0.9431160  0.409287089
+109       GLADNEH2 2.1848185 0.9849923  0.301441890
+110      GLADNEH2c 2.3329558 1.0584457  0.422021261
+111      GLADNEH2f 2.4456522 0.9466537  0.411068366
+112      GLADNEH2J 1.9194444 0.9854992 -0.352277465
+113       GLADNEH3 2.1581549 1.1011673  0.505458476
+114      GLADNEH3J 2.2000000 1.1210194  0.364625946
+115       GLADNEH4 1.8313120 1.0595882  0.357089943
+116      GLADNEH4J 1.6731302 0.9823856  0.445103664
+117       GLADNEH5 2.3793103 1.0452189  0.529727390
+118      GLADNEH5B 2.0537634 0.9798085  0.598742490
+119      GLADNEH5J 1.5136612 0.9413364  0.354792140
+120      GLADNEH5y 2.1274471 1.0186793  0.559478633
+121       GLADNEH6 2.1006601 0.9915842  0.580148985
+122      GLADNEH6J 1.8172043 1.1650456  0.578440527
+123       GLADNEH7 2.2885572 0.9416454  0.139015181
+124      GLADNEH7J 2.7240437 0.9946823  0.461977218
+125       GLADNEH8 1.7166392 1.0711195  0.411074790
+126      GLADNEH8J 2.6831956 1.0623745  0.429050527
+127       GLADNEH9 2.3376906 0.9039571  0.464334112
+128      GLADNEH9c 2.0030769 1.0425836  0.553221801
+129      GLADNEH9J 2.1165312 0.9863045  0.188052611
+130      GLADNEHb1 2.5483871 1.1303037  0.505683980
+131     GLADNEHb10 2.7246835 1.0969618  0.442375997
+132     GLADNEHb11 2.9690402 1.0361335  0.248934777
+133     GLADNEHb12 3.1855346 0.9793667  0.514128660
+134     GLADNEHb13 2.6099071 1.0378673  0.587697459
+135     GLADNEHb14 2.2500000 1.0725425  0.276214782
+136      GLADNEHb2 2.7269841 1.0565547  0.520560052
+137      GLADNEHb3 2.3726115 1.1740055  0.534918470
+138      GLADNEHb4 2.3099662 1.1641454  0.193969716
+139      GLADNEHb5 2.7459807 1.1143239  0.538398196
+140      GLADNEHb6 2.5924765 1.0294743  0.440988115
+141      GLADNEHb7 2.5186335 0.9737812  0.460065306
+142      GLADNEHb8 2.2664577 1.1022434  0.431384407
+143      GLADNEHb9 2.7573770 1.0098950  0.503282743
+144      GLADNEHc1 2.5933941 1.1519859  0.516595366
+145     GLADNEHc11 1.9539524 1.0020092  0.537826186
+146     GLADNEHc12 1.8186693 1.0197349  0.539211796
+147     GLADNEHc13 2.1342435 1.0598058  0.589710527
+148      GLADNEHc2 1.7269962 0.9842719  0.333035166
+149      GLADNEHc3 1.6525097 0.9176398  0.398148008
+150      GLADNEHc5 1.5015408 1.0036544  0.519211429
+151      GLADNEHc7 2.0876586 0.9774229  0.558640952
+152      GLADNEHc9 2.1527936 1.0133389  0.588526106
+153      GLADNEHf7 2.0122888 0.9477923  0.551786603
+154      GLADNEHf9 2.1064815 1.0531859  0.550141551
+155  KAMRATLNEK01x 1.6983965 1.0524443  0.400617629
+156 KAMRATLNEK01xB 2.2310427 1.0912934  0.014555314
+157  KAMRATLNEK02x 1.7453794 1.0542937  0.589895100
+158 KAMRATLNEK02xB 1.9747596 1.0739616  0.627729237
+159  KAMRATLNEK03x 1.8115468 1.0973520  0.748093273
+160 KAMRATLNEK03xB 1.8291215 1.0919946  0.725610850
+161  KAMRATLNEK04x 1.8940309 1.0364886  0.728558339
+162 KAMRATLNEK04xB 2.1553738 1.0553873  0.679167748
+163    KAMRATLNEK1 2.0805180 0.9956202  0.695337205
+164   KAMRATLNEK10 1.3855932 1.0182034  0.421224565
+165  KAMRATLNEK10c 1.0761099 0.8301267  0.281295053
+166   KAMRATLNEK11 2.1658456 0.9869624  0.541101412
+167   KAMRATLNEK12 2.3195266 0.9743712  0.638387921
+168  KAMRATLNEK12c 1.8200110 1.0485153  0.751805257
+169  KAMRATLNEK12f 0.9322638 0.9271943  0.574744368
+170  KAMRATLNEK12m 2.2102489 1.0335669  0.785726690
+171   KAMRATLNEK13 1.3176661 1.0062608  0.461732124
+172  KAMRATLNEK13f 1.7074468 0.9979808  0.642623657
+173   KAMRATLNEK14 2.1037838 1.0619536  0.563506650
+174  KAMRATLNEK14c 1.6892744 1.0231299  0.721010438
+175  KAMRATLNEK14f 2.0354610 1.1000491  0.492401313
+176  KAMRATLNEK14m 1.9760666 1.0327533  0.802149202
+177  KAMRATLNEK17f 2.6782988 1.0044107 -0.545480714
+178  KAMRATLNEK17m 1.4088341 1.0260152  0.562192349
+179   KAMRATLNEK1e 1.6690850 0.9976665  0.412355110
+180   KAMRATLNEK1f 1.6060924 1.0053927  0.644197640
+181    KAMRATLNEK2 1.9516582 1.1198793  0.522935552
+182  KAMRATLNEK23f 0.9194991 0.8812844  0.559655467
+183   KAMRATLNEK2e 1.3160920 0.8527305  0.384602614
+184   KAMRATLNEK2f 1.2492401 1.0064130  0.570059599
+185    KAMRATLNEK3 1.9251322 1.0857031  0.733002173
+186   KAMRATLNEK3B 1.8854415 1.1141548  0.729340904
+187   KAMRATLNEK3e 1.0203644 0.9314562  0.363930661
+188   KAMRATLNEK3m 2.4994775 1.0014364  0.775336739
+189    KAMRATLNEK4 1.9073458 1.0647477  0.724443755
+190   KAMRATLNEK4e 1.3465665 1.0594868  0.597667734
+191   KAMRATLNEK4m 1.8554779 1.0727429  0.793087749
+192    KAMRATLNEK5 1.5535420 1.0975595  0.436014483
+193   KAMRATLNEK5e 1.7101608 1.1680008  0.424452031
+194    KAMRATLNEK6 1.3801917 1.0503442  0.476333305
+195    KAMRATLNEK7 1.9099049 1.1518010  0.564716562
+196   KAMRATLNEK7B 1.7786697 1.0897093  0.440375807
+197    KAMRATLNEK8 2.2455574 1.0417462  0.546182147
+198    KAMRATLNEK9 2.3457792 1.0448083  0.572659309
+199   KAMRATLNEKb1 2.1041293 1.0423633  0.488159993
+200   KAMRATLNEKb2 0.9651899 0.9268775  0.352290524
+                                                                                          ItemText
+1                                               Dagar av aktivitet utan avbrott piggar upp mig | +
+2                                               Har ständigt dagar av aktiviteter utan avbrott | +
+3                                                 Arrangerar nya fritidsaktiviteter hela tiden | +
+4                                                      Tycker om att delta i många aktiviteter | +
+5                                       Uppskattar dagar när jag känner mig väldigt aktiverad  | +
+6                                        Under en normal dag i mitt liv händer det ofta mycket | +
+7                                                         Föredrar att ha ganska lite att göra | -
+8                                       Är aktiv även när det finns möjlighet att ta det lugnt | +
+9                                                     Gillar att ständigt vara igång med något | +
+10                                          Gillar verkligen att ständigt vara igång med något | +
+11                                                      Får energi av att ta det lite lugnare  | -
+12                                           Tar det lite lugnare för att ladda mina batterier | -
+13                                              Gillar att ständigt ha någon aktivitet på gång | +
+14                             Tycker det är bra när dagar är fria från allt för mycket ståhej | -
+15                                           Mina dagar är oft fria från alltför mycket ståhej | -
+16                                               Vill ha ständigt nya saker på gång hela tiden | +
+17                                            Tycker om att ständigt arrangera nya aktiviteter | +
+18                                                 En dag utan aktivitet laddar mina batterier | -
+19                                                  Har många dagar som saknar aktivt innehåll | -
+20  Låter vanligtvis bli att sätta mig i en sits där jag har för många saker på gång samtidigt | -
+21                                                              Får energi av att ta det lugnt | -
+22                                                        Gillar att ha en nästan tom kalender | -
+23                              Ser inget egenvärde i en fritid full med massor av aktiviteter | -
+24                                           Fyller inte min fritid med massor av aktiviteter  | -
+25                                                      Vill helst syssla med en sak åt gången | -
+26                                   Efter en dag av aktiviteter känner jag mig full av energi | +
+27                              Även efter en dag full av aktiviteter har jag massor av energi | +
+28                                  Tycker det är bra när vissa dagar har en lite lugnare rytm | -
+29                                           Tycker det är bra när vissa dagar är händelselösa | -
+30                                                           Dagar av aktivitet piggar upp mig | +
+31                                              Dagar av aktivitet utan avbrott piggar upp mig | +
+32                                                 Ser fördelarna med dagar av lägre aktivitet | -
+33                                                   Ser fördelarna med dagar av låg aktivitet | -
+34                                                    Tycker om att  delta i många aktiviteter | +
+35                                             Trivs bäst då jag kan delta i många aktiviteter | +
+36                                      Har ibland perioder där jag inte har så mycket inbokat | -
+37                                                                 Är aktiv inom många områden | +
+38                                                       Är varje dag aktiv inom många områden | +
+39                                               Får energi av att ibland ta det lite lugnare  | -
+40                                    Genaom att ibland ta det lite lugnare får jag mer energi | -
+41                         Ser till så att det finns någon rolig aktivitet när arbetet är slut | +
+42                                                 Undviker att ha många aktiviteter samma dag | -
+43                                     Låter vanligtvis bli att ha många aktiviteter samma dag | -
+44                                     Låter vanligtvis bli att ha många aktiviteter samma dag | -
+45                                                Försöker ibland begränsa antalet aktiviteter | -
+46                                                          Saknar behov att ha mycket på gång | -
+47                                                               Trivs bra med att bara slappa | -
+48                                                      Försöker fylla min tid med olika nöjen | +
+49                                              Shoppar eller roar mig hellre än tar det lugnt | +
+50                                                             Lagom mycket på gång passar mig | -
+51                                         Föredrar att ha lagom mycket på gång under en vecka | -
+52                     Uppskattar dagar med många aktiviteter som hela tiden avlöser varandra. | +
+53                                               Hittar på något i nöjesväg nästan varenda dag | +
+54                                             Föredrar de dagar då jag är ständigt sysselsatt | +
+55                                                       Är nästan alltid sysselsatt med något | +
+56                                                              Är oftast sysselsatt med något | +
+57                                           Vill ständigt sysselsätta mig med nya aktiviteter | +
+58                                             Väljer ibland att ta en paus från all aktivitet | -
+59                                                    Kan ibland ta en paus från all aktivitet | -
+60                                                     Fyller min tid med en massa olika saker | +
+61                                              Mina dagar är proppfulla med olika aktiviteter | +
+62                                         Gillar att koncentrera mig på ett fåtal aktiviteter | -
+63                                              Gillar att ständigt ha någon aktivitet på gång | +
+64                                            Gillar att ständigt ha flera aktiviteter på gång | +
+65                                               Är ofta den som har flest aktiviteter på gång | +
+66                                                       Går ibland på sparlåga under fritiden | -
+67                               Det finns sällan anledning att låta saker och ting ta sin tid | -
+68                                                    Min fritid är full med olika aktiviteter | +
+69                                                Min fritid är full med massor av aktiviteter | +
+70                            Att ha nya saker på gång hela tiden har mindre betydelse för mig | -
+71                                     Att ha nya saker på gång hela tiden är oviktigt för mig | -
+72                                              Uppskattar dagar med många  fritidsaktiviteter | +
+73                     Uppskattar dagar med många aktiviteter som hela tiden avlöser varandra. | +
+74                                          Jag är ofta upptagen med olika sociala aktiviteter | +
+75                                                         Tycker ibland om att göra ingenting | -
+76                                                 Tycker det är OK att vara inaktiv emellanåt | -
+77                                   Strävar efter att vara i situationer där det händer något | +
+78                                                        Har ibland perioder av låg aktivitet | -
+79                                 Jag är nästan alltid upptagen med olika sociala aktiviteter | +
+80                                                     Tillåter mig ibland en viss inaktivitet | -
+81                                                     Tillåter mig perioder med låg aktivitet | -
+82                                            Trivs bäst med att ha lite lagom mycket att göra | -
+83                             Upplever mest nackdelar med att vara igång med mycket samtidigt | -
+84                                                  Väljer noga vilka nya saker jag tar på mig | -
+85                                                  Lägger gärna min kraft på en sak åt gången | -
+86                                                           Min kalender är alltid proppfull  | +
+87                                                       Tillåter mig ofta en viss inaktivitet | -
+88                                         Tillåter mig ganska långa perioder av låg aktivitet | -
+89                           Upplever en del nackdelar med att vara igång med mycket samtidigt | -
+90                                        Har inget behov att skratta och vara glad hela tiden | -
+91                                          Har inget behov att spexa och vara glad hela tiden | -
+92                                             Missar inget tillfälle att dra ett roligt skämt | +
+93                                         Är en av dem som skrattar högst och mest på en fest | +
+94                                                Axlar sällan rollen som sällskapets skämtare | -
+95           Föredrar att umgås med människor som kan vara allvarliga och inte skämtar om allt | -
+96                 Umgås oftast med människor som kan vara allvarliga och inte skämtar om allt | -
+97                                      Är nog allvarlig för det mesta och skojar inte om allt | -
+98                                          Är nog allvarlig rätt ofta och skojar inte om allt | -
+99                         Ser till att jag underhåller och gläder andra så mycket som möjligt | +
+100                                  Få vardagssituationer får mig att uttrycka spontan glädje | -
+101                                                     Även dagar då jag är mindre glad är ok | -
+102       Visst kan det vara roligt på en fest men det är också skönt när man kan ta det lugnt | -
+103                              Gott humör är knappast den mest utmärkande egenskapen hos mig | -
+104                                     Har ingen ambition att vara sällskapets glädjespridare | -
+105                                     Tycker ett skämtsamt umgänge ibland kan bli för mycket | -
+106                                                Har svårt att känna riktigt barnslig glädje | -
+107                                             Skrattar bara åt skämt som är särskilt lyckade | -
+108                                Söker hela tiden efter sådant som roar mig och gör mig glad | +
+109                                     Har behov av att det händer roliga saker för det mesta | +
+110                                        Vill att det ständigt händer saker som gör mig glad | +
+111                                             Söker hela tiden efter sådant som gör mig glad | +
+112                                   Att bara göra roliga saker är inget som jag prioriterar  | +
+113                                                                    Skrattar högt och länge | +
+114                                                             Skrattar mig genom vissa dagar | +
+115                                                                        Älskar allt i livet | +
+116                                                                 Tar allting med ett skratt | +
+117                                                Vill vara glädjespridaren i alla sammanhang | +
+118                                                        Är glädjesprdaren i alla sammanhang | +
+119                                                  Måste inte ständigt skratta och vara glad | -
+120                                      Vill vara glad och säga lustigheter i alla sammanhang | +
+121                                                        Skrattar och skojar mig genom livet | +
+122                                                   Missar inget tillfälle att dra ett skämt | +
+123                                     Håller ibland igen den skämtsamma tonen gentemot andra | -
+124                                          Berättar gärna om roliga och dråpliga situationer | +
+125                                                             Skrattar inte åt vad som helst | -
+126                                                         Brukar ganska sällan dra ett skämt | -
+127                                                       Känner glädje i det mesta som händer | +
+128                                                    Är sprudlande glad så gott som dagligen | +
+129                                         Bryr mig mindre om ifall andra tycker jag är rolig | -
+130                                        Uttrycker spontan glädje bara vid enstaka tillfälle | -
+131                                                  Känner sällan spontan och barnslig glädje | -
+132                        Det bästa som finns är när man kan skratta både med och åt varandra | +
+133                                           Gläds verkligen av att få skratta högt och länge | +
+134                                                     Axlar sällan rollen som glädjespridare | -
+135                                                     Håller ibland min glädje för mig själv | -
+136                                  Gott humör är knappast den egenskap som utmärker mig mest | -
+137                                   Saknar ambitionen att vara alla sällskaps glädjespridare | -
+138                                                 Dras inte med när andra skojar och skämtar | -
+139                                              Drabbas sällan av spontan och barnslig glädje | -
+140                                     Undviker människor som hela tiden skall försöka skämta | -
+141                               Ser till att jag ofta får möjlighet att roa och glädja andra | +
+142                    Väljer ibland bort att aktivt delta när andra börjar skoja med varandra | -
+143                                                                  Vill vara glädjespridaren | +
+144                                                               Visar sällan intensiv glädje | -
+145                                                                   Skrattar mig genom livet | +
+146                                                 Måste hela tiden få skratta och ha det kul | +
+147                                               Rollen som glädjespridare får någon annan ta | -
+148                                    Känner inget krav på att jag skall vara glad hela tiden | -
+149                                       Måste inte alltid vara den som får andra att skratta | -
+150                                              Är den som skrattar högst och mest på en fest | +
+151                                         Söker ständigt tillfällen att roa och glädja andra | +
+152                                                Vill vara glädjespridaren oavsett situation | +
+153                               Strävar hela tiden efter tillfällen att roa och glädja andra | +
+154                                           Vill vara glädjespridaren oavsett vad som händer | +
+155                                            Uppskattar stunden när andra gått hem för dagen | -
+156                                         Stannar kvar när alla andra har gått hem för dagen | -
+157                                   Gillar att befinna mig på platser där man får vara ensam | -
+158                                        Befinner mig ofta på platser där man får vara ensam | -
+159                                                     Vill ständigt ha människor omkring mig | +
+160                                                         Har ständigt människor omkring mig | +
+161                                                 Vill ständigt vara med vänner och kollegor | +
+162                                       Ser till att jag har vänner och kolleger omkring mig | +
+163                                                 Strävar efter att ha människor omkring mig | +
+164                                                  Föredrar att någon gång vara på egen hand | -
+165                                              Tycker om när jag kan göra saker på egen hand | -
+166                              Strävar efter att behålla kontakten med människor jag träffar | +
+167                                        Vill gärna att det finns andra människor i närheten | +
+168                                       Vill ständigt ha människor omkring mig att umgås med | +
+169                                                            Gillar att då och då vara ensam | -
+170                                         Vill oftast ha människor omkring mig att umgås med | +
+171                                            Ibland behöver jag en paus i umgänget med andra | -
+172                                                Vill ständigt umgås med vänner och kollegor | +
+173                                           Är utåtriktad och umgås med människor hela tiden | +
+174                               Är utåtriktad och vill umgås med människor precis hela tiden | +
+175                                           Kan tröttna på att ha många kamrater omkring mig | -
+176                                      Är utåtriktad och vill umgås med människor hela tiden | +
+177                                               Klarar mig bra med ett mindre antal kompisar | +
+178                                                Klarar mig bra med ett litet antal kompisar | -
+179                                             Trivs med stunden när andra gått hem för dagen | -
+180                                               Strävar efter att ha mycket folk omkring mig | +
+181                              Saknar ibland den riktiga entusiasmen för att träffa kompisar | -
+182                                                    Kan ibland gilla att vara för mig själv | -
+183                                                               Njuter av mitt eget sällskap | -
+184                               Väljer någon gång att vara själv framför att träffa kompisar | -
+185                                        Vill jämt träffas och umgås med vänner och kollegor | +
+186                                         Träffas och umgås ständigt med vänner och kollegor | +
+187                                               Känner mig tillfreds även med att vara själv | -
+188                                        Vill ofta träffas och umgås med vänner och kollegor | +
+189                        Försöker se till att jag har vänner omkring mig så ofta som möjligt | +
+190                                     Trivs bra även med få eller inga människor omkring mig | -
+191                                                 Har vänner omkring mig så ofta som möjligt | +
+192                                     Tycker ibland att ensamhet är ett attraktivt tillstånd | -
+193                                             Pratar hellre med några få än många på en fest | -
+194                                 Känner rätt ofta behov av att få vara för mig själv en tid | -
+195                                             Har inget stort behov av att ha många kompisar | -
+196                                            Agerar inte för att jag skall få många kompisar | -
+197                                     Uppskattar att hela tiden skapa nya vänskapsrelationer | +
+198                                             Har stort behov att ha kontakt med mina vänner | +
+199                                Gillar att befinna mig på platser med helt utan mina vänner | -
+200                                              Kan känna behov av att få vara för mig själv  | -
+ [ reached 'max' / getOption("max.print") -- omitted 934 rows ]

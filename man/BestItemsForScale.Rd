@@ -14,7 +14,7 @@ BestItemsForScale(object, targetObject = NULL, method = "mean")
 \item{method}{which method to create the scales, mean default}
 }
 \value{
-Psychometric object only items that correlate most strong with their scale
+Psychometric object with items that correlate most strongly with their scale
 }
 \description{
 BestItemsForScale

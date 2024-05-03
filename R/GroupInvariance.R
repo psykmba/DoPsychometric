@@ -110,7 +110,7 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     }
     res <- list()
 
-    for(scale in scale)
+    for(scale in subscales)
     {
       dataFrames <- ScaleItemFrames[[scale]]
       dataFrames <- MakeParcels(dataFrames)
@@ -304,7 +304,7 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
                        estimator=estimator, group = names(group), group.equal = invariance))
   }
   # object <- DeleteItems(object, delVar)
-  subScaleData <- GetItemWithParcels(scales, object$ScaleItemFrames)
+  subScaleData <- GetItemWithParcels(names(object$ScaleItemFrames[scale]), object$ScaleItemFrames)
   ordCommand <- c()
   if (isTRUE(ordered))
     ordCommand <- names(getDataFrameSubScale(subScaleData))
@@ -333,7 +333,8 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
   {
     browser()
     models <- list(fit.configural = simpModel1, fit.loadings = simpModel2)
-    print(partialInvariance(models,  type = "metric"))
+ # This is not ready yet
+       # print(partialInvariance(models,  type = "metric"))
   simpModel3 <- GetSimpleModel(scale, subScaleData, ordCommand,
                                    group = object$OtherVariables[group],
                                    invariance =  c("loadings", "intercepts"),
@@ -343,11 +344,11 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
                                    invariance =  c("loadings", "intercepts", "residuals" ),
                                    corr = T)
   }
-  print(anova(simpModel1,simpModel2,simpModel3,simpModel4))
+  print(lavaan::anova(simpModel1,simpModel2,simpModel3,simpModel4))
   object$RCommands <- commands
   class(object) <- c("GroupInvariance", "Psychometric")
   object$ResultList <- list(simpModel1, simpModel2,simpModel3,simpModel4)
-  names(object$ResultList) <- cs(simpModel1, simpModel2,simpModel3,simpModel4)
+  names(object$ResultList) <- psych::cs(simpModel1, simpModel2,simpModel3,simpModel4)
 
   return(object)
 

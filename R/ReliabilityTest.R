@@ -57,7 +57,34 @@ GetReliabilityTest <- function(object, what = "Alpha", check = T, imp = "NULL", 
     return(res)
 
   }
-  if (what == "Alpha")
+  if (what == "LeaveOneOut")
+  {
+    allres <- data.frame(matrix(ncol = 5, nrow = 0))
+    for (scale in object$ScaleItemFrames)
+    {
+      res <- list()
+      for (index in 1:length(scale))
+      {
+        m <- mean(scale[[index]], na.rm = T)
+        sd <- sd(scale[[index]], na.rm = T)
+        rm <- rowMeans(scale[-index], na.rm = T)
+        c <- stats::cor(rm, scale[[index]], use = "pairwise.complete.obs")
+        if (is.null(object$ItemDictionary[[names(scale[index])]]))
+          itemText <- "No text"
+        else
+          itemText <- object$ItemDictionary[[names(scale[index])]]
+        allres <- rbind(allres, list(names(scale[index]),m,sd,c, itemText))
+      }
+
+    }
+    x <- c("Item","Mean", "SD", "LeaveOneOut", "ItemText")
+    colnames(allres) <- x
+    return(allres)
+
+
+  }
+
+  else if (what == "Alpha")
   {
     resList2 <- lapply(object$ScaleItemFrames, FUN = function(x) {return(psych::alpha(x, check.keys = check))})
     printres <- as.data.frame(lapply(resList2, FUN = function(x) return(x$total$raw_alpha)))

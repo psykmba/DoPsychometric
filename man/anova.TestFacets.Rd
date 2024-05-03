@@ -4,7 +4,7 @@
 \alias{anova.TestFacets}
 \title{anova TestFacets}
 \usage{
-\method{anova}{TestFacets}(object, ...)
+anova.TestFacets(object, ...)
 }
 \arguments{
 \item{object}{an object of class TestFacets}
