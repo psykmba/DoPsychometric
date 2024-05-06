@@ -17,7 +17,9 @@
 #' @details The GetPsychometric functions create a class that can be used to simplify
 #' psychometric evaluation of a scale or an inventory. The function takes a dataframe
 #' with items that are automatically aggregated to scales based on one of two different
-#' methods.
+#' methods. When you have the Psychometric object you can do a number of
+#' psychometric analyses, and when you are satisfied you can save the file and
+#' use the scales (and items and other variables) in R or another program.
 #'
 #' 1. Either you name the item columns in a consistent way based on the scale names
 #' you like to have, e.g., all items from the extraversion scale starts with 'extr'
@@ -339,7 +341,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     {
 
       res <- cbind(res, rowMeans(as.data.frame(frames[[index]]), na.rm = T))
-        RCommands <<- append(RCommands, list(paste("Data$",nameV[index], "<- rowMeans(Data[c(", GetColNames(nameV[index]), ")],na.rm = TRUE)\n", sep = "")))
+        RCommands <<- append(RCommands, list(paste("Data$",nameV[index], "<- rowMeans(Data[psych::cs(", GetColNames(nameV[index]), ")],na.rm = TRUE)\n", sep = "")))
     }
     res <- as.data.frame(res)
     row.names(res) <- 1:nrow(res)

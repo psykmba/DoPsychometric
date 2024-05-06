@@ -54,7 +54,9 @@ Makes it simple to do basic psychometrics of scales
 The GetPsychometric functions create a class that can be used to simplify
 psychometric evaluation of a scale or an inventory. The function takes a dataframe
 with items that are automatically aggregated to scales based on one of two different
-methods.
+methods. When you have the Psychometric object you can do a number of
+psychometric analyses, and when you are satisfied you can save the file and
+use the scales (and items and other variables) in R or another program.
 \enumerate{
 \item Either you name the item columns in a consistent way based on the scale names
 you like to have, e.g., all items from the extraversion scale starts with 'extr'

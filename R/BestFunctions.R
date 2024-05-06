@@ -244,4 +244,49 @@ BestItemsForScale <- function(object, targetObject = NULL, method = "mean")
 }
 
 
+#' bestDiscriminantItem
+#'
+#' @param object Psychometric object
+#' @param mainScale Scale to test which items are best
+#' @param discriminantScales which scales to discriminate from
+#' @return sorted vector of items with highest discrimination first
+#' @export
+bestDiscriminantItem <- function(object, mainScale, discriminantScales) {
+  UseMethod("bestDiscriminantItem",object)
+}
+
+
+#' bestDiscriminantItem
+#'
+#' @param object Psychometric object
+#' @param mainScale Scale to test which items are best
+#' @param discriminantScales which scales to discriminate from
+#' @return sorted vector of items with highest discrimination first
+#' @export
+bestDiscriminantItem <- function(object, mainScale, discriminantScales)
+{
+  res <- c()
+
+  getSubScaleNames <- function(subScales)
+  {
+    res <- ""
+    for (subScale in names(subScales))
+    {
+      res <- paste(res, subScale, " + ")
+    }
+    return(substr(res, 1, stringr::str_length(res)-2))
+  }
+
+  items <- object$ScaleItemFrames[[mainScale]]
+  data <- cbind(discriminantScales, items)
+  n <- names(items)
+  for (item in n)
+  {
+    pred <- summary(lm(as.formula(paste(item,"~", paste(getSubScaleNames(discriminantScales)),
+                                collapse = "")), data = data, na))
+    res <-c(res, pred$r.squared)
+  }
+  names(res) <- n
+  return(sort(res))
+}
 
