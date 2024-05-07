@@ -9,7 +9,7 @@
 #' @export
 splitP <- function(object, f = NULL, group, ...)
 {
-  UseMethod("split", object)
+  UseMethod("splitP", object)
 }
 #' Split Psychometric
 #'

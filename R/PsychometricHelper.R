@@ -7,7 +7,7 @@
 #' @export
 filterP.Psychometric<-function(object, ...)
 {
-  UseMethod("filter", object)
+  UseMethod("filterP", object)
 }
 
 #' filter
@@ -35,7 +35,7 @@ filterP.Psychometric<-function(object, ...)
   object$OriginalData <- dplyr::filter(object$OriginalData, allFrame$tmyFilter)
   for(index in 1:length(object$ScaleItemFrames))
     object$ScaleItemFrames[[index]] <-
-              dplyr::filter(object$ScaleItemFrames[[index]], allFrame$tmyFilter)
+    dplyr::filter(object$ScaleItemFrames[[index]], allFrame$tmyFilter)
   return(object)
 }
 
@@ -349,13 +349,29 @@ writeP <- function(object, File, colnames = T, rownames = F) {
 writeP.Psychometric <- function(object, File, colnames = T, rownames = F)
 {
   write.table(x = getData(object),file = File, col.names = colnames,
-                   row.names = rownames)
+              row.names = rownames)
   return(NULL)
 
 }
 
 
-#' Title
+#' getSubScaleNames
+#'
+#' @param object a Psychometric object
+#'
+#' @return a list of all names starting with the
+#' @details When the ScaleItemFrames is created it changes the variable names of
+#' the items. This functions return all the names together with the scale names.
+#' The functions can be used to check that everything has been defined correctly.
+#' @export
+getSubScaleNames <- function(object)
+  writeP <- function(object, File, colnames = T, rownames = F) {
+    UseMethod("getSubScaleNames", object)
+  }
+
+
+
+#' getSubScaleNames
 #'
 #' @param object a Psychometric object
 #'
