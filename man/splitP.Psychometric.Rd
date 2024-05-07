@@ -2,7 +2,7 @@
 % Please edit documentation in R/Split.R
 \name{splitP.Psychometric}
 \alias{splitP.Psychometric}
-\title{Split Psychometric}
+\title{splitP Psychometric}
 \usage{
 \method{splitP}{Psychometric}(object, f = NULL, group, ...)
 }

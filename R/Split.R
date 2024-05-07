@@ -11,7 +11,7 @@ splitP <- function(object, f = NULL, group, ...)
 {
   UseMethod("splitP", object)
 }
-#' Split Psychometric
+#' splitP Psychometric
 #'
 #' Makes it simple to work with groups
 #' @param object A Psychometric object
