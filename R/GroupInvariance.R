@@ -254,6 +254,21 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     }
     return(data)
   }
+  DeleteItems <- function(object, delVar)
+  {
+    for (x in 1:length(object$ScaleItemFrames))
+    {
+      for (v in delVar)
+      {
+        if (v %in% names(object$ScaleItemFrames[[x]]))
+        {
+          object$ScaleItemFrames[[x]] <- object$ScaleItemFrames[[x]][ , -which(names(object$ScaleItemFrames[[x]]) %in% v)]
+        }
+      }
+    }
+    return(object)
+  }
+
   GetSimpleModel <- function(scales, subScaleData, ordered, corr = F,
                              group = NULL, invariance = NULL)
   {
@@ -303,7 +318,7 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     return(lavaan::cfa(model = lines, data = dataFrame, ordered = ordered,
                        estimator=estimator, group = names(group), group.equal = invariance))
   }
-  # object <- DeleteItems(object, delVar)
+  object <- DeleteItems(object, delVar)
   subScaleData <- GetItemWithParcels(names(object$ScaleItemFrames[scale]), object$ScaleItemFrames)
   ordCommand <- c()
   if (isTRUE(ordered))
@@ -331,7 +346,6 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
   }
   else
   {
-    browser()
     models <- list(fit.configural = simpModel1, fit.loadings = simpModel2)
  # This is not ready yet
        # print(partialInvariance(models,  type = "metric"))
@@ -347,7 +361,10 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
   print(lavaan::anova(simpModel1,simpModel2,simpModel3,simpModel4))
   object$RCommands <- commands
   class(object) <- c("GroupInvariance", "Psychometric")
-  object$ResultList <- list(simpModel1, simpModel2,simpModel3,simpModel4)
+  object$ResultList <- list(lavaan::summary(simpModel1),
+                            lavaan::summary(simpModel2),
+                            lavaan::summary(simpModel3),
+                            lavaan::summary(simpModel4))
   names(object$ResultList) <- psych::cs(simpModel1, simpModel2,simpModel3,simpModel4)
 
   return(object)

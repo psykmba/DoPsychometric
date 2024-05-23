@@ -1,26 +1,14 @@
-#' Split Psychometric
+#' split Psychometric
 #'
 #' Makes it simple to work with groups
 #' @param object A Psychometric object
 #' @param f  A function to apply to the groups
+#' @param drop logical indicating if levels that do not occur should be dropped (if f is a factor or a list).
 #' @param group  A group variables among other variables
 #' @param ... more arguments to the f function
 #' @return all results from the f function
 #' @export
-splitP <- function(object, f = NULL, group, ...)
-{
-  UseMethod("splitP", object)
-}
-#' splitP Psychometric
-#'
-#' Makes it simple to work with groups
-#' @param object A Psychometric object
-#' @param f  A function to apply to the groups
-#' @param group  A group variables among other variables
-#' @param ... more arguments to the f function
-#' @return all results from the f function
-#' @export
-splitP.Psychometric <- function(object, f = NULL, group, ...)
+split.Psychometric <- function(x, f, drop = FALSE,  ...)
 {
   GetExtraArgument <- function(a, default = NULL)
   {
@@ -30,6 +18,12 @@ splitP.Psychometric <- function(object, f = NULL, group, ...)
     else
       return(default)
 
+  }
+  group <- GetExtraArgument("Grupp", NULL)
+  if (is.null(group))
+      {
+      print("No group argument to the split function")
+        return()
   }
   splitDataFrames <- split(object$OriginalData, object$OriginalData[c(group)])
   results <- list()

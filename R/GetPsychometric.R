@@ -136,6 +136,7 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   }
   CreateItemNames <- function()
   {
+    browser
     index <- 1
     for (scale in scaleNames)
     {
@@ -305,7 +306,8 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
          {
            name <- names(frame[index])
             frame[index] <- ifelse(load[index] < 0,
-                                  Reverse(frame[index], resp[[1]], oldNames[index]))
+                                  Reverse(frame[index], resp[[1]], oldNames[index]),
+                                  load[index])
          }
           return(frame)
       }
@@ -325,8 +327,8 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
     {
        interm <- GetData(scaleNames[index])
        oldNames <- names(interm)
-       # interm <- ChangeOriginalDataNames(interm)
-       # interm <- getSignItemName(interm,scaleNames[index], itemLength )
+       #interm <- ChangeOriginalDataNames(interm)
+       #interm <- getSignItemName(interm,scaleNames[index], itemLength )
       resFrames <- append(resFrames, list(as.data.frame(GetReverse(interm, responses[index], oldNames))))
      }
     names(resFrames) <- scaleNames
@@ -420,4 +422,5 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   return(MyObject)
 
 }
+
 

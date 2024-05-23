@@ -205,6 +205,7 @@ namesP.Psychometric <- function(x)
 #' @param scales the scales that should be included in the result
 #'
 #' @return an Psychometric object with only the scales
+#' @export
 selectP <- function(object, scales)
 {
   UseMethod("selectP", object);
@@ -216,10 +217,60 @@ selectP <- function(object, scales)
 #' @param scales the scales that should be included in the result
 #'
 #' @return an Psychometric object with only the scales
+#' @export
 selectP.Psychometric <- function(object, scales)
 {
   newObject <- object
   newObject$ScaleFrame <- object$ScaleFrame[scales]
   newObject$ScaleItemFrames <- object$ScaleItemFrames[scales]
+  newObject$ResponseScales <- object$ResponseScales[scales]
+  res <- list()
+  for(com in newObject$RCommands)
+  {
+    for(scale in scales)
+    {
+      if (!is.na(stringr::str_match(com,scale)))
+        res <- append(res, list(com))
+    }
+  }
+  newObject$RCommands <- res
+  newObject$ScaleNames <- scales
+  newObject$ResultList <- list()
   return(newObject)
+}
+
+
+#' select'[]'
+#'
+#' @param x a Psychometric object
+#' @param i the index
+#'
+#' @return an Psychometric object only the indexed rows
+#' @export
+`[.Psychometric` <- function(x,i)
+{
+  UseMethod("[", object);
+}
+
+#' select'[]'
+#'
+#' @param x a Psychometric object
+#' @param i the index
+#'
+#' @return an Psychometric object only the indexed rows
+#' @export
+`[.Psychometric` <- function(x,i)
+{
+  argnames <- sys.call()
+  form <- as.character(argnames[3])
+ browser()
+   param <- rlang::parse_expr(form)
+   return(filterP(x,villkor = form))
+   data <- x
+  data$ScaleFrame <- x$ScaleFrame[i,]
+  data$OtherVariables <- x$OtherVariables[i,]
+  data$ScaleItemFrames <- lapply(x$ScaleItemFrames, FUN = function(d)
+    return(d[i,]))
+  data$OriginalData <- x$OriginalData[i,]
+  return(data)
 }

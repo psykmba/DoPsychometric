@@ -1,28 +1,25 @@
-#' filter
-#'
-#' @param object a Psychometric object
-#' @param ... extra argument filter
-#'
-#' @return filtered object
-#' @export
-filterP.Psychometric<-function(object, ...)
+filterP<-function(object, ...)
 {
-  UseMethod("filterP", object)
-}
+  GetExtraArgument <- function(a, default)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(default)
 
-#' filter
-#'
-#' @param object a Psychometric object
-#' @param ... extra argument filter
-#'
-#' @return filtered object
-#' @export
-filterP.Psychometric<-function(object, ...)
-{
+  }
+
   argnames <- sys.call()
-  form <- as.character(argnames[3])
-  allFrame <- cbind(object$ScaleFrame, object$OtherVariables)
+  browser()
+
+  if (typeof(argnames[3]) == "language")
+      form <- as.character(argnames[3])
+  else
+      form <- GetExtraArgument("villkor", "")
+   allFrame <- cbind(object$ScaleFrame, object$OtherVariables)
   myFilter <- "myFilter"
+
   allFrame <-  allFrame %>% dplyr::mutate(!!paste("t", myFilter, sep = "") := !!rlang::parse_expr(form))
   if (nrow(object$ScaleFrame) != length(allFrame$tmyFilter))
   {
