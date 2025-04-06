@@ -5,8 +5,6 @@
 \title{select'[]'}
 \usage{
 \method{[}{Psychometric}(x, i)
-
-\method{[}{Psychometric}(x, i)
 }
 \arguments{
 \item{x}{a Psychometric object}
@@ -15,11 +13,7 @@
 }
 \value{
 an Psychometric object only the indexed rows
-
-an Psychometric object only the indexed rows
 }
 \description{
-select'[]'
-
 select'[]'
 }

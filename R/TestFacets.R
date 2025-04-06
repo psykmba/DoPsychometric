@@ -12,13 +12,14 @@
 #' @param estimator any estimator that is admissible for cfa
 #' @param zeroVar var set to zero error variance
 #' @param delVar delete some variables in a previous model
+#' @param testBifactor test whether facets are unique from single bi-factor
 #'
 #' @return TestFacet model
 #' @export
 TestFacets <- function(object,scale, subscales, fixed = F,
                        fixedScales = F,parcel = F, fixedSubScales = c(),
                        tries = 1, estimator = "ML", zeroVar = c(),
-                       delVar = c()) {
+                       delVar = c(), testBifactor = FALSE) {
   UseMethod("TestFacets", object)
 }
 
@@ -35,13 +36,14 @@ TestFacets <- function(object,scale, subscales, fixed = F,
 #' @param estimator any estimator that is admissible for cfa
 #' @param zeroVar var set to zero error variance
 #' @param delVar delete some variables in a previous model
+#' @param testBifactor test whether facets are unique from single bi-factor
 #'
 #' @return a TestFacet model
 #' @export
 TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
                                     fixedScales = F,parcel = F,fixedSubScales = c(),
                                     tries = 1, estimator = "ML", zeroVar = c(),
-                                    delVar = c())
+                                    delVar = c(), testBifactor = FALSE)
 {
   commands <- list()
   GetItemWithParcels <- function(subscales,ScaleItemFrames)
@@ -408,6 +410,7 @@ TestFacets.Psychometric <- function(object, scale, subscales, fixed = F,
    }
     return(object)
   }
+
   MainCall <- function()
   {
     object <- DeleteItems(object, delVar)

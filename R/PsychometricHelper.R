@@ -11,21 +11,24 @@ filterP<-function(object, ...)
   }
 
   argnames <- sys.call()
-  browser()
-
-  if (typeof(argnames[3]) == "language")
-      form <- as.character(argnames[3])
-  else
-      form <- GetExtraArgument("villkor", "")
+   form <- GetExtraArgument("villkor", "")
    allFrame <- cbind(object$ScaleFrame, object$OtherVariables)
-  myFilter <- "myFilter"
 
-  allFrame <-  allFrame %>% dplyr::mutate(!!paste("t", myFilter, sep = "") := !!rlang::parse_expr(form))
-  if (nrow(object$ScaleFrame) != length(allFrame$tmyFilter))
+  if (length(form) != nrow(allFrame) && typeof(argnames[3]) == "language")
   {
-    print("Logical vector not the same length as frames")
-    return()
+    allFrame$tmyFilter <- 0
+    form <- as.character(form)
+
+    allFrame <-  allFrame %>% dplyr::mutate(tmyFilter := !!rlang::parse_expr(form))
+    if (nrow(object$ScaleFrame) != length(allFrame$tmyFilter))
+    {
+      print("Logical vector not the same length as frames")
+      return()
+    }
+
   }
+  else
+    allFrame$tmyFilter <- form
   allFrame <- allFrame %>% tidyr::replace_na(list(tmyFilter = FALSE))
   object$ScaleFrame <- dplyr::filter(object$ScaleFrame, allFrame$tmyFilter)
   object$OtherVariables <- dplyr::filter(object$OtherVariables, allFrame$tmyFilter)
@@ -174,7 +177,7 @@ handleOutliers.Psychometric <- function(object, method = "Mahalanobis", limit = 
   if (method == "Mahalanobis") {
     scaleCor <- stats::cov(noMissObject$ScaleFrame)
     Outliers <- stats::mahalanobis(noMissObject$ScaleFrame, colMeans(noMissObject$ScaleFrame), scaleCor)
-    object <- dplyr::filter(noMissObject, Outliers < stats::qchisq(1-limit, length(object$ScaleNames)))
+    object <- filterP(noMissObject, villkor = Outliers < stats::qchisq(1-limit, length(object$ScaleNames)))
     return(object)
   }
   if (method == "SD")

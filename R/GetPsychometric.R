@@ -389,22 +389,23 @@ GetPsychometric <- function(data, scaleNames, responseScale = list(c(1,5)),
   {
     data <- CreateItemNames()
    }
-  IDVar <- NULL
-  if (!is.null(data[[idVar]]))
-  {
-    IDVar <- data[[idVar]]
-    data <- dplyr::select(data, -idVar)
-  }
-  else
-  {
-    IDVar <- as.data.frame(1:nrow(data))
-
-  }
   RCommands <- list()
-  otherVariables <- GetNonItemVar()
   responseScale <- expandResponsScale(responseScale, scaleNames)
   scaleItemFrames <- GetScaleItemFrames(data, responseScale)
    scaleFrames <- GetScalesFrame(scaleItemFrames, scaleNames)
+   IDVar <- NULL
+   if (!is.null(data[[idVar]]))
+   {
+     IDVar <- data[[idVar]]
+     data <- dplyr::select(data, -idVar)
+   }
+   else
+   {
+     IDVar <- as.data.frame(1:nrow(data))
+
+   }
+   otherVariables <- GetNonItemVar()
+
   # if (is.null(itemList))
   #    data <- ChangeOriginalDataNames(data)
   names(scaleItemFrames) <- scaleNames

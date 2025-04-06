@@ -240,17 +240,6 @@ selectP.Psychometric <- function(object, scales)
 }
 
 
-#' select'[]'
-#'
-#' @param x a Psychometric object
-#' @param i the index
-#'
-#' @return an Psychometric object only the indexed rows
-#' @export
-`[.Psychometric` <- function(x,i)
-{
-  UseMethod("[", object);
-}
 
 #' select'[]'
 #'
@@ -263,14 +252,28 @@ selectP.Psychometric <- function(object, scales)
 {
   argnames <- sys.call()
   form <- as.character(argnames[3])
- browser()
    param <- rlang::parse_expr(form)
-   return(filterP(x,villkor = form))
-   data <- x
-  data$ScaleFrame <- x$ScaleFrame[i,]
-  data$OtherVariables <- x$OtherVariables[i,]
-  data$ScaleItemFrames <- lapply(x$ScaleItemFrames, FUN = function(d)
-    return(d[i,]))
-  data$OriginalData <- x$OriginalData[i,]
-  return(data)
-}
+   browser()
+   tryCatch(
+     {
+       i <- eval(param)
+       data <- x
+       data$ScaleFrame <- x$ScaleFrame[i,]
+       data$OtherVariables <- x$OtherVariables[i,]
+       data$ScaleItemFrames <- lapply(x$ScaleItemFrames, FUN = function(d)
+         return(d[i,]))
+       data$OriginalData <- x$OriginalData[i,]
+       return(data)
+
+     },
+     error = function(con)
+     {
+       return(filterP(x,villkor = param))
+
+     },
+     finally = function(con)
+     {
+       print("Ready")
+     }
+   )
+ }
