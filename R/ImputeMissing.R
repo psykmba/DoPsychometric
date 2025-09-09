@@ -50,6 +50,21 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
       return(mice::complete(imputed))
 
     }
+    if (handleMissing == "Polr")
+    {
+
+
+      # Step 3: Run mice on this subset
+      dataToHandle[] <- lapply(dataToHandle, function(x) {
+        if (all(is.na(x))) return(x)
+        if (is.numeric(x)) return(ordered(x))
+        x
+      })
+      imputed <- mice::mice(dataToHandle, m = 1, method = "polr", printFlag=pf)
+
+       return(mice::complete(imputed))
+
+    }
     if (handleMissing == "Regression")
     {
       imputed <- mice::mice(dataToHandle, m = 1, method = "norm.predict", printFlag=pf)
@@ -102,6 +117,8 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
     res <- NULL
     for (index in 1:length(frames))
     {
+      frames[[index]] <- as.data.frame(sapply(frames[[index]], as.numeric))
+
       res <- cbind(res, rowMeans(as.data.frame(frames[index]), na.rm = F))
     }
     res <- as.data.frame(res)
@@ -131,3 +148,47 @@ imputeMissing.Psychometric <- function(object, handleMissing = "Listwise", scale
 
   return(object)
 }
+
+#' Get number of missing
+#'
+#' Makes it simple to do basic psychometrics
+#' @param object Psychometric object
+#' @param items = F get number of missing on item level
+#' @param scales T = do missing on scale level F = on item level
+#' @return a vector with names for scales and items, and number of missing in the cells
+#' @details This is to chcek for missing to be sued buy other functions
+#' @export
+
+getMissing <- function(object, items = F, scales = T, ...) {
+  UseMethod("getMissing", object)
+}
+
+#' @export
+getMissing.Psychometric <- function(object, items = F, scales = T, ...)
+{
+  if (scales == T)
+  {
+    res <- sapply(object$ScaleFrame, function(x) sum(is.na(x)))
+    return(res)
+  }
+  else
+  {
+    if (isTRUE(items))
+    {
+      res <- list()
+      for(index in 1:length(object$ScaleItemFrames))
+      {
+        res[[index]] <- sapply(object$ScaleItemFrames[[index]], function(x) sum(is.na(x)))
+      }
+      names(res) <- object$ScaleNames
+      return(res)
+    }
+    else
+    {
+      res <- sapply(object$ScaleFrame, function(x) sum(is.na(x)))
+      return(res)
+    }
+
+  }
+}
+

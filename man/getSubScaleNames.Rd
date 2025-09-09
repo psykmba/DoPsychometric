@@ -12,6 +12,8 @@ getSubScaleNames(object)
 }
 \arguments{
 \item{object}{a Psychometric object}
+
+\item{scales}{if NULL all scales otherswise a subset of scales in a Psychometric object}
 }
 \value{
 a list of all names starting with the

@@ -8,7 +8,7 @@ GroupInvariance(
   object,
   scale,
   group,
-  ordered = F,
+  ordered = c(),
   fixed = F,
   fixedScales = F,
   parcel = F,

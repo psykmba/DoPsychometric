@@ -4,7 +4,6 @@
 #' @param object A Psychometric object
 #' @param f  A function to apply to the groups
 #' @param drop logical indicating if levels that do not occur should be dropped (if f is a factor or a list).
-#' @param group  A group variables among other variables
 #' @param ... more arguments to the f function
 #' @return all results from the f function
 #' @export

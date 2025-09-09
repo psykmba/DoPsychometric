@@ -3,13 +3,14 @@
 #' getSubScaleNames
 #'
 #' @param object a Psychometric object
+#' @param scales if NULL all scales otherswise a subset of scales in a Psychometric object
 #'
 #' @return a list of all names starting with the
 #' @details When the ScaleItemFrames is created it changes the variable names of
 #' the items. This functions return all the names together with the scale names.
 #' The functions can be used to check that everything has been defined correctly.
 #' @export
-getSubScaleNames <- function(object)
+getSubScaleNames <- function(object, scales = NULL)
 {
   UseMethod("getSubScaleNames", object)
 }
@@ -18,15 +19,17 @@ getSubScaleNames <- function(object)
 #' getSubScaleNames
 #'
 #' @param object a Psychometric object
+#' @param scales if NULL all scales otherswise a subset of scales in a Psychometric object
 #'
 #' @return a list of all names starting with the
 #' @details When the ScaleItemFrames is created it changes the variable names of
 #' the items. This functions return all the names together with the scale names.
 #' The functions can be used to check that everything has been defined correctly.
 #' @export
-getSubScaleNames.Psychometric <- function(object)
+getSubScaleNames.Psychometric <- function(object, scales = NULL)
 {
   res <- list()
+  if (scales == NULL) {
   for(index in 1:length(object$ScaleNames))
   {
     nam2 <-  names(object$ScaleItemFrames[[index]])
@@ -34,6 +37,21 @@ getSubScaleNames.Psychometric <- function(object)
 
   }
   names(res) <- object$ScaleNames
+  }
+  else
+  {
+    for(scale in scales)
+    {
+      if (scale %in% object$ScaleNames)
+      {
+        index <- which(object$ScaleNames == scale)
+        nam2 <-  names(object$ScaleItemFrames[[index]])
+        res <- append(res, list(c(nam2)))
+        names(res)[length(res)] <- scale
+      }
+    }
+
+  }
   return(res)
 }
 
@@ -253,7 +271,6 @@ selectP.Psychometric <- function(object, scales)
   argnames <- sys.call()
   form <- as.character(argnames[3])
    param <- rlang::parse_expr(form)
-   browser()
    tryCatch(
      {
        i <- eval(param)
@@ -262,7 +279,7 @@ selectP.Psychometric <- function(object, scales)
        data$OtherVariables <- x$OtherVariables[i,]
        data$ScaleItemFrames <- lapply(x$ScaleItemFrames, FUN = function(d)
          return(d[i,]))
-       data$OriginalData <- x$OriginalData[i,]
+        data$OriginalData <- x$OriginalData[i,]
        return(data)
 
      },

@@ -15,7 +15,8 @@
   tries = 1,
   estimator = "ML",
   zeroVar = c(),
-  delVar = c()
+  delVar = c(),
+  testBifactor = FALSE
 )
 }
 \arguments{
@@ -40,6 +41,8 @@
 \item{zeroVar}{var set to zero error variance}
 
 \item{delVar}{delete some variables in a previous model}
+
+\item{testBifactor}{test whether facets are unique from single bi-factor}
 }
 \value{
 a TestFacet model

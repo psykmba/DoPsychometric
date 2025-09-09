@@ -1,3 +1,29 @@
+
+#' filterV
+#' @param object a Psychometric object to work with
+#' @param filterVector a logical vector
+#' @return an updated Psychometric object
+#' @export
+filterV <- function(object,filterVector) {
+  UseMethod("filterV", object)
+}
+
+#' filterV
+#' @param object a Psychometric object to work with
+#' @param filterVector a logical vector
+#' @return an updated Psychometric object
+#' @export
+#'
+filterV <- function(object,filterVector){
+  object$ScaleFrame <- dplyr::filter(object$ScaleFrame, filterVector)
+  object$OtherVariables <- dplyr::filter(object$OtherVariables, filterVector)
+  object$OriginalData <- dplyr::filter(object$OriginalData, filterVector)
+  for(index in 1:length(object$ScaleItemFrames))
+    object$ScaleItemFrames[[index]] <-
+    dplyr::filter(object$ScaleItemFrames[[index]], filterVector)
+  return(object)
+}
+
 filterP<-function(object, ...)
 {
   GetExtraArgument <- function(a, default)

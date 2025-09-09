@@ -15,11 +15,19 @@
 #'
 #' @return TestFacet model
 #' @export
-GroupInvariance <- function(object,scale, group,ordered = F,fixed = F,
-                       fixedScales = F,parcel = F,fixedSubScales = c(),
-                       tries = 1, estimator = "ML", zeroVar = c(),
-                       delVar = c()) {
-  UseMethod("TestFacets", object)
+GroupInvariance <- function(object,
+                            scale,
+                            group,
+                            ordered = c(),
+                            fixed = F,
+                            fixedScales = F,
+                            parcel = F,
+                            fixedSubScales = c(),
+                            tries = 1,
+                            estimator = "ML",
+                            zeroVar = c(),
+                            delVar = c()) {
+  UseMethod("GroupInvariance", object)
 }
 
 #' Facet test with CFA
@@ -39,29 +47,35 @@ GroupInvariance <- function(object,scale, group,ordered = F,fixed = F,
 #'
 #' @return a Invariance model
 #' @export
-GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixed = F,
-                                    fixedScales = F,parcel = F,fixedSubScales = c(),
-                                    tries = 1, estimator = "ML", zeroVar = c(),
-                                    delVar = c())
+GroupInvariance.Psychometric <- function(object,
+                                         scale,
+                                         group,
+                                         ordered = c(),
+                                         fixed = F,
+                                         fixedScales = F,
+                                         parcel = F,
+                                         fixedSubScales = c(),
+                                         tries = 1,
+                                         estimator = "ML",
+                                         zeroVar = c(),
+                                         delVar = c())
 {
-  commands <- list()
-  GetItemWithParcels <- function(subscales,ScaleItemFrames)
+   commands <- list()
+  GetItemWithParcels <- function(subscales, ScaleItemFrames)
   {
     GetItemNum <- function(n, maxItems)
     {
       res <- maxItems
-      if ((n - (maxItems*2)) == (maxItems-1))
-        return(c(maxItems, maxItems*2, n))
+      if ((n - (maxItems * 2)) == (maxItems - 1))
+        return(c(maxItems, maxItems * 2, n))
       else
-        return(c(maxItems,  maxItems*2-1, n))
+        return(c(maxItems, maxItems * 2 - 1, n))
     }
-    GetRandomItemNum <- function( itemVector, nLength)
+    GetRandomItemNum <- function(itemVector, nLength)
     {
-
       itemNums <- sample(1:nLength, nLength, replace = F)
-      return(list(itemNums[1:itemVector[1]],
-                  itemNums[(itemVector[1]+1):itemVector[2]],
-                  itemNums[(itemVector[2]+1):itemVector[3]]))
+      return(list(itemNums[1:itemVector[1]], itemNums[(itemVector[1] + 1):itemVector[2]], itemNums[(itemVector[2] +
+                                                                                                      1):itemVector[3]]))
 
     }
     MakeParcels <- function(data)
@@ -71,16 +85,14 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
         s <- ncol(data) / 3
         numItemVector <- 0
         if (trunc(s) == s)
-          numItemVector <- c(s,s*2,s*3)
+          numItemVector <- c(s, s * 2, s * 3)
         else
         {
           maxItems <- trunc(s) + 1
           numItemVector <- GetItemNum(ncol(data), maxItems)
         }
-        randomParcelNum<- GetRandomItemNum( numItemVector, ncol(data))
-        return(list(data[randomParcelNum[[1]]],
-                    data[randomParcelNum[[2]]],
-                    data[randomParcelNum[[3]]]))
+        randomParcelNum <- GetRandomItemNum(numItemVector, ncol(data))
+        return(list(data[randomParcelNum[[1]]], data[randomParcelNum[[2]]], data[randomParcelNum[[3]]]))
       }
       else
       {
@@ -95,7 +107,7 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
       res <- data.frame(row.names = 1:nrow(data[[1]]))
       for (d in data)
       {
-        if(ncol(d) == 1)
+        if (ncol(d) == 1)
         {
           newColumn <- data.frame(d)
         }
@@ -110,7 +122,7 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     }
     res <- list()
 
-    for(scale in subscales)
+    for (scale in subscales)
     {
       dataFrames <- ScaleItemFrames[[scale]]
       dataFrames <- MakeParcels(dataFrames)
@@ -128,25 +140,25 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     {
       res <- paste(res, subScale, " + ")
     }
-    return(substr(res, 1, stringr::str_length(res)-2))
+    return(substr(res, 1, stringr::str_length(res) - 2))
   }
   getSubScaleNamesZero <- function(subScaleData)
   {
     res <- ""
     for (subScale in names(subScaleData))
     {
-      res <- paste(res, "0*",subScale, " + ", sep="")
+      res <- paste(res, "0*", subScale, " + ", sep = "")
     }
-    return(substr(res, 1, stringr::str_length(res)-2))
+    return(substr(res, 1, stringr::str_length(res) - 2))
   }
   getSubScaleNamesOne <- function(subScaleData)
   {
     res <- ""
     for (subScale in names(subScaleData))
     {
-      res <- paste(res, "1*",subScale, " + ", sep="")
+      res <- paste(res, "1*", subScale, " + ", sep = "")
     }
-    return(substr(res, 1, stringr::str_length(res)-2))
+    return(substr(res, 1, stringr::str_length(res) - 2))
   }
 
   getScaleNames <- function(scaleNames)
@@ -157,7 +169,7 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     {
       res <- paste(res, scale, " + ")
     }
-    return(substr(res, 1, stringr::str_length(res)-2))
+    return(substr(res, 1, stringr::str_length(res) - 2))
   }
   getScaleNamesOne <- function(scaleNames)
   {
@@ -165,15 +177,15 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
 
     for (scale in scaleNames)
     {
-      res <- paste(res, "1*",scale, " + ", sep = "")
+      res <- paste(res, "1*", scale, " + ", sep = "")
     }
-    return(substr(res, 1, stringr::str_length(res)-2))
+    return(substr(res, 1, stringr::str_length(res) - 2))
   }
 
-  getDataFrameSubScale <-function(subScaleData)
+  getDataFrameSubScale <- function(subScaleData)
   {
     dataFrame <- data.frame(row.names = 1:nrow(subScaleData[[1]]))
-    for(subScale in subScaleData)
+    for (subScale in subScaleData)
     {
       dataFrame <- cbind(dataFrame, subScale)
     }
@@ -184,10 +196,11 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
   {
     lines <- ""
     for (x in 1:length(subscales))
-      for(y in (x+1):length(subscales))
+      for (y in (x + 1):length(subscales))
       {
-        if (y<=length(subscales) && y != x)
-          lines <- paste(lines, subscales[x], "~~0*",subscales[y], "\n ", sep="")
+        if (y <= length(subscales) && y != x)
+          lines <- paste(lines, subscales[x], "~~0*", subscales[y], "\n ", sep =
+                           "")
       }
     return(lines)
   }
@@ -196,15 +209,15 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     lines <- ""
     for (z in zeroVar)
     {
-      lines <- paste(lines, z, "~~0*",z, "\n ", sep="")
+      lines <- paste(lines, z, "~~0*", z, "\n ", sep = "")
 
     }
     return (lines)
   }
-  CollapseNoLevelInGroup <- function(data,group)
+  CollapseNoLevelInGroup <- function(data, group)
   {
     res <- list()
-    for(index in 1:(length(data)-1))
+    for (index in 1:(length(data) - 1))
     {
       levelsMat <- table(data[[index]], data[[group]])
       d <- data[[index]]
@@ -212,21 +225,21 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
         CollapseBottom <- function(dCol, level)
         {
           ch <- dCol + 1
-          return(ifelse(dCol==as.numeric(level), ch, dCol))
+          return(ifelse(dCol == as.numeric(level), ch, dCol))
         }
-        CollapseTop <- function(dCol,level)
+        CollapseTop <- function(dCol, level)
         {
-          ch<-dCol-1
-          return(ifelse(dCol==as.numeric(level), ch, dCol))
+          ch <- dCol - 1
+          return(ifelse(dCol == as.numeric(level), ch, dCol))
         }
 
         flag  <- F
-        if (0 %in% levelsMat[1,])
+        if (0 %in% levelsMat[1, ])
         {
           d <- CollapseBottom(d, rownames(levelsMat)[1])
           flag <- T
         }
-        if (0 %in% levelsMat[nrow(levelsMat),])
+        if (0 %in% levelsMat[nrow(levelsMat), ])
         {
           rn <- rownames(levelsMat)
           d <- CollapseTop(d, rn[length(rn)])
@@ -238,8 +251,8 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
         {
           if (0 %in% table(d, data[[group]]))
           {
-             inZero <- 2
-            while(0 %in% table(d, data[[group]]))
+            inZero <- 2
+            while (0 %in% table(d, data[[group]]))
             {
               rn <- rownames(levelsMat)
               d = CollapseBottom(d, rn[inZero])
@@ -262,36 +275,38 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
       {
         if (v %in% names(object$ScaleItemFrames[[x]]))
         {
-          object$ScaleItemFrames[[x]] <- object$ScaleItemFrames[[x]][ , -which(names(object$ScaleItemFrames[[x]]) %in% v)]
+          object$ScaleItemFrames[[x]] <- object$ScaleItemFrames[[x]][, -which(names(object$ScaleItemFrames[[x]]) %in% v)]
         }
       }
     }
     return(object)
   }
 
-  GetSimpleModel <- function(scales, subScaleData, ordered, corr = F,
-                             group = NULL, invariance = NULL)
+  GetSimpleModel <- function(scales,
+                             subScaleData,
+                             ordered,
+                             corr = F,
+                             group = NULL,
+                             invariance = NULL)
   {
-
     lines <- ""
-    for(scale in names(subScaleData))
+    for (scale in names(subScaleData))
     {
-
       if (isTRUE(fixedScales))
       {
-        ind <-getSubScaleNamesOne(subScaleData[[scale]])
+        ind <- getSubScaleNamesOne(subScaleData[[scale]])
       }
       else if (scale %in% fixedSubScales)
       {
-        ind <-getSubScaleNamesOne(subScaleData[[scale]])
+        ind <- getSubScaleNamesOne(subScaleData[[scale]])
 
       }
       else
       {
-        ind <-getSubScaleNames(subScaleData[[scale]])
+        ind <- getSubScaleNames(subScaleData[[scale]])
       }
-      line <- paste(scale, "=~" , ind, "\n", sep=" ")
-      lines <- paste(lines, " ", line, sep=" ")
+      line <- paste(scale, "=~" , ind, "\n", sep = " ")
+      lines <- paste(lines, " ", line, sep = " ")
     }
     dep <-  getScaleNames(names(subScaleData))
     if (!isTRUE(corr))
@@ -312,60 +327,95 @@ GroupInvariance.Psychometric <- function(object, scale, group, ordered = F, fixe
     if (length(ordered > 0))
     {
       estimator = "DWLS"
-      dataFrame <- CollapseNoLevelInGroup(dataFrame,length(dataFrame))
+      dataFrame <- CollapseNoLevelInGroup(dataFrame, length(dataFrame))
     }
 
-    return(lavaan::cfa(model = lines, data = dataFrame, ordered = ordered,
-                       estimator=estimator, group = names(group), group.equal = invariance))
+    return(
+      lavaan::cfa(
+        model = lines,
+        data = dataFrame,
+        ordered = ordered,
+        estimator = estimator,
+        group = names(group),
+        group.equal = invariance
+      )
+    )
   }
+  browser()
   object <- DeleteItems(object, delVar)
   subScaleData <- GetItemWithParcels(names(object$ScaleItemFrames[scale]), object$ScaleItemFrames)
   ordCommand <- c()
   if (isTRUE(ordered))
     ordCommand <- names(getDataFrameSubScale(subScaleData))
-  else if(length(ordered) > 0)
+  else if (length(ordered) > 0)
     ordCommand <- ordered
-  simpModel1 <- GetSimpleModel(scale, subScaleData, ordCommand,
-                                   group = object$OtherVariables[group],
-                                   corr = T)
-  simpModel2 <- GetSimpleModel(scale, subScaleData, ordCommand,
-                                   group = object$OtherVariables[group],
-                                   invariance =  c("loadings"),
-                                   corr = T)
+  simpModel1 <- GetSimpleModel(
+    scale,
+    subScaleData,
+    ordCommand,
+    group = object$OtherVariables[group],
+    corr = T
+  )
+  simpModel2 <- GetSimpleModel(
+    scale,
+    subScaleData,
+    ordCommand,
+    group = object$OtherVariables[group],
+    invariance =  c("loadings"),
+    corr = T
+  )
   if (length(ordered) > 0)
   {
-    simpModel3 <- GetSimpleModel(scale, subScaleData, ordCommand,
-                                 group = object$OtherVariables[group],
-                                 invariance =  c("loadings", "thresholds"),
-                                 corr = T)
-    simpModel4 <- GetSimpleModel(scale, subScaleData, ordCommand,
-                                 group = object$OtherVariables[group],
-                                 invariance =  c("loadings", "thresholds", "residuals", "means" ),
-                                 corr = T)
+    simpModel3 <- GetSimpleModel(
+      scale,
+      subScaleData,
+      ordCommand,
+      group = object$OtherVariables[group],
+      invariance =  c("loadings", "thresholds"),
+      corr = T
+    )
+    simpModel4 <- GetSimpleModel(
+      scale,
+      subScaleData,
+      ordCommand,
+      group = object$OtherVariables[group],
+      invariance =  c("loadings", "thresholds", "residuals", "means"),
+      corr = T
+    )
 
   }
   else
   {
     models <- list(fit.configural = simpModel1, fit.loadings = simpModel2)
- # This is not ready yet
-       # print(partialInvariance(models,  type = "metric"))
-  simpModel3 <- GetSimpleModel(scale, subScaleData, ordCommand,
-                                   group = object$OtherVariables[group],
-                                   invariance =  c("loadings", "intercepts"),
-                                   corr = T)
-  simpModel4 <- GetSimpleModel(scale, subScaleData, ordCommand,
-                                   group = object$OtherVariables[group],
-                                   invariance =  c("loadings", "intercepts", "residuals" ),
-                                   corr = T)
+    # This is not ready yet
+    # print(partialInvariance(models,  type = "metric"))
+    simpModel3 <- GetSimpleModel(
+      scale,
+      subScaleData,
+      ordCommand,
+      group = object$OtherVariables[group],
+      invariance =  c("loadings", "intercepts"),
+      corr = T
+    )
+    simpModel4 <- GetSimpleModel(
+      scale,
+      subScaleData,
+      ordCommand,
+      group = object$OtherVariables[group],
+      invariance =  c("loadings", "intercepts", "residuals"),
+      corr = T
+    )
   }
-  print(lavaan::anova(simpModel1,simpModel2,simpModel3,simpModel4))
+  print(lavaan::anova(simpModel1, simpModel2, simpModel3, simpModel4))
   object$RCommands <- commands
   class(object) <- c("GroupInvariance", "Psychometric")
-  object$ResultList <- list(lavaan::summary(simpModel1),
-                            lavaan::summary(simpModel2),
-                            lavaan::summary(simpModel3),
-                            lavaan::summary(simpModel4))
-  names(object$ResultList) <- psych::cs(simpModel1, simpModel2,simpModel3,simpModel4)
+  object$ResultList <- list(
+    lavaan::summary(simpModel1),
+    lavaan::summary(simpModel2),
+    lavaan::summary(simpModel3),
+    lavaan::summary(simpModel4)
+  )
+  names(object$ResultList) <- psych::cs(simpModel1, simpModel2, simpModel3, simpModel4)
 
   return(object)
 

@@ -14,8 +14,6 @@
 \item{...}{more arguments to the f function}
 
 \item{object}{A Psychometric object}
-
-\item{group}{A group variables among other variables}
 }
 \value{
 all results from the f function
