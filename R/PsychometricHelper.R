@@ -381,40 +381,59 @@ writeP.Psychometric <- function(object, File, colnames = T, rownames = F)
 }
 
 
+
 #' getSubScaleNames
 #'
 #' @param object a Psychometric object
+#' @param scales if NULL all scales otherswise a subset of scales in a Psychometric object
 #'
 #' @return a list of all names starting with the
 #' @details When the ScaleItemFrames is created it changes the variable names of
 #' the items. This functions return all the names together with the scale names.
 #' The functions can be used to check that everything has been defined correctly.
 #' @export
-getSubScaleNames <- function(object)
-  writeP <- function(object, File, colnames = T, rownames = F) {
-    UseMethod("getSubScaleNames", object)
-  }
-
+getSubScaleNames <- function(object, scales)
+{
+  UseMethod("getSubScaleNames", object)
+}
 
 
 #' getSubScaleNames
 #'
 #' @param object a Psychometric object
+#' @param scales if NULL all scales otherswise a subset of scales in a Psychometric object
 #'
 #' @return a list of all names starting with the
 #' @details When the ScaleItemFrames is created it changes the variable names of
 #' the items. This functions return all the names together with the scale names.
 #' The functions can be used to check that everything has been defined correctly.
 #' @export
-getSubScaleNames <- function(object)
+getSubScaleNames <- function(object, scales = NULL)
 {
   res <- list()
-  for(index in 1:length(object$ScaleNames))
+  if (is.null(NULL)) {
+    for(index in 1:length(object$ScaleNames))
+    {
+      nam2 <-  names(object$ScaleItemFrames[[index]])
+      res <- append(res, list(c(nam2)))
+
+    }
+    names(res) <- object$ScaleNames
+  }
+  else
   {
-    nam2 <-  names(object$ScaleItemFrames[[index]])
-    res <- append(res, list(c(nam2)))
+    for(scale in scales)
+    {
+      if (scale %in% object$ScaleNames)
+      {
+        index <- which(object$ScaleNames == scale)
+        nam2 <-  names(object$ScaleItemFrames[[index]])
+        res <- append(res, list(c(nam2)))
+        names(res)[length(res)] <- scale
+      }
+    }
 
   }
-  names(res) <- object$ScaleNames
   return(res)
 }
+

@@ -3,19 +3,120 @@
 #' @param object Psychometric object
 #' @param scale, scale to find best items for
 #' @param nItems, number of items in new scale
+#' @param splitReversed, whether item should be splitted on reversed items
+#' @param disc, take away items with bad discrimination
+#' @param ..., parameters to discriminate function
 #'
 #' @return best item object
 #' @export
-bestItems <- function(object,  scale, nItems) {
+bestItems <- function(object,  scale, nItems, splitReversed, disc,...) {
   UseMethod("bestItems", object)
 }
 
 #' @export
-bestItems.Psychometric <- function(object, scale, nItems)
+bestItems.Psychometric <- function(object, scale, nItems, splitReversed = F, disc = 0, ...)
 {
+  GetExtraArgument <- function(a, default)
+  {
+    arg <- list(...)
+    if (a %in% names(arg))
+      return(arg[[a]])
+    else
+      return(default)
 
+  }
+  GetBestSplitted <- function()
+    # Items that are reversed ends with "R" so first all items that do not end with R
+    # should be selected and half of the nItems should be taken from these, then the
+    # items with a name that ends with "R" should be selected and half of the nItems
+  {
+    items <- object$ScaleItemFrames[[scale]]
+    nItems2 <- round(nItems/2)
+    nItems1 <- nItems - nItems2
+    namesV <- names(items)
+    normalItems <- c()
+    reversedItems <- c()
+    for (name in namesV)
+    {
+      if (stringr::str_ends(name, "R"))
+        reversedItems <- c(reversedItems, name)
+      else
+        normalItems <- c(normalItems, name)
+    }
+    if (length(normalItems) < nItems1)
+      nItems1 <- length(normalItems)
+    if (length(reversedItems) < nItems2)
+      nItems2 <- length(reversedItems)
+    res1 <- invisible(psych::bestScales(cbind(items[normalItems], object$ScaleFrame[scale]),
+                                        criteria = scale, n.item = nItems1-1, dictionary = object$ItemDictionary))
+    res2 <- invisible(psych::bestScales(cbind(items[reversedItems], object$ScaleFrame[scale]),
+                                        criteria = scale, n.item = nItems2-1, dictionary = object$ItemDictionary))
+    return(c(res1$best.keys[[1]], res2$best.keys[[1]]))
+
+  }
+  if (disc == 0 )
+    if (isTRUE(splitReversed))
+      res <- GetBestSplitted()
+    else
    res <- invisible(psych::bestScales(cbind(object$ScaleItemFrames[[scale]], object$ScaleFrame[scale]),
                     criteria = scale, n.item = nItems-1, dictionary = object$ItemDictionary))
+  else
+  {
+    if (isTRUE(splitReversed))
+      # In this case only half of the items in disc should be taken from each group
+    {
+     disc <- round(disc/2)
+      nItems2 <- round(nItems/2)
+      nItems1 <- nItems - nItems2
+      namesV <- names(object$ScaleItemFrames[[scale]])
+      normalItems <- c()
+      reversedItems <- c()
+      for (name in namesV)
+      {
+        if (stringr::str_ends(name, "R"))
+          reversedItems <- c(reversedItems, name)
+        else
+          normalItems <- c(normalItems, name)
+      }
+      if (length(normalItems) < nItems1)
+        nItems1 <- length(normalItems)
+      if (length(reversedItems) < nItems2)
+        nItems2 <- length(reversedItems)
+      disc1 <- round(disc/2)
+      disc2 <- disc - disc1
+      discScales <- GetExtraArgument("discrminantScales", NULL)
+      if (is.null(discScales))
+      {
+        print("No discriminant scales given")
+        return(NULL)
+      }
+      useItems <- bestDiscriminantItem(object, scale, object$ScaleFrame[discScales])
+      useItems1 <- intersect(names(useItems),reversedItems)
+      useItems2 <- intersect(names(useItems),normalItems)
+      useItems1 <- useItems1[1:(length(useItems1)-disc1)]
+      useItems2 <- useItems2[1:(length(useItems2)-disc2)]
+      if (nItems > length(useItems)-disc)
+        return(c(useItems1, useItems2))
+      res1 <- invisible(psych::bestScales(cbind(object$ScaleItemFrames[[scale]][,useItems1], object$ScaleFrame[scale]),
+                                         criteria = scale, n.item = nItems1-1, dictionary = object$ItemDictionary))
+      res2 <- invisible(psych::bestScales(cbind(object$ScaleItemFrames[[scale]][,useItems2], object$ScaleFrame[scale]),
+                                         criteria = scale, n.item = nItems2-1, dictionary = object$ItemDictionary))
+      return(c(res1$best.keys[[1]], res2$best.keys[[1]]))
+    }
+   discScales <- GetExtraArgument("discrminantScales", NULL)
+    if (is.null(discScales))
+    {
+      print("No discriminant scales given")
+      return(NULL)
+    }
+    useItems <- bestDiscriminantItem(object, scale, object$ScaleFrame[discScales])
+    useItems <- names(useItems[1:(length(useItems)-disc)])
+    if (nItems < length(useItems)-disc)
+      return(useItems)
+    res <- invisible(psych::bestScales(cbind(object$ScaleItemFrames[[scale]][,useItems], object$ScaleFrame[scale]),
+                                       criteria = scale, n.item = nItems-1, dictionary = object$ItemDictionary))
+
+  }
    return(res)
 }
 
@@ -266,7 +367,6 @@ bestDiscriminantItem <- function(object, mainScale, discriminantScales) {
 bestDiscriminantItem <- function(object, mainScale, discriminantScales)
 {
   res <- c()
-
   getSubScaleNames <- function(subScales)
   {
     res <- ""
@@ -283,7 +383,7 @@ bestDiscriminantItem <- function(object, mainScale, discriminantScales)
   for (item in n)
   {
     pred <- summary(lm(as.formula(paste(item,"~", paste(getSubScaleNames(discriminantScales)),
-                                collapse = "")), data = data, na))
+                                collapse = "")), data = data))
     res <-c(res, pred$r.squared)
   }
   names(res) <- n

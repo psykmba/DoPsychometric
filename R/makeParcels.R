@@ -3,52 +3,67 @@
 #' @param object Psychometric object
 #' @param scales, scale to find best items for
 #' @param random, random parcels
+#' @param nParc,  number of parcels to make 2 or 3
 #'
 #' @return best item object
 #' @export
-makeThreeParcels <- function(object,  scales, random = FALSE) {
+makeThreeParcels <- function(object,  scales, random = FALSE, nParc = 3) {
   UseMethod("makeThreeParcels", object)
 }
 
 #' @export
-makeThreeParcels.Psychometric <- function(object,  scales,  random = FALSE)
-  {
-
+makeThreeParcels.Psychometric <- function(object,  scales,  random = FALSE, nParc = 3)
+{
   if (isTRUE(random))
   {
     scaleItemFrames <- object$ScaleItemFrames[scales]
-    for (scale in scales)
+    if (nParc == 3)
     {
-       s <- object$ScaleItemFrames[[scale]]
-      sampleR <- sample(1:ncol(s), ncol(s))
-      P1 <- rowMeans(s[,sampleR[1:trunc(ncol(s)/3)]], na.rm = T)
-      P2 <- rowMeans(s[,sampleR[(trunc(ncol(s)/3)+1):trunc(ncol(s)/3)*2]], na.rm = T)
-      P3 <- rowMeans(s[,sampleR[(trunc(ncol(s)/3)*2+1):ncol(s)]], na.rm = T)
+      for (scale in scales)
+      {
+        s <- object$ScaleItemFrames[[scale]]
+        sampleR <- sample(1:ncol(s), ncol(s))
+        P1 <- rowMeans(s[,sampleR[1:trunc(ncol(s)/3)]], na.rm = T)
+        P2 <- rowMeans(s[,sampleR[(trunc(ncol(s)/3)+1):trunc(ncol(s)/3)*2]], na.rm = T)
+        P3 <- rowMeans(s[,sampleR[(trunc(ncol(s)/3)*2+1):ncol(s)]], na.rm = T)
 
 
 
 
-      s <- as.data.frame(list(P1,P2,P3))
-      names(s) <- sapply(c("P1", "P2", "P3"), FUN = function(x) return(paste(scale, x, sep = "")))
-      object$ScaleItemFrames[[scale]] <- s
+        s <- as.data.frame(list(P1,P2,P3))
+        names(s) <- sapply(c("P1", "P2", "P3"), FUN = function(x) return(paste(scale, x, sep = "")))
+        object$ScaleItemFrames[[scale]] <- s
+      }
+    }
+    else if (nParc == 2)
+    {
+      for (scale in scales)
+      {
+        s <- object$ScaleItemFrames[[scale]]
+        sampleR <- sample(1:ncol(s), ncol(s))
+        P1 <- rowMeans(s[,sampleR[1:trunc(ncol(s)/2)]], na.rm = T)
+        P2 <- rowMeans(s[,sampleR[(trunc(ncol(s)/2)+1):ncol(s)]], na.rm = T)
+        s <- as.data.frame(list(P1,P2))
+        names(s) <- sapply(c("P1", "P2"), FUN = function(x) return(paste(scale, x, sep = "")))
+        object$ScaleItemFrames[[scale]] <- s
+      }
     }
     return(object)
-
 
   }
   scaleItemFrames <- object$ScaleItemFrames[scales]
   for (scale in scales)
   {
     s <- object$ScaleItemFrames[[scale]]
-       if (ncol(s) >=9 )
-        s <- psych::scoreItems(psych::parcels(s, size = 3),s)$scores[,1:3]
-      else
-        s <-  psych::scoreItems(psych::parcels(s, size = 2),s)$scores[,1:3]
+    if (ncol(s) >=9 && nParc == 3)
+      s <- psych::scoreItems(psych::parcels(s, size = 3),s)$scores[,1:3]
+    else
+      s <-  psych::scoreItems(psych::parcels(s, size = 2),s)$scores[,1:3]
 
 
 
 
-      s <- as.data.frame(s)
+    s <- as.data.frame(s)
     names(s) <- sapply(names(s), FUN = function(x) return(paste(scale, x, sep = "")))
     object$ScaleItemFrames[[scale]] <- s
   }

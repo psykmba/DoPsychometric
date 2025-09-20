@@ -9,6 +9,8 @@ getSubScaleNames(object)
 getSubScaleNames(object)
 
 getSubScaleNames(object)
+
+getSubScaleNames(object)
 }
 \arguments{
 \item{object}{a Psychometric object}
@@ -21,6 +23,8 @@ a list of all names starting with the
 a list of all names starting with the
 
 a list of all names starting with the
+
+a list of all names starting with the
 }
 \description{
 getSubScaleNames
@@ -28,8 +32,14 @@ getSubScaleNames
 getSubScaleNames
 
 getSubScaleNames
+
+getSubScaleNames
 }
 \details{
+When the ScaleItemFrames is created it changes the variable names of
+the items. This functions return all the names together with the scale names.
+The functions can be used to check that everything has been defined correctly.
+
 When the ScaleItemFrames is created it changes the variable names of
 the items. This functions return all the names together with the scale names.
 The functions can be used to check that everything has been defined correctly.
